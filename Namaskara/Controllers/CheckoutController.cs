@@ -66,9 +66,10 @@ namespace Namaskara.Controllers
                 order.OrderInfoId = orderInfo.OrderInfoId;
                 order.Email = orderInfo.Email;
                 order.OrderDate = DateTime.Now;
+                order.ConfirmDate = order.OrderDate.AddDays(1);
                 order.Status = "Order Submitted";
                 order.OrderInfo = orderInfo;
-                
+
                 ProcessOrder(order);
 
                 return RedirectToAction("Complete", new { id = order.OrderId });
@@ -76,10 +77,11 @@ namespace Namaskara.Controllers
             catch
             {
                 return View("Error");
-            } 
+            }
             
-            
-            
+
+
+
         }
 
         [AllowAnonymous]
@@ -209,7 +211,7 @@ namespace Namaskara.Controllers
 
             //Process the order
             var cart = ShoppingCart.GetCart(this.HttpContext);
-            cart.CreateOrder(order);
+            decimal total = cart.CreateOrder(order.OrderId);
 
             //Create Payment Confirmation token and send it
             string code = CreatePaymentConfirmationToken();
@@ -217,6 +219,8 @@ namespace Namaskara.Controllers
             code = System.Web.HttpUtility.UrlEncode(code);
             PaymentConfirmation pc = new PaymentConfirmation { OrderId = order.OrderId, Code = code };
 
+            order.Total = total;
+            ndb.Entry(order).State = System.Data.Entity.EntityState.Modified;
             ndb.PaymentConfirmations.Add(pc);
             ndb.SaveChanges();
 

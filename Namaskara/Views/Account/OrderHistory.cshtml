@@ -10,7 +10,7 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.OrderInfoId)
+            @Html.DisplayNameFor(model => model.OrderId)
         </th>
         
         <th>
@@ -32,7 +32,7 @@
             @Html.DisplayFor(modelItem => item.OrderId)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Total)
+            @String.Format("{0:n}", item.Total)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Status)
@@ -41,9 +41,7 @@
             @Html.DisplayFor(modelItem => item.OrderDate)
         </td>
         <td>
-            
-            @Html.ActionLink("Details", "Details", new { id=item.OrderId }) 
-            
+            @Html.ActionLink("Details", "OrderDetails", new { id=item.OrderId }) 
         </td>
     </tr>
 }

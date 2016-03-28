@@ -513,6 +513,7 @@
     <Content Include="Views\Account\EditInformation.cshtml" />
     <Content Include="Views\Manage\PasswordChanged.cshtml" />
     <Content Include="Views\StoreManager\OrderDetails.cshtml" />
+    <Content Include="Views\Account\OrderDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="PaymentImages\" />

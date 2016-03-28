@@ -115,18 +115,20 @@ namespace Namaskara.Models
             return total ?? decimal.Zero;
         }
         
-        public int CreateOrder(Order order)
+        public decimal CreateOrder(int orderId)
         {
+            
             decimal orderTotal = 0;
 
             var cartItems = GetCartItems();
+            
 
             foreach (var item in cartItems)
             {
                 var orderDetail = new OrderDetail
                 {
                     ItemId = item.ItemId,
-                    OrderId = order.OrderId,
+                    OrderId = orderId,
                     UnitPrice = item.Item.RetailPrice,
                     Quantity = item.Count
                 };
@@ -134,15 +136,15 @@ namespace Namaskara.Models
                 orderTotal += (item.Count * item.Item.RetailPrice);
                 ndb.OrderDetails.Add(orderDetail);
             }
-
-            order.Total = orderTotal;
-            ndb.Entry(order).State = System.Data.Entity.EntityState.Modified;
+            
+            
+            //ndb.Entry(order).State = System.Data.Entity.EntityState.Modified;
 
             ndb.SaveChanges();
-
             EmptyCart();
 
-            return order.OrderId;
+
+            return orderTotal;
         }
         
         public string GetCartId(HttpContextBase context)

@@ -149,6 +149,17 @@ namespace Namaskara.Controllers
             return View(orders);
         }
 
+        public ActionResult OrderDetails(int id)
+        {
+            
+            List<OrderDetail> orderDetails = ndb.OrderDetails.Where(m => m.OrderId == id).ToList();
+            foreach(var od in orderDetails)
+            {
+                od.Item = ndb.Items.Include("Product").Single(m=> m.Id == od.ItemId);
+            }
+            return View(orderDetails);
+        }
+
         //Migrating shopping cart to logged in user
         private void MigrateShoppingCart(string UserName)
         {
