@@ -41,8 +41,8 @@
                                 @if (item.IsAvailable)
                                 {
                                     @Html.Raw("Available") 
-                                    <span>@item.RetailPrice</span>
-                                    <input type="number" min="0" max="10" id="count-@item.Id" />
+                                    <span>@String.Format("Rp {0:n}", item.RetailPrice)</span>
+                                    <input type="number" min="0" max="10" id="count-@item.Id" class="count" />
                                     <button class="addCart" data-id="@item.Id">Add to Cart</button>
                                 }
                                 else
@@ -76,6 +76,7 @@
                     function (data) {
                         $("#update-message").text(data.Message);
                         $("#cart").load('@Url.Action("CartSummary", "ShoppingCart")');
+                        $(".count").val("0");
                         
 
                     }, "json");

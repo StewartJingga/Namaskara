@@ -10,7 +10,7 @@ using Namaskara.Models;
 
 namespace Namaskara.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize]
     public class ManageController : Controller
     {
         private ApplicationSignInManager _signInManager;
@@ -52,6 +52,7 @@ namespace Namaskara.Controllers
 
         //
         // GET: /Manage/Index
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult> Index(ManageMessageId? message)
         {
             ViewBag.StatusMessage =
@@ -77,6 +78,7 @@ namespace Namaskara.Controllers
 
         //
         // POST: /Manage/RemoveLogin
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> RemoveLogin(string loginProvider, string providerKey)
@@ -101,6 +103,7 @@ namespace Namaskara.Controllers
 
         //
         // GET: /Manage/AddPhoneNumber
+        [Authorize(Roles = "Admin")]
         public ActionResult AddPhoneNumber()
         {
             return View();
@@ -108,6 +111,7 @@ namespace Namaskara.Controllers
 
         //
         // POST: /Manage/AddPhoneNumber
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> AddPhoneNumber(AddPhoneNumberViewModel model)
@@ -132,6 +136,7 @@ namespace Namaskara.Controllers
 
         //
         // POST: /Manage/EnableTwoFactorAuthentication
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> EnableTwoFactorAuthentication()
@@ -147,6 +152,7 @@ namespace Namaskara.Controllers
 
         //
         // POST: /Manage/DisableTwoFactorAuthentication
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DisableTwoFactorAuthentication()
@@ -162,6 +168,7 @@ namespace Namaskara.Controllers
 
         //
         // GET: /Manage/VerifyPhoneNumber
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult> VerifyPhoneNumber(string phoneNumber)
         {
             var code = await UserManager.GenerateChangePhoneNumberTokenAsync(User.Identity.GetUserId(), phoneNumber);
@@ -171,6 +178,7 @@ namespace Namaskara.Controllers
 
         //
         // POST: /Manage/VerifyPhoneNumber
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> VerifyPhoneNumber(VerifyPhoneNumberViewModel model)
@@ -196,6 +204,7 @@ namespace Namaskara.Controllers
 
         //
         // GET: /Manage/RemovePhoneNumber
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult> RemovePhoneNumber()
         {
             var result = await UserManager.SetPhoneNumberAsync(User.Identity.GetUserId(), null);
@@ -211,15 +220,16 @@ namespace Namaskara.Controllers
             return RedirectToAction("Index", new { Message = ManageMessageId.RemovePhoneSuccess });
         }
 
-        //
+        
         // GET: /Manage/ChangePassword
         public ActionResult ChangePassword()
         {
             return View();
         }
 
-        //
+
         // POST: /Manage/ChangePassword
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> ChangePassword(ChangePasswordViewModel model)
@@ -236,14 +246,21 @@ namespace Namaskara.Controllers
                 {
                     await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
                 }
-                return RedirectToAction("Index", new { Message = ManageMessageId.ChangePasswordSuccess });
+                return RedirectToAction("PasswordChanged");
             }
             AddErrors(result);
             return View(model);
         }
 
+        public ActionResult PasswordChanged()
+        {
+            ViewBag.StatusMessage = "Your password has been changed";
+            return View();
+        }
+
         //
         // GET: /Manage/SetPassword
+        [Authorize(Roles = "Admin")]
         public ActionResult SetPassword()
         {
             return View();
@@ -251,6 +268,7 @@ namespace Namaskara.Controllers
 
         //
         // POST: /Manage/SetPassword
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> SetPassword(SetPasswordViewModel model)
@@ -276,6 +294,7 @@ namespace Namaskara.Controllers
 
         //
         // GET: /Manage/ManageLogins
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult> ManageLogins(ManageMessageId? message)
         {
             ViewBag.StatusMessage =
@@ -299,6 +318,7 @@ namespace Namaskara.Controllers
 
         //
         // POST: /Manage/LinkLogin
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult LinkLogin(string provider)
@@ -309,6 +329,7 @@ namespace Namaskara.Controllers
 
         //
         // GET: /Manage/LinkLoginCallback
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult> LinkLoginCallback()
         {
             var loginInfo = await AuthenticationManager.GetExternalLoginInfoAsync(XsrfKey, User.Identity.GetUserId());

@@ -6,7 +6,7 @@ using System.Data.Entity;
 
 namespace Namaskara.Models
 {
-    public class InitialData : DropCreateDatabaseAlways<NamaskaraDb>
+    public class InitialData : DropCreateDatabaseIfModelChanges<NamaskaraDb>
     {
         protected override void Seed(NamaskaraDb context)
         {

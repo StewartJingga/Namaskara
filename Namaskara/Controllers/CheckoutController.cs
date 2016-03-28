@@ -29,9 +29,21 @@ namespace Namaskara.Controllers
         public ActionResult AddressAndPayment()
         {
             //If user has created an order information
-            if(ndb.OrderInformation.Any(m => m.Email == User.Identity.Name))
+            if(ndb.UserInformations.Any(m => m.Email == User.Identity.Name))
             {
-                return View(ndb.OrderInformation.Single(m => m.Email == User.Identity.Name));
+                UserInformation info = ndb.UserInformations.Single(m => m.Email == User.Identity.Name);
+                OrderInfo oi = new OrderInfo()
+                {
+                    Address = info.Address,
+                    City = info.City,
+                    State = info.State,
+                    FirstName = info.FirstName,
+                    LastName = info.LastName,
+                    PostalCode = info.PostalCode,
+                    Country = info.Country,
+                    Phone = info.Phone
+                };
+                return View(oi);
             }
             else return View();
         }
@@ -45,19 +57,17 @@ namespace Namaskara.Controllers
             TryUpdateModel(orderInfo);
             orderInfo.Email = User.Identity.Name;
             Order order = new Order();
+            ndb.OrderInformation.Add(orderInfo);
+            ndb.SaveChanges();
 
-            if (!ndb.OrderInformation.Any(m => m.Email == User.Identity.Name))
-            {
-                ndb.OrderInformation.Add(orderInfo);
-                ndb.SaveChanges();
-            }
-            
+
             try
             {
                 order.OrderInfoId = orderInfo.OrderInfoId;
                 order.Email = orderInfo.Email;
                 order.OrderDate = DateTime.Now;
                 order.Status = "Order Submitted";
+                order.OrderInfo = orderInfo;
                 
                 ProcessOrder(order);
 
@@ -87,15 +97,22 @@ namespace Namaskara.Controllers
             OrderInfo orderInfo = new OrderInfo();
             TryUpdateModel(orderInfo);
             Order order = new Order();
-  
+
+            ndb.OrderInformation.Add(orderInfo);
+            ndb.SaveChanges();
+
             try
             {
                 order.OrderInfoId = orderInfo.OrderInfoId;
                 order.Email = orderInfo.Email;
                 order.OrderDate = DateTime.Now;
+                order.ConfirmDate = order.OrderDate.AddDays(1); 
                 order.Status = "Order Submitted";
+                order.OrderInfo = orderInfo;
 
                 ProcessOrder(order);
+                
+                
 
                 return RedirectToAction("Complete", new { id = order.OrderId });
             }
@@ -122,8 +139,8 @@ namespace Namaskara.Controllers
             if (isValid)
             {
                 Order order = ndb.Orders.Find(orderId);
-                TimeSpan difference = DateTime.Now - order.OrderDate;
-                if (difference.TotalHours <= 24)
+                
+                if (order.ConfirmDate >= DateTime.Now)
                 {
                     UploadImageModel model = new UploadImageModel { OrderId = orderId };
                     return View(model);
@@ -151,16 +168,23 @@ namespace Namaskara.Controllers
                 order.Bank = model.Bank;
                 order.AccountName = model.AccountName;
                 order.AccountNumber = model.AccountNumber;
+                try
+                {
+                    order.AmountPaid = Decimal.Parse(model.AmountPaid);
+                }
+                catch { return View("Error"); }
+                
 
-                if (PaymentImage.ContentLength > 0)
+                if (PaymentImage != null)
                 {
                     var fileName = "OrderId=" + model.OrderId.ToString() + " " + Path.GetFileName(PaymentImage.FileName);
                     var path = Path.Combine(Server.MapPath("~/PaymentImages/"), fileName);
                     PaymentImage.SaveAs(path);
                     
                     order.PaymentImage = fileName;
-                    order.Status = "Waiting For Confirmation";
+                    
                 }
+                order.Status = "Waiting For Confirmation";
                 ndb.Entry(order).State = System.Data.Entity.EntityState.Modified;
                 ndb.SaveChanges();
                 return RedirectToAction("PaymentUploaded");
@@ -174,6 +198,7 @@ namespace Namaskara.Controllers
         {
             return View();
         }
+
         private void ProcessOrder(Order order)
         {
             
@@ -199,7 +224,7 @@ namespace Namaskara.Controllers
             EmailFormModel email = new EmailFormModel
             {
                 Destination = order.Email,
-                Message = "Please confirm your payment by clicking <a href=\""
+                Message = "Your order number is: " + order.OrderId + "<br>Please confirm your payment by clicking <a href=\""
                         + callbackUrl + "\">here</a>"
             };
 

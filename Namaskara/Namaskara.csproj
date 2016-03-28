@@ -206,6 +206,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\CartItem.cs" />
     <Compile Include="Models\Category.cs" />
@@ -223,6 +224,7 @@
     <Compile Include="Models\PaymentConfirmation.cs" />
     <Compile Include="Models\Product.cs" />
     <Compile Include="Models\ShoppingCart.cs" />
+    <Compile Include="Models\UserInformation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\ShoppingCartAddModel.cs" />
@@ -230,6 +232,7 @@
     <Compile Include="ViewModels\ShoppingCartViewModel.cs" />
     <Compile Include="ViewModels\UpdateItemViewModel.cs" />
     <Compile Include="ViewModels\UploadImageModel.cs" />
+    <Compile Include="ViewModels\UserAccountViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Data\Database.mdf" />
@@ -506,6 +509,10 @@
     <Content Include="Views\StoreManager\EditOrder.cshtml" />
     <Content Include="Views\StoreManager\WCOrder.cshtml" />
     <Content Include="Views\Account\OrderHistory.cshtml" />
+    <Content Include="Views\Account\UserInformation.cshtml" />
+    <Content Include="Views\Account\EditInformation.cshtml" />
+    <Content Include="Views\Manage\PasswordChanged.cshtml" />
+    <Content Include="Views\StoreManager\OrderDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="PaymentImages\" />

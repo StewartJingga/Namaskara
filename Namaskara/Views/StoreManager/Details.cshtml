@@ -35,7 +35,7 @@
                     @Model[i].Size
                 </td>
                 <td>
-                    @Model[i].RetailPrice
+                    @String.Format("Rp {0:n}", @Model[i].RetailPrice)
                 </td>
                 <td>
                     @Html.CheckBox("["+i+"].IsAvailable", Model[i].IsAvailable)

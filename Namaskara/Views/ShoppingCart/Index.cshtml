@@ -36,6 +36,7 @@
         <th>
             Quantity
         </th>
+        <th>Total</th>
         <th></th>
     </tr>
     @foreach (var item in Model.CartItems)
@@ -45,13 +46,13 @@
                 @Html.ActionLink(item.Item.DisplayName, "Details", "Store", new { id = item.Item.ProductId }, null)
             </td>
             <td id="itemPrice-@item.RecordId" data-id="@item.Item.RetailPrice">
-                @item.Item.RetailPrice
+                @String.Format("Rp {0:n}", item.Item.RetailPrice)
             </td>
             <td id="item-count-@item.RecordId">
                 @item.Count
             </td>
             <td id="total-price-@item.RecordId">
-                @Html.Raw(@item.Item.RetailPrice * @item.Count)
+                @Html.Raw(@String.Format("Rp {0:n}", @item.Item.RetailPrice * @item.Count))
             </td>
             <td>
                 <a href="#" class="RemoveLink" data-id="@item.RecordId">
@@ -67,7 +68,7 @@
         <td></td>
         <td></td>
         <td id="cart-total">
-            @Model.CartTotal
+            @String.Format("Rp {0:n}", @Model.CartTotal)
         </td>
     </tr>
 </table>

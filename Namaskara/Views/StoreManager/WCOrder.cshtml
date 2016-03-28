@@ -9,9 +9,23 @@
 <p>@Html.ActionLink("All Orders", "OrderIndex") | @Html.ActionLink("Waiting Confirmation", "WCOrder")</p>
 <table class="table">
     <tr>
-        
+        <th>
+            @Html.DisplayNameFor(model => model.OrderId)
+        </th>
         <th>
             @Html.DisplayNameFor(model => model.Email)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Bank)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AccountName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AccountNumber)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AmountPaid)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Total)
@@ -19,7 +33,6 @@
         <th>
             @Html.DisplayNameFor(model => model.Status)
         </th>
-        
         <th>
             @Html.DisplayNameFor(model => model.OrderDate)
         </th>
@@ -28,22 +41,35 @@
 
 @foreach (var item in Model) {
     <tr>
-        
+        <td>
+            @Html.DisplayFor(modelItem => item.OrderId)
+        </td>
         <td>
             @Html.DisplayFor(modelItem => item.Email)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Total)
+            @Html.DisplayFor(modelItem => item.Bank)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AccountName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AccountNumber)
+        </td>
+        <td>
+            @String.Format("{0:n}", item.AmountPaid)
+        </td>
+        <td>
+            @String.Format("{0:n}", item.Total)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Status)
         </td>
-        
         <td>
             @Html.DisplayFor(modelItem => item.OrderDate)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.OrderId }) |
+            @Html.ActionLink("Confirm", "ConfirmPayment", new { id=item.OrderId })
             
         </td>
     </tr>

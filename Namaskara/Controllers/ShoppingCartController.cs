@@ -40,7 +40,7 @@ namespace Namaskara.Controllers
             }
             var results = new ShoppingCartAddModel
             {
-                Message = addedItem.Name + " " + count.ToString() + "x has been added to cart",
+                Message = addedItem.Name + " - " + addedItem.Size + " " + count.ToString() + "x has been added to cart",
                 
                 
             };

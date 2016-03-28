@@ -13,6 +13,11 @@ namespace Namaskara.Controllers
     public class StoreManagerController : Controller
     {
         NamaskaraDb ndb = new NamaskaraDb();
+
+        public StoreManagerController()
+        {
+            MakeExpired();
+        }
         // GET: StoreManager
         public ActionResult CategoryIndex()
         {
@@ -120,6 +125,23 @@ namespace Namaskara.Controllers
             return View(ndb.Orders.Where(m=>m.Status == "Waiting For Confirmation").ToList());
         }
 
+        public ActionResult ConfirmPayment(int id)
+        {
+            Order order = ndb.Orders.Find(id);
+            order.Status = "Confirmed";
+            ndb.Entry(order).State = System.Data.Entity.EntityState.Modified;
+            ndb.SaveChanges();
+
+            return RedirectToAction("WCOrder");
+
+        }
+
+        public ActionResult OrderDetails(int id)
+        {
+            
+            return View(ndb.Orders.Find(id));
+        }
+
         public ActionResult EditOrder(int id)
         {
             List<string> status = new List<string>
@@ -127,11 +149,13 @@ namespace Namaskara.Controllers
                 "Order Submitted",
                 "Waiting For Confirmation",
                 "Confirmed",
-                "Delivered",
-                "Completed"
+                "Pending",
+                "Completed",
+                "Expired"
             };
-            ViewBag.Status = new SelectList(status);
-            return View(ndb.Orders.Find(id));
+            Order order = ndb.Orders.Find(id);
+            ViewBag.Status = new SelectList(status, order.Status);
+            return View(order);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -139,7 +163,9 @@ namespace Namaskara.Controllers
         {
             if (ModelState.IsValid)
             {
-                ndb.Entry(order).State = System.Data.Entity.EntityState.Modified;
+                Order changes = ndb.Orders.Find(order.OrderId);
+                TryUpdateModel(changes);
+                ndb.Entry(changes).State = System.Data.Entity.EntityState.Modified;
                 ndb.SaveChanges();
 
                 return RedirectToAction("OrderIndex");
@@ -149,11 +175,42 @@ namespace Namaskara.Controllers
                 "Order Submitted",
                 "Waiting For Confirmation",
                 "Confirmed",
-                "Delivered",
-                "Completed"
+                "Pending",
+                "Completed",
+                "Expired"
             };
             ViewBag.Status = new SelectList(status);
             return View(order);
+        }
+
+        private ActionResult MakeExpired()
+        {
+            List<Order> orders = ndb.Orders.Where(m => m.Status == "Order Submitted").ToList();
+            foreach(Order order in orders)
+            {
+                
+                TimeSpan difference = DateTime.Now - order.ConfirmDate;
+                if (difference.TotalHours >= 1)
+                {
+                    order.Status = "Expired";
+                    ndb.Entry(order).State = System.Data.Entity.EntityState.Modified;
+                }
+            }
+            
+            ndb.SaveChanges();
+            return RedirectToAction("OrderIndex");
+        }
+
+        public ActionResult ExtendTime(int id)
+        {
+            Order order = ndb.Orders.Find(id);
+            order.Status = "Order Submitted";
+            order.ConfirmDate = DateTime.Now.AddDays(1);
+
+            ndb.Entry(order).State = System.Data.Entity.EntityState.Modified;
+            ndb.SaveChanges();
+
+            return RedirectToAction("OrderDetails", new { id = id });
         }
 
 

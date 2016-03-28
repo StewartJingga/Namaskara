@@ -10,6 +10,7 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Namaskara.Models;
 using System.Collections.Generic;
+using Namaskara.ViewModels;
 
 namespace Namaskara.Controllers
 {
@@ -79,7 +80,68 @@ namespace Namaskara.Controllers
             return View(model);
         }
 
-        
+        public ActionResult UserInformation()
+        {
+            string userEmail = User.Identity.GetUserName();
+            UserInformation userInfo = ndb.UserInformations.Single(m => m.Email == userEmail);
+            UserAccountViewModel model = new UserAccountViewModel();
+
+            model.Address = userInfo.Address;
+            model.City = userInfo.City;
+            model.Country = userInfo.Country;
+            model.Email = userEmail;
+            model.FirstName = userInfo.FirstName;
+            model.LastName = userInfo.LastName;
+            model.Phone = userInfo.Phone;
+            model.PostalCode = userInfo.PostalCode;
+            model.State = userInfo.State;
+ 
+            return View(model);
+        }
+
+        public ActionResult EditInformation()
+        {
+            string userEmail = User.Identity.GetUserName();
+            UserInformation userInfo = ndb.UserInformations.Single(m => m.Email == userEmail);
+            UserAccountViewModel model = new UserAccountViewModel();
+
+            model.Address = userInfo.Address;
+            model.City = userInfo.City;
+            model.Country = userInfo.Country;
+            model.Email = userEmail;
+            model.FirstName = userInfo.FirstName;
+            model.LastName = userInfo.LastName;
+            model.Phone = userInfo.Phone;
+            model.PostalCode = userInfo.PostalCode;
+            model.State = userInfo.State;
+
+            return View(model);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditInformation(UserAccountViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                string userEmail = User.Identity.GetUserName();
+                UserInformation userInfo = ndb.UserInformations.Single(m => m.Email == userEmail);
+                userInfo.Address = model.Address;
+                userInfo.City = model.City;
+                userInfo.Country = model.Country;
+                userInfo.FirstName = model.FirstName;
+                userInfo.LastName = model.LastName;
+                userInfo.Phone = model.Phone;
+                userInfo.PostalCode = model.PostalCode;
+                userInfo.State = model.State;
+
+                ndb.Entry(userInfo).State = System.Data.Entity.EntityState.Modified;
+                ndb.SaveChanges();
+
+                return RedirectToAction("UserInformation");
+            }
+            return View(model);
+        }
+
         public ActionResult OrderHistory()
         {
             string userEmail = User.Identity.GetUserName();
@@ -253,7 +315,15 @@ namespace Namaskara.Controllers
                 return View("Error");
             }
             var result = await UserManager.ConfirmEmailAsync(userId, code);
-            return View(result.Succeeded ? "ConfirmEmail" : "Error");
+            if (result.Succeeded)
+            {
+                UserInformation userInfo = new UserInformation() { Email = userId};
+                ndb.UserInformations.Add(userInfo);
+                ndb.SaveChanges();
+
+                return View("ConfirmEmail");
+            }
+            return View("Error");
         }
 
         //
