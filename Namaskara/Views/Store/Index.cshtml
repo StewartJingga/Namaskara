@@ -1,0 +1,24 @@
+﻿@model IEnumerable<Namaskara.Models.Category>
+
+@{
+    ViewBag.Title = "Products";
+}
+@section categories {
+    <div id="categories">
+        <h3>Categories</h3>
+        @{Html.RenderAction("CategoryList", "Store"); }
+    </div>
+}
+
+
+
+
+<h2>Featured Items</h2>
+
+
+    
+
+
+
+
+

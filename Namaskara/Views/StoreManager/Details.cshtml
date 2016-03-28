@@ -1,0 +1,57 @@
+﻿@model IList<Namaskara.Models.Item>
+
+
+@{
+    
+    ViewBag.Title = Model[0].Name;
+}
+
+<h2>@Model[0].Name</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <table>
+        <thead>
+            <tr>
+                <td>Name</td>
+                <td>Size</td>
+                <td>Price</td>
+                <td>Available</td>
+            </tr>
+        </thead>
+        @for (int i = 0; i < Model.Count(); i++)
+        {
+            <tr>
+                @Html.HiddenFor(m => m[i].Id)
+                @Html.HiddenFor(m => m[i].Name)
+                @Html.HiddenFor(m => m[i].Size)
+                @Html.HiddenFor(m => m[i].RetailPrice)
+                <td>
+                    @Model[i].Name
+                </td>
+                <td>
+                    @Model[i].Size
+                </td>
+                <td>
+                    @Model[i].RetailPrice
+                </td>
+                <td>
+                    @Html.CheckBox("["+i+"].IsAvailable", Model[i].IsAvailable)
+                </td>
+            </tr>
+        }
+        
+        <tr>
+            <td>
+                <input type="submit" value="Save" class="btn btn-default" />
+            </td>
+        </tr>
+        
+    </table>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>

@@ -1,0 +1,46 @@
+﻿@model Namaskara.Models.CreateNewProduct
+
+@{
+    ViewBag.Title = "Pricing";
+}
+
+<h2>Pricing</h2>
+
+@using (Html.BeginForm("Create", "StoreManager")) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>Pricing</h4>
+        <hr />
+        @Html.HiddenFor(model => model.Name)
+        @Html.HiddenFor(model => model.Category)
+        @Html.HiddenFor(model => model.ImageUrl)
+        @Html.HiddenFor(model => model.Origin)
+        @Html.HiddenFor(model => model.Sizes)
+
+        <table>
+            <tr>
+                <td>Size</td>
+                <td>Price</td>
+            </tr>
+            @for (int i = 0; i < Model.Sizes; i++)
+            {
+                <tr>
+                    <td><input type="text" id="size-@i" name="size-@i" /></td>
+                    <td><input type="text" id="price-@i" name="price-@i" /></td>
+                </tr>
+            }
+        </table>
+        
+
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+

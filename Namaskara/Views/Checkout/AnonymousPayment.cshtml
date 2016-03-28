@@ -1,0 +1,8 @@
+﻿@model int
+@{
+    ViewBag.Title = "Order Review";
+}
+
+<h2>Review Your Order</h2>
+
+@Html.ActionLink("Confirm Payment", "Complete", new { id = Model})

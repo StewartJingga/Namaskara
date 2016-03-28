@@ -1,0 +1,166 @@
+﻿
+body {
+    
+    padding-top: 10px;
+    padding-bottom: 20px;
+}
+
+ul {
+    margin-bottom: 0;
+    list-style-type: none;
+}
+
+
+
+a:hover {
+    text-decoration: none;
+    color: black;
+}
+
+#header {
+    background-color: rgba(141,199, 61, 1);
+    width: 1170px;
+}
+
+#logo {
+    float: left;
+}
+
+#login {
+    float: right;
+}
+
+#navigation {
+    background-color: rgba(141,199, 61, 1);
+    margin-top: 10px;
+    width: 1170px;
+    
+}
+
+#navigation ul{
+    background-color: rgba(141,199, 61, 1);
+    height: 50px;
+    
+}
+
+#navigation li {
+    display: inline-block;
+    text-align: center;
+    line-height: 50px;
+    
+}
+
+#navigation li:hover {
+    background-color: rgba(97, 138, 40, 1);
+}
+
+#navigation a{   
+    display: block;
+    width: 100px;
+    color: black;
+}
+
+/*----------------- CATEGORIES SIDEBAR ---------------------*/
+#categories {
+    float: left;
+    padding: 10px 10px
+}
+
+#categories ul{    
+    padding: 5px 0;
+}
+
+#categories li{  
+    
+    line-height: 40px; 
+}
+
+#categories li:hover{  
+    background-color: lightgray;
+   
+}
+
+#categories a{  
+    padding: inherit;
+    display: block;
+    width: 160px;
+    height: inherit;
+    color: black;
+}
+#categories a:hover{  
+    color: black;
+}
+
+#mainBody {
+    width: 1170px;
+    padding: 0;
+}
+
+#body {
+    float: left;
+    width: 990px;
+    padding: 10px 10px;
+}
+
+/* ----------------- Products Index -----------------*/
+#products {
+    
+}
+
+#products img{
+    width: 200px;
+    height: 200px;
+}
+
+.box {
+    margin: 10px 10px;
+    float: left;
+    width: 200px;
+    height: 240px;
+}
+
+#products p{
+    text-align: center;
+}
+
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+
+/* --------------- DROP DOWNS -----------------------*/
+.dropdown-content {
+    display: none;
+    position: relative;
+    
+}
+
+.dropdown-content > div {
+    position: absolute;
+    background-color: green;
+    z-index: 1;
+}
+
+.categories {
+    background-color: green;
+    position: relative;
+}
+
+.categories a{
+    text-decoration: none;
+    color: black;
+}
+.categories a:hover{
+    text-decoration: none;
+    color: black;
+}
+
+/*--------------------- HELPER CLASS --------------------*/
+.clear {
+    clear: both;
+}
+
+

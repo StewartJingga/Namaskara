@@ -1,0 +1,89 @@
+﻿@model Namaskara.Models.Product
+
+@{
+    ViewBag.Title = Model.Name;
+}
+
+<script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
+
+@section categories {
+    <div id="categories">
+        <h3>Categories</h3>
+        @{Html.RenderAction("CategoryList", "Store"); }
+    </div>
+}
+
+<h2>@Model.Name</h2>
+
+<div>
+    <div id="update-message">
+    </div>
+    <hr />
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-6"></div>
+            <div class="col-sm-6">
+                <table>
+                    <tr>
+                        <td>@Html.DisplayNameFor(model => model.Name) :</td>
+                        <td>@Html.DisplayFor(model => model.Name)</td>
+                    </tr>
+                    <tr>
+                        <td>@Html.DisplayNameFor(model => model.Origin)</td>
+                        <td>@Html.DisplayFor(model => model.Origin)</td>
+                    </tr>
+                    <tr>Available Sizes</tr>
+                    @foreach (var item in Model.Items)
+                    {
+                        <tr>
+                            <td>@item.Size</td>
+                            <td>
+                                @if (item.IsAvailable)
+                                {
+                                    @Html.Raw("Available") 
+                                    <span>@item.RetailPrice</span>
+                                    <input type="number" min="0" max="10" id="count-@item.Id" />
+                                    <button class="addCart" data-id="@item.Id">Add to Cart</button>
+                                }
+                                else
+                                {
+                                    @Html.Raw("Not Available")
+                                }
+                            </td>
+                        </tr>
+                    }
+                </table>
+            </div>
+        </div>
+    </div>
+ 
+</div>
+<p>
+    @Html.ActionLink("Back to List", "Index")
+</p>
+
+<script type="text/javascript">
+    $(document).ready(function (e) {
+
+        $(".addCart").click(function () {
+
+            var itemToAdd = $(this).attr("data-id");
+            var itemCount = $("#count-" + itemToAdd).val();
+
+            if (itemToAdd != "") {
+
+                $.post('@Url.Action("AddToCart", "ShoppingCart")', { id: itemToAdd, count: itemCount },
+                    function (data) {
+                        $("#update-message").text(data.Message);
+                        $("#cart").load('@Url.Action("CartSummary", "ShoppingCart")');
+                        
+
+                    }, "json");
+            }
+        });
+    });
+
+
+
+
+</script>

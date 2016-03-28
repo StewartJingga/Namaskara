@@ -1,0 +1,106 @@
+﻿@model Namaskara.ViewModels.ShoppingCartViewModel
+
+@{
+    ViewBag.Title = "Shopping Cart";
+}
+
+
+
+<script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
+<h2>Shopping Cart</h2>
+
+<p class="button">
+    @if (!Request.IsAuthenticated)
+    {
+        @Html.ActionLink("Checkout >> ", "AnonymousAddressAndPayment", "Checkout");
+    }
+    else
+    {
+        @Html.ActionLink("Checkout >> ", "AddressAndPayment", "Checkout");
+    }
+
+
+
+
+</p>
+<div id="update-message">
+</div>
+<table>
+    <tr>
+        <th>
+            Item Name
+        </th>
+        <th>
+            Price (each)
+        </th>
+        <th>
+            Quantity
+        </th>
+        <th></th>
+    </tr>
+    @foreach (var item in Model.CartItems)
+    {
+        <tr id="row-@item.RecordId">
+            <td>
+                @Html.ActionLink(item.Item.DisplayName, "Details", "Store", new { id = item.Item.ProductId }, null)
+            </td>
+            <td id="itemPrice-@item.RecordId" data-id="@item.Item.RetailPrice">
+                @item.Item.RetailPrice
+            </td>
+            <td id="item-count-@item.RecordId">
+                @item.Count
+            </td>
+            <td id="total-price-@item.RecordId">
+                @Html.Raw(@item.Item.RetailPrice * @item.Count)
+            </td>
+            <td>
+                <a href="#" class="RemoveLink" data-id="@item.RecordId">
+                    Remove from cart
+                </a>
+            </td>
+        </tr>
+    }
+    <tr>
+        <td>
+            Total
+        </td>
+        <td></td>
+        <td></td>
+        <td id="cart-total">
+            @Model.CartTotal
+        </td>
+    </tr>
+</table>
+
+<script type="text/javascript">
+    $(document).ready(function (e) {
+        
+        $(".RemoveLink").click(function () {
+
+            var recordToDelete = $(this).attr("data-id");
+            var itemPrice = $("#itemPrice-"+recordToDelete).attr("data-id");
+            
+            if (recordToDelete != "") {
+
+                $.post('@Url.Action("RemoveFromCart", "ShoppingCart")', { id: recordToDelete },
+                    function (data) {
+                        if (data.ItemCount == 0) {
+                            $("#row-" + data.DeleteId).fadeOut("slow");
+                        } else {
+                            $("#item-count-" + data.DeleteId).text(data.ItemCount);
+                            $("#total-price-" + data.DeleteId).text(parseFloat(Math.round(data.ItemCount * itemPrice)).toFixed(2));
+                            
+                        }
+                        $("#cart-total").text(data.CartTotal);
+                        $("#update-message").text(data.Message);
+                        $("#cart-status").text("Cart (" + data.CartCount + ")");
+                        
+                    }, "json");
+            }
+        });
+    });
+
+
+    
+    
+</script>
