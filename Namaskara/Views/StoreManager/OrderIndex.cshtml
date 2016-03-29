@@ -10,7 +10,7 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.OrderId)
+            @Html.ActionLink("Order ID", "OrderIndex", new { sort = ViewBag.OrderSort })
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Email)

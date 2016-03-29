@@ -26,6 +26,13 @@ a:hover {
     float: left;
 }
 
+
+#result a{
+    background-color:white;
+    display: block;
+    z-index: 4;
+}
+
 #login {
     float: right;
 }

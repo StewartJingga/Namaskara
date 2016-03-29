@@ -134,6 +134,7 @@ namespace Namaskara.Models
                 };
 
                 orderTotal += (item.Count * item.Item.RetailPrice);
+                orderDetail.Item = null;
                 ndb.OrderDetails.Add(orderDetail);
             }
             

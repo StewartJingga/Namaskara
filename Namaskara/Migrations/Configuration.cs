@@ -9,7 +9,7 @@ namespace Namaskara.Migrations
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = false;
+            AutomaticMigrationsEnabled = true;
             ContextKey = "Namaskara.Models.NamaskaraDb";
         }
 

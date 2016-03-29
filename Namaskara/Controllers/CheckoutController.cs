@@ -108,7 +108,7 @@ namespace Namaskara.Controllers
                 order.OrderInfoId = orderInfo.OrderInfoId;
                 order.Email = orderInfo.Email;
                 order.OrderDate = DateTime.Now;
-                order.ConfirmDate = order.OrderDate.AddDays(1); 
+                order.ConfirmDate = order.OrderDate.AddDays(Config.DaysToConfirm); 
                 order.Status = "Order Submitted";
                 order.OrderInfo = orderInfo;
 

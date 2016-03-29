@@ -113,10 +113,21 @@ namespace Namaskara.Controllers
             return RedirectToAction("Index");
         }
 
-        public ActionResult OrderIndex()
+        public ActionResult OrderIndex(string sort)
         {
-            
-            return View(ndb.Orders.ToList());
+            ViewBag.OrderSort = String.IsNullOrEmpty(sort) ? "order_asc": "";
+            List<Order> orders;
+            switch (sort)
+            {
+                case "order_asc":
+                    orders = ndb.Orders.OrderBy(m => m.OrderId).ToList();
+                    break;
+                default:
+                    orders = ndb.Orders.OrderByDescending(m => m.OrderId).ToList();
+                    break;
+                
+            }
+            return View(orders);
         }
 
         public ActionResult WCOrder()
@@ -138,8 +149,7 @@ namespace Namaskara.Controllers
 
         public ActionResult OrderDetails(int id)
         {
-            
-            return View(ndb.Orders.Find(id));
+            return View(ndb.Orders.Include("OrderInfo").Single(m => m.OrderId == id));
         }
 
         public ActionResult EditOrder(int id)

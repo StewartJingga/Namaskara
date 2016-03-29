@@ -39,5 +39,18 @@ namespace Namaskara.Controllers
             List<Category> categories = ndb.Categories.ToList();
             return PartialView(categories);
         }
+
+        [HttpPost]
+        public ActionResult SearchBox(string searchString)
+        {
+            List<Product> result;
+            if (!string.IsNullOrWhiteSpace(searchString))
+            {
+                result = ndb.Products.Where(m => m.Name.Contains(searchString)).ToList();
+            }
+            else result = null;
+
+            return Json(result);
+        }
     }
 }

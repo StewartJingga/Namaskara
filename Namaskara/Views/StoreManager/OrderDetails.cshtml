@@ -6,7 +6,7 @@
 
 <h2>OrderDetails</h2>
 
-<div>
+<div style="float:left;">
     <h4>Order</h4>
     <hr />
     <dl class="dl-horizontal">
@@ -107,6 +107,77 @@
 
     </dl>
 </div>
+
+<div style="float:left">
+    <h4>Customer Information</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.OrderInfo.FirstName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OrderInfo.FirstName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.OrderInfo.LastName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OrderInfo.LastName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.OrderInfo.Phone)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OrderInfo.Phone)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.OrderInfo.Address)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OrderInfo.Address)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.OrderInfo.Country)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OrderInfo.Country)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.OrderInfo.City)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OrderInfo.City)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.OrderInfo.State)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OrderInfo.State)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.OrderInfo.PostalCode)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OrderInfo.PostalCode)
+        </dd>
+    </dl>
+</div>
+<div class="clear"></div>
 <p>
     @Html.ActionLink("Edit", "EditOrder", new { id = Model.OrderId }) |
     @Html.ActionLink("Back to List", "OrderIndex")

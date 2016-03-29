@@ -2,6 +2,10 @@
 
 @{
     ViewBag.Title = Model.Name;
+    string a = "/Images/" + Model.ImageUrl + ".jpg";
+
+    
+
 }
 
 <script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
@@ -21,7 +25,7 @@
     <hr />
     <div class="container">
         <div class="row">
-            <div class="col-sm-6"></div>
+            <div class="col-md-3"><img src="@a" height="200" width="200"/></div>
             <div class="col-sm-6">
                 <table>
                     <tr>
