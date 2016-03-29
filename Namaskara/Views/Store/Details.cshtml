@@ -44,6 +44,7 @@
                             <td>
                                 @if (item.IsAvailable)
                                 {
+                                    
                                     @Html.Raw("Available") 
                                     <span>@String.Format("Rp {0:n}", item.RetailPrice)</span>
                                     <input type="number" min="0" max="10" id="count-@item.Id" class="count" />

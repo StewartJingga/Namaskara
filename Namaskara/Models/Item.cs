@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
 using System.Web.Mvc;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.RegularExpressions;
 
 namespace Namaskara.Models
 {
@@ -33,15 +34,34 @@ namespace Namaskara.Models
                 return Name + " - " + Size;
             }
         }
+
+        
         public bool IsAvailable { get; set; }
 
         [DisplayName("Retail Price")]
         public decimal RetailPrice { get; set; }
-       
-       
-        
-       
-        
+        public int Weight
+        {
+            get
+            {
+                string weight = Regex.Replace(Size, @"[^0-9]", "");
+
+                return weight.Count() < 2 ? Int32.Parse(weight)*1000 : Int32.Parse(weight);
+            }
+        }
+
+        public string Unit
+        {
+            get
+            {
+                return Regex.Replace(Size, @"[^a-z]", "");
+            }
+        }
+
+
+
+
+
 
     }
 }
