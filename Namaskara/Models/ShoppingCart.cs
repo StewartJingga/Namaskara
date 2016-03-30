@@ -89,7 +89,7 @@ namespace Namaskara.Models
             List<CartItem> cartItems = ndb.CartItems.Where(c => c.CartId == ShoppingCartId).ToList();
             foreach (CartItem cart in cartItems)
             {
-                cart.Item = ndb.Items.Find(cart.ItemId);
+                cart.Item = ndb.Items.Include("Product").Single(m => m.Id == cart.ItemId);
             }
             return cartItems;
         }
@@ -108,9 +108,19 @@ namespace Namaskara.Models
         
         public decimal GetTotal()
         {
-            decimal? total = (from cartItems in ndb.CartItems
-                              where cartItems.CartId == ShoppingCartId
-                              select (int?)cartItems.Count * cartItems.Item.RetailPrice).Sum();
+
+            List<CartItem> cartItems = ndb.CartItems.Where(m => m.CartId == ShoppingCartId).ToList();
+            decimal? total = 0;
+            decimal price;
+            foreach(var cartItem in cartItems)
+            {
+                cartItem.Item = ndb.Items.Include("Product").Single(m => m.Id == cartItem.ItemId);
+
+                price = cartItem.Item.Product.IsOnSale ? Utilities.FindReducedPrice(cartItem.Item.RetailPrice, cartItem.Item.Product.DiscountPercentage) : cartItem.Item.RetailPrice;
+
+                total += price * cartItem.Count;
+            }
+            
 
             return total ?? decimal.Zero;
         }
@@ -129,11 +139,11 @@ namespace Namaskara.Models
                 {
                     ItemId = item.ItemId,
                     OrderId = orderId,
-                    UnitPrice = item.Item.RetailPrice,
+                    UnitPrice = item.Item.Product.IsOnSale ? Utilities.FindReducedPrice(item.Item.RetailPrice, item.Item.Product.DiscountPercentage) : item.Item.RetailPrice,
                     Quantity = item.Count
                 };
 
-                orderTotal += (item.Count * item.Item.RetailPrice);
+                orderTotal += (item.Count * orderDetail.UnitPrice);
                 orderDetail.Item = null;
                 ndb.OrderDetails.Add(orderDetail);
             }

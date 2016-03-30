@@ -1,4 +1,5 @@
 ﻿@model Namaskara.ViewModels.ShoppingCartViewModel
+@using Namaskara.Models
 
 @{
     ViewBag.Title = "Shopping Cart";
@@ -46,13 +47,32 @@
                 @Html.ActionLink(item.Item.DisplayName, "Details", "Store", new { id = item.Item.ProductId }, null)
             </td>
             <td id="itemPrice-@item.RecordId" data-id="@item.Item.RetailPrice">
-                @String.Format("Rp {0:n}", item.Item.RetailPrice)
+                @if (item.Item.Product.IsOnSale)
+                {
+                
+                    <span style="color:red">@String.Format("{0:n}", item.Item.RetailPrice)</span>
+                    <span>--></span>
+                    <span style="color:green">@String.Format("{0:n}", Utilities.FindReducedPrice(item.Item.RetailPrice, item.Item.Product.DiscountPercentage))</span>
+                
+                }
+                else
+                {
+                    @String.Format("{0:n}", item.Item.RetailPrice)
+                }
             </td>
             <td id="item-count-@item.RecordId">
                 @item.Count
             </td>
             <td id="total-price-@item.RecordId">
-                @Html.Raw(@String.Format("Rp {0:n}", @item.Item.RetailPrice * @item.Count))
+               @if (item.Item.Product.IsOnSale)
+               {
+                   @Html.Raw(String.Format("Rp {0:n}", Utilities.FindReducedPrice(item.Item.RetailPrice, item.Item.Product.DiscountPercentage) * item.Count));
+               }
+               else
+               {
+                   @Html.Raw(String.Format("Rp {0:n}", @item.Item.RetailPrice * @item.Count));
+               }
+               
             </td>
             <td>
                 <a href="#" class="RemoveLink" data-id="@item.RecordId">

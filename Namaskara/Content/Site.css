@@ -165,6 +165,12 @@ textarea {
     color: black;
 }
 
+/*--------------------- STORE MANAGER -------------------*/
+
+#itemList th,td {
+    padding-right: 25px;
+}
+
 /*--------------------- HELPER CLASS --------------------*/
 .clear {
     clear: both;

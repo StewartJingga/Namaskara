@@ -1,4 +1,5 @@
 ﻿@model Namaskara.Models.Product
+@using Namaskara.Models
 
 @{
     ViewBag.Title = Model.Name;
@@ -19,9 +20,12 @@
 
 <h2>@Model.Name</h2>
 
+
+
 <div>
-    <div id="update-message">
+    <div class="alert alert-success" id="update-message" style="display: none;">
     </div>
+
     <hr />
     <div class="container">
         <div class="row">
@@ -33,7 +37,7 @@
                         <td>@Html.DisplayFor(model => model.Name)</td>
                     </tr>
                     <tr>
-                        <td>@Html.DisplayNameFor(model => model.Origin)</td>
+                        <td>@Html.DisplayNameFor(model => model.Origin) :</td>
                         <td>@Html.DisplayFor(model => model.Origin)</td>
                     </tr>
                     <tr>Available Sizes</tr>
@@ -44,9 +48,17 @@
                             <td>
                                 @if (item.IsAvailable)
                                 {
-                                    
-                                    @Html.Raw("Available") 
-                                    <span>@String.Format("Rp {0:n}", item.RetailPrice)</span>
+                                    if (Model.IsOnSale)
+                                    {
+                                        <span style="color:red">@String.Format("Rp {0:n}", item.RetailPrice)</span>
+                                        <span>--></span>
+                                        <span style="color:green">@String.Format("Rp {0:n}", Utilities.FindReducedPrice(item.RetailPrice, Model.DiscountPercentage))</span>
+                                    }
+                                    else
+                                    {
+                                        <span>@String.Format("Rp {0:n}", item.RetailPrice)</span>
+                                    }
+
                                     <input type="number" min="0" max="10" id="count-@item.Id" class="count" />
                                     <button class="addCart" data-id="@item.Id">Add to Cart</button>
                                 }
@@ -75,11 +87,12 @@
             var itemToAdd = $(this).attr("data-id");
             var itemCount = $("#count-" + itemToAdd).val();
 
-            if (itemToAdd != "") {
+            if (itemToAdd != "" & itemCount != 0) {
 
                 $.post('@Url.Action("AddToCart", "ShoppingCart")', { id: itemToAdd, count: itemCount },
                     function (data) {
-                        $("#update-message").text(data.Message);
+                        $("#update-message").text(data.Message).show();
+                        
                         $("#cart").load('@Url.Action("CartSummary", "ShoppingCart")');
                         $(".count").val("0");
                         

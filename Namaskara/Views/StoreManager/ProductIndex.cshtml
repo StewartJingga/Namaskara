@@ -7,7 +7,7 @@
 <h2>ProductIndex</h2>
 
 <p>
-    @Html.ActionLink("Category List", "CategoryIndex", "StoreManager") | @Html.ActionLink("Product List", "ProductIndex", "StoreManager")
+    @Html.ActionLink("Category List", "CategoryIndex", "StoreManager") | @Html.ActionLink("Product List", "ProductIndex", new { id = 0 })
 </p>
 <table class="table">
     <tr>
@@ -26,7 +26,7 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.Name)
+            @Html.ActionLink(item.Name, "Details", new { id = item.ProductId })
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Origin)

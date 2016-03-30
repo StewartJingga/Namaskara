@@ -1,57 +1,138 @@
-﻿@model IList<Namaskara.Models.Item>
-
+﻿@model Namaskara.Models.Product
+@using Namaskara.Models
 
 @{
-    
-    ViewBag.Title = Model[0].Name;
+    ViewBag.Title = "Details";
 }
 
-<h2>@Model[0].Name</h2>
+<h2>Details</h2>
+@if (ViewBag.Message != "")
+{
+    <div class="alert alert-success">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+    @ViewBag.Message
+    </div>
+}
+
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
+    @Html.ValidationSummary()
+    <div class="row">
+        <div class="col-md-6">
+            <h4>Product</h4>
+            @Html.HiddenFor(model => model.ProductId)
+            <hr />
+            <a href="#" class="editProductData">Edit</a>
+            <dl class="dl-horizontal">
+                <dt>
+                    @Html.DisplayNameFor(model => model.Name)
+                </dt>
 
-    <table>
-        <thead>
-            <tr>
-                <td>Name</td>
-                <td>Size</td>
-                <td>Price</td>
-                <td>Available</td>
-            </tr>
-        </thead>
-        @for (int i = 0; i < Model.Count(); i++)
-        {
-            <tr>
-                @Html.HiddenFor(m => m[i].Id)
-                @Html.HiddenFor(m => m[i].Name)
-                @Html.HiddenFor(m => m[i].Size)
-                @Html.HiddenFor(m => m[i].RetailPrice)
-                <td>
-                    @Model[i].Name
-                </td>
-                <td>
-                    @Model[i].Size
-                </td>
-                <td>
-                    @String.Format("Rp {0:n}", @Model[i].RetailPrice)
-                </td>
-                <td>
-                    @Html.CheckBox("["+i+"].IsAvailable", Model[i].IsAvailable)
-                </td>
-            </tr>
-        }
-        
-        <tr>
-            <td>
-                <input type="submit" value="Save" class="btn btn-default" />
-            </td>
-        </tr>
-        
-    </table>
+                <dd>
+                    @Html.DisplayFor(model => model.Name)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.Origin)
+                </dt>
+
+                <dd>
+                    @Html.TextBoxFor(model => model.Origin, new { disabled = "disabled" })
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.IsOnSale)
+                </dt>
+
+                <dd>
+                    @Html.CheckBoxFor(model => model.IsOnSale, new { disabled = "disabled" })
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.IsFeatured)
+                </dt>
+
+                <dd>
+                    @Html.CheckBoxFor(model => model.IsFeatured, new { disabled = "disabled" })
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.DiscountPercentage)
+                </dt>
+
+                <dd>
+                    <input type="number" id="DiscountPercentage" name="DiscountPercentage" width="50" disabled max="100" min="0" step="0.1" value="@Model.DiscountPercentage" maxlength="4"/><b>%</b> 
+                </dd>
+                <dt></dt><dd></dd>
+                <dt></dt><dd><input type="submit" value="Save Changes" id="submitProductChanges" disabled/></dd>
+            </dl>
+            
+        </div>
+        <div class="col-md-6">
+            <h4>Item List</h4> 
+            <hr />
+            <br />
+            <table id="itemList">
+                <tr>
+                    <th>Size</th>
+                    <th style="text-align:center">Price (Rp)</th>
+                    <th>Available</th>
+                    
+                    
+                </tr>
+                @foreach (var item in Model.Items)
+                {
+                    <tr>
+                        <td>@item.Size</td>
+                        @if (Model.IsOnSale)
+                        {
+                            <td>
+                                <span style="color:red">@String.Format("{0:n}", item.RetailPrice)</span> -->
+                                <span style="color:green">@String.Format("{0:n}", Utilities.FindReducedPrice(item.RetailPrice, Model.DiscountPercentage))</span>
+                            </td>
+                        }
+                        else
+                        {
+                            <td>@String.Format("{0:n}", item.RetailPrice)</td>
+                        }
+                       
+                        <td>@item.IsAvailable</td>
+
+                    </tr>
+                }
+            </table>
+
+            @Html.ActionLink("Edit Item/s", "EditItem", new { id = Model.ProductId })
+            
+        </div>
+
+    </div>
+    
 }
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
+
+
+<p>
+    
+    @Html.ActionLink("Back to List", "ProductIndex")
+</p>
+
+<script>
+    $(".editProductData").click(function () {
+        $("#Origin").prop("disabled", function (i, v) { return !v; });
+        $("#IsOnSale").prop("disabled", function (i, v) { return !v; });
+        $("#IsFeatured").prop("disabled", function (i, v) { return !v; });
+        $("#DiscountPercentage").prop("disabled", function (i, v) { return !v; });
+        $("#submitProductChanges").prop("disabled", function (i, v) { return !v; });
+
+        if (!$("#submitProductChanges").attr("disabled")) {
+            $(this).html("Cancel");
+        }
+        else {
+            $(this).html("Edit");
+        }
+    });
+</script>
+

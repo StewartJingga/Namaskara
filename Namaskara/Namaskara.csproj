@@ -226,12 +226,14 @@
     <Compile Include="Models\Product.cs" />
     <Compile Include="Models\ShoppingCart.cs" />
     <Compile Include="Models\UserInformation.cs" />
+    <Compile Include="Models\Utilities.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\ShoppingCartAddModel.cs" />
     <Compile Include="ViewModels\ShoppingCartRemoveViewModel.cs" />
     <Compile Include="ViewModels\ShoppingCartViewModel.cs" />
     <Compile Include="ViewModels\UpdateItemViewModel.cs" />
+    <Compile Include="ViewModels\UpdateProductViewModel.cs" />
     <Compile Include="ViewModels\UploadImageModel.cs" />
     <Compile Include="ViewModels\UserAccountViewModel.cs" />
   </ItemGroup>
@@ -517,6 +519,7 @@
     <Content Include="Views\StoreManager\OrderDetails.cshtml" />
     <Content Include="Views\Account\OrderDetails.cshtml" />
     <Content Include="Views\Shared\_SearchBox.cshtml" />
+    <Content Include="Views\StoreManager\EditItem.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="PaymentImages\" />

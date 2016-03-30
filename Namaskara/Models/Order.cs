@@ -19,8 +19,12 @@ namespace Namaskara.Models
         public decimal Delivery { get; set; }
         [Display(Name = "Total (Rp)")]
         public decimal Total { get; set; }
+        [Display(Name = "Total After Promo")]
+        public decimal TotalAP { get; set; }
         public string Status { get; set; }
         public string PaymentImage { get; set; }
+        public bool PromoActivated { get; set; }
+        public double PromoDiscount { get; set; }
         public string Bank { get; set; }
         [Display(Name = "Account Name")]
         public string AccountName { get; set; }

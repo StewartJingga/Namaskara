@@ -17,7 +17,10 @@ namespace Namaskara.Models
         public string Origin { get; set; }
 
         public string ImageUrl { get; set; }
-
+        public bool IsOnSale { get; set; }
+        public bool IsFeatured { get; set; }
+        [Range(0, 100.00, ErrorMessage ="Discount must be between 0 to 100")]
+        public double DiscountPercentage { get; set; }
         [ScaffoldColumn(false)]
         public int CategoryId { get; set; }
 

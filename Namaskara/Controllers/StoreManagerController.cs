@@ -41,14 +41,48 @@ namespace Namaskara.Controllers
 
 
         }
-        public ActionResult Details(int id)
+        public ActionResult Details(int id, string message = "")
+        {
+            ViewBag.Message = message;
+
+            Product product = ndb.Products.Find(id);
+            product.Items = ndb.Items.Where(m => m.ProductId == id).ToList();
+            return View(product);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Details(UpdateProductViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                Product product = ndb.Products.Find(model.ProductId);
+                TryUpdateModel(product);
+                if (model.DiscountPercentage.GetType() != typeof(double))
+                {
+                    product.DiscountPercentage = Convert.ToDouble(model.DiscountPercentage);
+                }
+                
+
+                product.Items = null;
+                ndb.Entry(product).State = System.Data.Entity.EntityState.Modified;
+                ndb.SaveChanges();
+
+                return RedirectToAction("Details", new { id = model.ProductId, message = "Product succesfully updated" });
+            }
+            
+
+            return View();
+        }
+
+        public ActionResult EditItem(int id)
         {
             return View(ndb.Items.Where(m => m.ProductId == id).ToList());
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Details(IList<UpdateItemViewModel> model)
+        public ActionResult EditItem(IList<UpdateItemViewModel> model)
         {
             if (ModelState.IsValid)
             {
@@ -57,17 +91,19 @@ namespace Namaskara.Controllers
                 Debug.Print(model[0].Size);
                 Debug.Print(model[0].RetailPrice.ToString());
                 Debug.Print(model[0].IsAvailable.ToString());
+                Item ci = null;
                 for (int i = 0; i < model.Count(); i++)
                 {
-                    Item ci = ndb.Items.Find(model[i].Id);
+                    ci = ndb.Items.Find(model[i].Id);
                     if (ci == null) return View(model);
+                    ci.RetailPrice = model[i].RetailPrice;
                     ci.IsAvailable = model[i].IsAvailable;
                     ndb.Entry(ci).State = System.Data.Entity.EntityState.Modified;
                     
                 }
                 ndb.SaveChanges();
 
-                return RedirectToAction("ProductIndex");
+                return RedirectToAction("Details", new {id = ci.ProductId, message = "Item has been successfully updated" });
             }
             return View(model);
         }
@@ -214,7 +250,7 @@ namespace Namaskara.Controllers
         public ActionResult ExtendTime(int id)
         {
             Order order = ndb.Orders.Find(id);
-            order.Status = "Order Submitted";
+            order.Status = "Waiting For Confirmation";
             order.ConfirmDate = DateTime.Now.AddDays(1);
 
             ndb.Entry(order).State = System.Data.Entity.EntityState.Modified;

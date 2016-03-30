@@ -23,6 +23,7 @@ namespace Namaskara.Controllers
                 CartTotal = cart.GetTotal()
 
             };
+            
 
             return View(viewModel);
         }

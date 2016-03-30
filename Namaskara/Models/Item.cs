@@ -25,19 +25,15 @@ namespace Namaskara.Models
         [DisplayName("Item Name")]
         [ScaffoldColumn(false)]
         public string Name { get; set; }
-        public string Size { get; set; }
-        
+        public string Size { get; set; }        
         public string DisplayName
         {
             get
             {
                 return Name + " - " + Size;
             }
-        }
-
-        
+        }     
         public bool IsAvailable { get; set; }
-
         [DisplayName("Retail Price")]
         public decimal RetailPrice { get; set; }
         public int Weight
@@ -49,7 +45,6 @@ namespace Namaskara.Models
                 return weight.Count() < 2 ? Int32.Parse(weight)*1000 : Int32.Parse(weight);
             }
         }
-
         public string Unit
         {
             get
