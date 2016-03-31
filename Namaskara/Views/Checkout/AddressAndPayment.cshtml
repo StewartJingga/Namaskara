@@ -1,25 +1,36 @@
-﻿@model Namaskara.Models.OrderInfo
+﻿@model Namaskara.ViewModels.CheckoutViewModel
+@using Namaskara.Models
 
-<div class="row">
-    @using (Html.BeginForm())
-    {
-        @Html.AntiForgeryToken()
-        <div class="col-md-5">
-            <div class="form-horizontal">
-                <h4>OrderInfo</h4>
-                <hr />
-                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                @Html.Hidden("Email", User.Identity.Name)
-                @Html.Hidden("ConfirmEmail", User.Identity.Name)
+@{
+    ViewBag.Title = "AnonymousAddressAndPayment";
+}
+
+<h2>Guest Checkout</h2>
+
+@Html.ActionLink("Login for existing customer", "AddressAndPayment")
+
+@using (Html.BeginForm("AddressAndPayment", "Checkout", FormMethod.Post, new { id = "checkoutForm" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="row" id="preCheckout">
+
+            <div class="col-md-6" id="contactDetails">
+                @Html.Hidden("Email", User.Identity.Name);
+                @Html.Hidden("ConfirmEmail", User.Identity.Name);
                 
+                <h4>Contact Detail</h4>
+                <hr />
                 <div class="form-group">
                     @Html.LabelFor(model => model.FirstName, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
+                    <div class="col-md-6">
                         @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control" } })
                         @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
                     </div>
                 </div>
-
                 <div class="form-group">
                     @Html.LabelFor(model => model.LastName, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
@@ -47,7 +58,7 @@
                 <div class="form-group">
                     @Html.LabelFor(model => model.State, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
-                        @Html.EditorFor(model => model.State, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.DropDownList("State")
                         @Html.ValidationMessageFor(model => model.State, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -76,26 +87,253 @@
                     </div>
                 </div>
 
-                
+                <div class="form-group">
+                    <div>
+                        <span>@Html.CheckBox("SameDeliveryAddress", true)</span>
+                        <span>@Html.LabelFor(model => model.SameDeliveryAddress)</span>
+                    </div>
+
+                </div>
+
             </div>
-            
-        </div>
-        <div class="col-md-3">
-            <h4>Payment Method</h4>
-            <hr/>
-            <p>
-                Currently, we only do payment via transfer.<br />
-                Grace Wirawan is cooking dinner for me.<br />
-                She thinks she is a good cook.<br />
-                Well, she sucks big time.
-               
-            </p>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-default" />  
+            <div class="col-md-4" id="shippingDetails" style="display:none;">
+                <h4>Shipping Address</h4>
+                <hr />
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ShippingAddress, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.ShippingAddress, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.ShippingAddress, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ShippingCity, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.ShippingCity, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.ShippingCity, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ShippingState, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.DropDownList("ShippingState")
+                        @Html.ValidationMessageFor(model => model.ShippingState, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ShippingPostalCode, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.ShippingPostalCode, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.ShippingPostalCode, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ShippingCountry, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.ShippingCountry, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.ShippingCountry, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6" id="deliveryDetails">
+                <h4>Delivery Details</h4>
+                <hr />
+                <table>
+                    <tr>
+                        <td>Destination City: </td>
+                        <td id="city">-</td>
+                    </tr>
+                    <tr>
+                        <td>Item Weight: </td>
+                        <td>@ViewBag.Weight</td>
+                    </tr>
+                    <tr>
+                        <td>Delivery Cost: </td>
+                        <td class="deliveryCost">-</td>
+                    </tr>
+
+                </table>
+
+                <hr />
+
+                <h6>Enter Promo Code:</h6>
+                <input name="Code" id="Code" type="text" />
+                <span>
+                    <input type="button" id="checkPromo" value="Enter" />
+                </span>
+                <div id="promoResult"></div>
+                <input type="checkbox" name="PromoActivated" id="PromoActivated" hidden />
+                <input name="PromoCode" id="PromoCode" type="text" hidden/>
+
+                <hr />
+                <div class="form-group" style="float:right;">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input id="preCheckoutSubmit" value="Submit Order" class="btn btn-default" />
+                    </div>
+                </div>
+
             </div>
         </div>
-        
-    }
-</div>
+        <div id="reviewOrder" style="display:none;">
+            <input id="return" value="return" type="button" />
+            <table>
+                <tr>
+                    <th>Item</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                </tr>
+                @foreach (var item in Model.CartItems)
+                {
+                    <tr id="row-@item.RecordId">
+                        <td>
+                            @item.Item.DisplayName
+                        </td>
+
+                        <td>
+                            @item.Count
+                        </td>
+
+                        <td style="text-align:right">
+                            @if (item.Item.Product.IsOnSale)
+                            {
+                                @Html.Raw(String.Format("Rp {0:n}", Utilities.FindReducedPrice(item.Item.RetailPrice, item.Item.Product.DiscountPercentage) * item.Count));
+                            }
+                            else
+                            {
+                                @Html.Raw(String.Format("Rp {0:n}", @item.Item.RetailPrice * @item.Count));
+                            }
+
+                        </td>
+                    </tr>
+                }
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td style="text-align:right">@Model.CartTotalPrice</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>Delivery Cost</td>
+                    <td class="deliveryCost" style="text-align:right"></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>Total Price (Rp)</td>
+                    <td id="totalPrice"></td>
+                </tr>
+            </table>
+
+            <input type="submit" value="Finalise Order" />
+        </div>
+
+
+
+    </div>
+}
+
+@section scripts{
+
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <script>
+        var form = $("#checkoutForm");
+
+        function checkDelCost() {
+            var city = $("#ShippingState").val();
+            $.post("/Checkout/CheckDelCost", { dest: city },
+                function (data) {
+                    if (data != null) {
+                        $("#city").text(city);
+                        $(".deliveryCost").text(data.Cost);
+                    }
+                });
+        }
+        function sameDelAddress() {
+            $("#ShippingState").val($("#State").val());
+            checkDelCost();
+            $("#contactDetails").addClass("col-md-6").removeClass("col-md-4");
+            $("#deliveryDetails").addClass("col-md-6").removeClass("col-md-4");
+
+            $("#shippingDetails").hide();
+        }
+
+        function diffDelAddress() {
+            $("#ShippingAddress").val("");
+            $("#contactDetails").addClass("col-md-4").removeClass("col-md-6");
+            $("#deliveryDetails").addClass("col-md-4").removeClass("col-md-6");
+            $("#shippingDetails").show();
+        }
+
+        $("#ShippingState").change(checkDelCost);
+        $("#State").change(function () {
+            if ($("#SameDeliveryAddress").is(":checked")) {
+                $("#ShippingState").val($("#State").val());
+                checkDelCost();
+            }
+        });
+
+        $("#SameDeliveryAddress").change(function () {
+            var checked = $(this).is(":checked");
+            if (checked) {
+                sameDelAddress();
+            } else {
+                diffDelAddress();
+            }
+        });
+
+        $("#checkPromo").click(function (e) {
+            e.preventDefault();
+            var codee = $("#Code").val();
+            $.post("/Checkout/CheckPromo", { code: codee },
+                function (data) {
+                    if (data == "1") {
+                        
+                        $("#Code").attr("disabled", true);
+                        $("#PromoCode").val($("#Code").val());
+                        $("#PromoActivated").prop("checked", true);
+                        $("#PromoActivated").val(true);
+                        
+                        $("#promoResult").text("Promo Activated!");
+                        $(this).prop("disabled", true);
+                    }
+                    else {
+                        $("#promoResult").text("Wrong Code!");
+                    }
+                }).fail(function () {
+                    $("#promoResult").text("Wrong Code!");
+                });
+        });
+
+
+        $("#return").click(function(){
+            $("#reviewOrder").hide();
+            $("#preCheckout").show();
+        });
+
+        $("#preCheckoutSubmit").click(function (e) {
+            e.preventDefault();
+            form.removeAttr("novalidate");
+            if ($("#checkoutForm").valid()) {
+                var city = $("#ShippingState").val();
+                $.post("/Checkout/GetTotalPrice", { dest: city },
+                    function (data) {
+                        $("#totalPrice").text(data);
+                        $("#preCheckout").hide();
+                        $("#reviewOrder").show();
+                    });
+            }
+
+
+
+        });
+    </script>
+
+}
+
+
 
 

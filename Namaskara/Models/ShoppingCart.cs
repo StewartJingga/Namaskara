@@ -124,12 +124,22 @@ namespace Namaskara.Models
 
             return total ?? decimal.Zero;
         }
-        
-        public decimal CreateOrder(int orderId)
-        {
-            
-            decimal orderTotal = 0;
 
+        public int GetCartWeight()
+        {
+            List<CartItem> cartItems = GetCartItems();
+            int total = 0;
+            foreach(var cartItem in cartItems)
+            {
+                total += cartItem.Item.Weight * cartItem.Count;
+            }
+
+            return total;
+        }
+        
+        public void CreateOrder(int orderId)
+        {
+  
             var cartItems = GetCartItems();
             
 
@@ -142,8 +152,7 @@ namespace Namaskara.Models
                     UnitPrice = item.Item.Product.IsOnSale ? Utilities.FindReducedPrice(item.Item.RetailPrice, item.Item.Product.DiscountPercentage) : item.Item.RetailPrice,
                     Quantity = item.Count
                 };
-
-                orderTotal += (item.Count * orderDetail.UnitPrice);
+ 
                 orderDetail.Item = null;
                 ndb.OrderDetails.Add(orderDetail);
             }
@@ -153,9 +162,7 @@ namespace Namaskara.Models
 
             ndb.SaveChanges();
             EmptyCart();
-
-
-            return orderTotal;
+            
         }
         
         public string GetCartId(HttpContextBase context)

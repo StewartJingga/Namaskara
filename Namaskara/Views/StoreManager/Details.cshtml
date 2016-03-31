@@ -119,20 +119,23 @@
     @Html.ActionLink("Back to List", "ProductIndex")
 </p>
 
-<script>
-    $(".editProductData").click(function () {
-        $("#Origin").prop("disabled", function (i, v) { return !v; });
-        $("#IsOnSale").prop("disabled", function (i, v) { return !v; });
-        $("#IsFeatured").prop("disabled", function (i, v) { return !v; });
-        $("#DiscountPercentage").prop("disabled", function (i, v) { return !v; });
-        $("#submitProductChanges").prop("disabled", function (i, v) { return !v; });
+@section scripts {
+    <script>
+        $(".editProductData").click(function () {
+            $("#Origin").prop("disabled", function (i, v) { return !v; });
+            $("#IsOnSale").prop("disabled", function (i, v) { return !v; });
+            $("#IsFeatured").prop("disabled", function (i, v) { return !v; });
+            $("#DiscountPercentage").prop("disabled", function (i, v) { return !v; });
+            $("#submitProductChanges").prop("disabled", function (i, v) { return !v; });
 
-        if (!$("#submitProductChanges").attr("disabled")) {
-            $(this).html("Cancel");
-        }
-        else {
-            $(this).html("Edit");
-        }
-    });
-</script>
+            if (!$("#submitProductChanges").attr("disabled")) {
+                $(this).html("Cancel");
+            }
+            else {
+                $(this).html("Edit");
+            }
+        });
+    </script>
+    }
+
 

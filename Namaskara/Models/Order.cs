@@ -13,7 +13,7 @@ namespace Namaskara.Models
         [ScaffoldColumn(false)]
         public int OrderInfoId { get; set; }
         public string Email { get; set; }
-        [Display(Name = "Price (Rp)")]
+        [Display(Name = "Items Price (Rp)")]
         public decimal Price { get; set; }
         [Display(Name = "Delivery (Rp)")]
         public decimal Delivery { get; set; }
@@ -23,6 +23,7 @@ namespace Namaskara.Models
         public decimal TotalAP { get; set; }
         public string Status { get; set; }
         public string PaymentImage { get; set; }
+        public string PromoCode { get; set; }
         public bool PromoActivated { get; set; }
         public double PromoDiscount { get; set; }
         public string Bank { get; set; }
@@ -38,6 +39,11 @@ namespace Namaskara.Models
         public DateTime ConfirmDate { get; set; }
         public OrderInfo OrderInfo { get; set; }
         public List<OrderDetail> OrderDetails { get; set; }
+
+        public Order()
+        {
+            this.Status = "Order Made";
+        }
 
     }
 }

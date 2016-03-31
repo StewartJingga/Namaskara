@@ -28,11 +28,20 @@ namespace Namaskara.Controllers
         
         public ActionResult AddressAndPayment()
         {
+            var cart = ShoppingCart.GetCart(this.HttpContext);
+            if(cart.GetTotal() == 0)
+            {
+                return RedirectToAction("Index", "Home");
+            }
             //If user has created an order information
-            if(ndb.UserInformations.Any(m => m.Email == User.Identity.Name))
+            if (ndb.UserInformations.Any(m => m.Email == User.Identity.Name))
             {
                 UserInformation info = ndb.UserInformations.Single(m => m.Email == User.Identity.Name);
-                OrderInfo oi = new OrderInfo()
+                
+                ViewBag.Weight = cart.GetCartWeight().ToString();
+                ViewBag.State = new SelectList(Config.CityList);
+                ViewBag.ShippingState = new SelectList(Config.CityList);
+                CheckoutViewModel oi = new CheckoutViewModel()
                 {
                     Address = info.Address,
                     City = info.City,
@@ -41,7 +50,9 @@ namespace Namaskara.Controllers
                     LastName = info.LastName,
                     PostalCode = info.PostalCode,
                     Country = info.Country,
-                    Phone = info.Phone
+                    Phone = info.Phone,
+                    CartItems = cart.GetCartItems(),
+                    CartTotalPrice = String.Format("Rp {0:n}", cart.GetTotal())
                 };
                 return View(oi);
             }
@@ -50,78 +61,110 @@ namespace Namaskara.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult AddressAndPayment(FormCollection values)
+        public ActionResult AddressAndPayment(CheckoutViewModel model)
         {
 
             OrderInfo orderInfo = new OrderInfo();
             TryUpdateModel(orderInfo);
             orderInfo.Email = User.Identity.Name;
-            Order order = new Order();
+            if (model.SameDeliveryAddress)
+            {
+                Utilities.DuplicateDeliveryAddress(orderInfo);
+            }
             ndb.OrderInformation.Add(orderInfo);
             ndb.SaveChanges();
 
-
             try
             {
-                order.OrderInfoId = orderInfo.OrderInfoId;
-                order.Email = orderInfo.Email;
-                order.OrderDate = DateTime.Now;
-                order.ConfirmDate = order.OrderDate.AddDays(1);
-                order.Status = "Order Submitted";
-                order.OrderInfo = orderInfo;
-
-                ProcessOrder(order);
-
+                Order order = new Order();
+                TryUpdateModel(order);
+                ProcessOrder(order, orderInfo);
                 return RedirectToAction("Complete", new { id = order.OrderId });
+
             }
             catch
             {
                 return View("Error");
             }
-            
-
-
-
         }
 
         [AllowAnonymous]
         public ActionResult AnonymousAddressAndPayment()
         {
-            return View();
+            var cart = ShoppingCart.GetCart(this.HttpContext);
+            if (cart.GetTotal() == 0)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            
+            ViewBag.Weight = cart.GetCartWeight().ToString();
+            ViewBag.State = new SelectList(Config.CityList);
+            ViewBag.ShippingState = new SelectList(Config.CityList);
+            var model = new CheckoutViewModel
+            {
+                CartItems = cart.GetCartItems(),
+                CartTotalPrice = String.Format("Rp {0:n}", cart.GetTotal())
+
+            };
+            return View(model);
             
         }
 
         [AllowAnonymous]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult AnonymousAddressAndPayment(FormCollection values)
+        public ActionResult AnonymousAddressAndPayment(CheckoutViewModel model)
         {
             OrderInfo orderInfo = new OrderInfo();
             TryUpdateModel(orderInfo);
-            Order order = new Order();
-
+            if (model.SameDeliveryAddress)
+            {
+                Utilities.DuplicateDeliveryAddress(orderInfo);
+            }
             ndb.OrderInformation.Add(orderInfo);
             ndb.SaveChanges();
 
             try
             {
-                order.OrderInfoId = orderInfo.OrderInfoId;
-                order.Email = orderInfo.Email;
-                order.OrderDate = DateTime.Now;
-                order.ConfirmDate = order.OrderDate.AddDays(Config.DaysToConfirm); 
-                order.Status = "Order Submitted";
-                order.OrderInfo = orderInfo;
-
-                ProcessOrder(order);
-                
-                
-
+                Order order = new Order();
+                TryUpdateModel(order);
+                ProcessOrder(order, orderInfo);
                 return RedirectToAction("Complete", new { id = order.OrderId });
             }
             catch
             {
                 return View(orderInfo);
             }
+        }
+
+        [AllowAnonymous]
+        [HttpPost]
+        public ActionResult CheckDelCost(string dest)
+        {
+            var cart = ShoppingCart.GetCart(this.HttpContext);
+            var model = new CheckWeightViewModel { Cost = String.Format("Rp {0:n}", Utilities.FindDeliveryCost(dest, cart.GetCartWeight())) };
+            return Json(model);
+        }
+
+        [AllowAnonymous]
+        [HttpPost]
+        public string CheckPromo(string code)
+        {
+
+            return ndb.PromoCodes.Any(m => m.Code == code) ? "1" : null;
+        }
+
+        [AllowAnonymous]
+        [HttpPost]
+        public string GetTotalPrice(string dest)
+        {
+            return String.Format("Rp {0:n}", Utilities.GetTotalPrice(ShoppingCart.GetCart(this.HttpContext), dest));
+        }
+
+        [AllowAnonymous]
+        public ActionResult OrderReview(int id)
+        {
+            return View();
         }
         
         [AllowAnonymous]
@@ -201,29 +244,38 @@ namespace Namaskara.Controllers
             return View();
         }
 
-        private void ProcessOrder(Order order)
+        private void ProcessOrder(Order order, OrderInfo orderInfo)
         {
-            
+            //Get the cart
+            var cart = ShoppingCart.GetCart(this.HttpContext);
 
+            //Process the order
+            order.OrderInfoId = orderInfo.OrderInfoId;
+            order.Email = orderInfo.Email;
+            order.OrderDate = DateTime.Now;
+            order.ConfirmDate = order.OrderDate.AddDays(Config.DaysToConfirm);
+            order.Status = "Order Submitted";
+            order.Delivery = Utilities.FindDeliveryCost(orderInfo.ShippingState, cart.GetCartWeight());
+            order.Price = cart.GetTotal();    
+            order.PromoDiscount = Utilities.CheckPromoDiscount(order.PromoCode, ndb);
+            order.Total = Utilities.GetTotalPrice(cart, orderInfo.ShippingState, order.PromoDiscount);
+            
             //Save Order
             ndb.Orders.Add(order);
             ndb.SaveChanges();
 
-            //Process the order
-            var cart = ShoppingCart.GetCart(this.HttpContext);
-            decimal total = cart.CreateOrder(order.OrderId);
+            //Process the order details
+            cart.CreateOrder(order.OrderId);
 
             //Create Payment Confirmation token and send it
             string code = CreatePaymentConfirmationToken();
 
             code = System.Web.HttpUtility.UrlEncode(code);
             PaymentConfirmation pc = new PaymentConfirmation { OrderId = order.OrderId, Code = code };
-
-            order.Total = total;
-            ndb.Entry(order).State = System.Data.Entity.EntityState.Modified;
             ndb.PaymentConfirmations.Add(pc);
             ndb.SaveChanges();
 
+            //Create Email Form
             var callbackUrl = Url.Action("ConfirmPayment", "Checkout", new { orderId = order.OrderId, code = code }, protocol: Request.Url.Scheme);
             EmailFormModel email = new EmailFormModel
             {

@@ -18,6 +18,7 @@ namespace Namaskara.Models
         public DbSet<OrderDetail> OrderDetails { get; set; }
         public DbSet<PaymentConfirmation> PaymentConfirmations { get; set; }
         public DbSet<UserInformation> UserInformations { get; set; }
+        public DbSet<PromoCode> PromoCodes { get; set; }
 
 
     }

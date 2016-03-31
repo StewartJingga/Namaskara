@@ -8,5 +8,9 @@ namespace Namaskara.Models
     public class Config
     {
         public static int DaysToConfirm = 2;
+
+        public static string[] CityList = { "","Jakarta",
+                                     "Surabaya",
+                                    "Makassar", "Bandung"};
     }
 }
