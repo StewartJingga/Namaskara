@@ -36,7 +36,8 @@
                 @if (Request.IsAuthenticated && User.IsInRole("Admin"))
                 {
                     <li>@Html.ActionLink("Store Manager", "CategoryIndex", "StoreManager")</li>
-                    <li>@Html.ActionLink("Orders", "WCOrder", "StoreManager")</li>
+                    <li>@Html.ActionLink("Orders", "WCOrders", "StoreManager")</li>
+                    <li>@Html.ActionLink("Promo", "PromoIndex", "StoreManager")</li>
 
                 }
                 else

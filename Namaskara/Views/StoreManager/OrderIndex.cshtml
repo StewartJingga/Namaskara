@@ -5,7 +5,7 @@
 }
 
 <h2>Order List</h2>
-<p>@Html.ActionLink("All Orders", "OrderIndex") | @Html.ActionLink("Waiting Confirmation", "WCOrder")</p>
+@{ Html.RenderAction("OrderNavigation");}
 
 <table class="table">
     <tr>

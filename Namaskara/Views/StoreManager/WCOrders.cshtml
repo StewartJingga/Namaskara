@@ -1,16 +1,16 @@
 ﻿@model IEnumerable<Namaskara.Models.Order>
 
 @{
-    ViewBag.Title = "WCOrder";
+    ViewBag.Title = ViewBag.OrderFilter;
 }
 
-<h2>WCOrder</h2>
+<h2>@ViewBag.OrderFilter</h2>
 
-<p>@Html.ActionLink("All Orders", "OrderIndex") | @Html.ActionLink("Waiting Confirmation", "WCOrder")</p>
+@{ Html.RenderAction("OrderNavigation");}
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.OrderId)
+            @Html.ActionLink("Order ID", "WCOrders", new { sort = ViewBag.OrderSort, status = ViewBag.OrderFilter })
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Email)
@@ -69,9 +69,10 @@
             @Html.DisplayFor(modelItem => item.OrderDate)
         </td>
         <td>
-            @Html.ActionLink("Confirm", "ConfirmPayment", new { id=item.OrderId })
-            
+            @Html.ActionLink("Confirm", "ConfirmOrPostponePayment", new { id = item.OrderId, status = "Confirmed" }) | 
+            @Html.ActionLink("Postpone", "ConfirmOrPostponePayment", new { id = item.OrderId, status = "Postponed" })
         </td>
+
     </tr>
 }
 

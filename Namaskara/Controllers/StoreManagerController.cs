@@ -108,9 +108,6 @@ namespace Namaskara.Controllers
             return View(model);
         }
 
-
-
-
         public ActionResult Edit(int id)
         {
             Product product = ndb.Products.Find(id);
@@ -166,16 +163,54 @@ namespace Namaskara.Controllers
             return View(orders);
         }
 
-        public ActionResult WCOrder()
+        public ActionResult WCOrders(string sort, string status)
         {
+            ViewBag.OrderSort = String.IsNullOrEmpty(sort) ? "order_asc" : "";
+            status = String.IsNullOrEmpty(status) ? "Waiting For Confirmation" : status;
+            ViewBag.OrderFilter = status;
+            List<Order> orders;
 
-            return View(ndb.Orders.Where(m=>m.Status == "Waiting For Confirmation").ToList());
+            switch (sort)
+            {
+                case "order_asc":
+                    orders = ndb.Orders.Where(m => m.Status == status).OrderBy(m => m.OrderId).ToList();
+                    break;
+                default:
+                    orders = ndb.Orders.Where(m => m.Status == status).OrderByDescending(m => m.OrderId).ToList();
+                    break;
+
+            }
+            return View(orders);
         }
 
-        public ActionResult ConfirmPayment(int id)
+        public ActionResult ConfirmedOrders(string sort)
+        {
+            ViewBag.OrderSort = String.IsNullOrEmpty(sort) ? "order_asc" : "";
+            
+            List<Order> orders;
+
+            switch (sort)
+            {
+                case "order_asc":
+                    orders = ndb.Orders.Where(m => m.Status == "Confirmed").OrderBy(m => m.OrderId).ToList();
+                    break;
+                default:
+                    orders = ndb.Orders.Where(m => m.Status == "Confirmed").OrderByDescending(m => m.OrderId).ToList();
+                    break;
+
+            }
+            foreach(var order in orders)
+            {
+                order.OrderInfo = ndb.OrderInformation.Find(order.OrderInfoId);
+            }
+            return View(orders);
+        }
+
+
+        public ActionResult ConfirmOrPostponePayment(int id, string status)
         {
             Order order = ndb.Orders.Find(id);
-            order.Status = "Confirmed";
+            order.Status = status;
             ndb.Entry(order).State = System.Data.Entity.EntityState.Modified;
             ndb.SaveChanges();
 
@@ -189,18 +224,9 @@ namespace Namaskara.Controllers
         }
 
         public ActionResult EditOrder(int id)
-        {
-            List<string> status = new List<string>
-            {
-                "Order Submitted",
-                "Waiting For Confirmation",
-                "Confirmed",
-                "Pending",
-                "Completed",
-                "Expired"
-            };
+        {           
             Order order = ndb.Orders.Find(id);
-            ViewBag.Status = new SelectList(status, order.Status);
+            ViewBag.Status = new SelectList(Config.StatusList, order.Status);
             return View(order);
         }
         [HttpPost]
@@ -216,16 +242,8 @@ namespace Namaskara.Controllers
 
                 return RedirectToAction("OrderIndex");
             }
-            List<string> status = new List<string>
-            {
-                "Order Submitted",
-                "Waiting For Confirmation",
-                "Confirmed",
-                "Pending",
-                "Completed",
-                "Expired"
-            };
-            ViewBag.Status = new SelectList(status);
+            
+            ViewBag.Status = new SelectList(Config.StatusList);
             return View(order);
         }
 
@@ -258,6 +276,46 @@ namespace Namaskara.Controllers
 
             return RedirectToAction("OrderDetails", new { id = id });
         }
+
+        public ActionResult PromoIndex()
+        {
+            return View(ndb.PromoCodes);
+        }
+        public ActionResult CreatePromo()
+        {
+            return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult CreatePromo(PromoCode model)
+        {
+            PromoCode promo = new PromoCode();
+            TryUpdateModel(promo);
+            try
+            {
+                ndb.PromoCodes.Add(promo);
+                ndb.SaveChanges();
+                return RedirectToAction("PromoIndex");
+            }
+            catch
+            {
+                return RedirectToAction("PromoIndex");
+            }
+
+        }
+        public ActionResult DeletePromo(string code)
+        {
+            ndb.PromoCodes.Remove(ndb.PromoCodes.Find(code));
+
+            return RedirectToAction("PromoIndex");
+        }
+
+        [ChildActionOnly]
+        public ActionResult OrderNavigation()
+        {
+            return PartialView();
+        }
+
 
 
     }

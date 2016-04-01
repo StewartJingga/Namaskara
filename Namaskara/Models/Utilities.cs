@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace Namaskara.Models
 {
@@ -11,49 +12,34 @@ namespace Namaskara.Models
         {
             return Convert.ToDecimal(1 - discount / 100) * price;
         }
+        public static decimal FindReducingPrice(decimal price, double discount)
+        {
+            return Convert.ToDecimal(discount / 100) * price;
+        }
 
-        public static decimal FindDeliveryCost(string city, int weight)//weight in gram
+
+        public static decimal FindDeliveryCost(string state, int weight, NamaskaraDb ndb)//weight in gram
         {
             int weightInKilo = (int)Math.Ceiling((double)weight/1000);
-            
-            int deliveryCost;
 
-            switch (city)
-            {
-                case ("Surabaya"):
-                    deliveryCost = 17000 * weightInKilo;
-                    break;
-                case ("Medan"):
-                    deliveryCost = 26000 * weightInKilo;
-                    break;
-                case ("Jakarta"):
-                    deliveryCost = 10000 * weightInKilo;
-                    break;
-                case ("Makassar"):
-                    deliveryCost = 31000 * weightInKilo;
-                    break;
-                
-                default:
-                    deliveryCost = 10000 * weightInKilo;
-                    break;
-            }
+            int cost = weightInKilo * (int)ndb.States.Single(m => m.StateName == state).PricePerKg;            
 
-            return Convert.ToDecimal(deliveryCost);
+            return Convert.ToDecimal(cost);
         }
 
         public static void DuplicateDeliveryAddress(OrderInfo orderInfo)
         {
             orderInfo.ShippingAddress = orderInfo.Address;
-            orderInfo.ShippingCity = orderInfo.ShippingCity;
-            orderInfo.ShippingCountry = orderInfo.ShippingCountry;
-            orderInfo.ShippingPostalCode = orderInfo.ShippingPostalCode;
+            orderInfo.ShippingCity = orderInfo.City;
+            orderInfo.ShippingCountry = orderInfo.Country;
+            orderInfo.ShippingPostalCode = orderInfo.PostalCode;
             orderInfo.ShippingState = orderInfo.State;
         }
 
-        public static decimal GetTotalPrice(ShoppingCart cart, string city, double promoDiscount = 0)
+        public static decimal GetTotalPrice(ShoppingCart cart, string state, NamaskaraDb ndb, double promoDiscount = 0)
         {
             
-            decimal deliveryCost = FindDeliveryCost(city, cart.GetCartWeight());
+            decimal deliveryCost = FindDeliveryCost(state, cart.GetCartWeight(), ndb);
             decimal cartTotal = FindReducedPrice(cart.GetTotal(), promoDiscount);
             return deliveryCost + cartTotal;
         }
@@ -67,6 +53,10 @@ namespace Namaskara.Models
             else return 0;
             
         }
+
+        
+
+        
 
         
     }

@@ -14,7 +14,7 @@
     <p class="button">
         @if (!Request.IsAuthenticated)
         {
-            @Html.ActionLink("Checkout >> ", "AnonymousAddressAndPayment", "Checkout", new { id = "checkout" });
+            @Html.ActionLink("Checkout >> ", "AnonymousAddressAndPayment", "Checkout", new { id = "checkout" }, null);
         }
         else
         {

@@ -9,13 +9,6 @@
         <li>
             @Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "UserInformation", "Account", routeValues: null, htmlAttributes: null)
         </li>
-        @if (!User.IsInRole("Admin"))
-        {
-            <li>
-                @Html.ActionLink("Order History", "OrderHistory", "Account")
-            </li>
-        }
-        
         <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
     </ul>
     }

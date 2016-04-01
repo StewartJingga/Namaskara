@@ -26,6 +26,7 @@ namespace Namaskara.Models
         public string PromoCode { get; set; }
         public bool PromoActivated { get; set; }
         public double PromoDiscount { get; set; }
+        public string TrackingNumber { get; set; }
         public string Bank { get; set; }
         [Display(Name = "Account Name")]
         public string AccountName { get; set; }

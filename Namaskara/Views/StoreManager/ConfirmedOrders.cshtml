@@ -1,0 +1,87 @@
+﻿@model IEnumerable<Namaskara.Models.Order>
+
+@{
+    ViewBag.Title = ViewBag.OrderFilter;
+}
+
+<h2>@ViewBag.OrderFilter</h2>
+
+@{ Html.RenderAction("OrderNavigation");}
+<table class="table">
+    <tr>
+        <th>
+            @Html.ActionLink("Order ID", "ConfirmedOrders", new { sort = ViewBag.OrderSort, status = ViewBag.OrderFilter })
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Email)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.OrderInfo.ShippingAddress)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.OrderInfo.ShippingState)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.OrderInfo.ShippingCity)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.OrderInfo.ShippingPostalCode)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.OrderInfo.Phone)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Total)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Status)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.OrderDate)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.OrderId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OrderInfo.ShippingAddress)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OrderInfo.ShippingState)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OrderInfo.ShippingCity)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OrderInfo.ShippingPostalCode)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OrderInfo.Phone)
+            </td>
+            <td>
+                @String.Format("{0:n}", item.Total)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OrderDate)
+            </td>
+            <td>
+                @Html.ActionLink("Complete", "ConfirmOrPostponePayment", new { id = item.OrderId, status = "Completed" })
+            </td>
+
+        </tr>
+    }
+
+</table>
+
+

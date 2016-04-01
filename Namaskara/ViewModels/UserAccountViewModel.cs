@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace Namaskara.ViewModels
 {
@@ -16,6 +17,9 @@ namespace Namaskara.ViewModels
         public string PostalCode { get; set; }
         public string Country { get; set; }
         public string Phone { get; set; }
+
+        public List<SelectListItem> States { get; set; }
+        
 
     }
 }

@@ -6,178 +6,218 @@
 
 <h2>OrderDetails</h2>
 
-<div style="float:left;">
-    <h4>Order</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.OrderId)
-        </dt>
+<div class="row">
+    <div class="col-sm-6">
+        <h4>Order</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.OrderId):
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.OrderId)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.OrderId)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Email)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.Email):
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Email)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.Email)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Price)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.Price):
+            </dt>
 
-        <dd>
-            @String.Format("Rp {0:n}", Model.Price)
-        </dd>
+            <dd>
+                @String.Format("Rp {0:n}", Model.Price)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Delivery)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.Delivery):
+            </dt>
 
-        <dd>
-            @String.Format("Rp {0:n}", Model.Delivery)
-        </dd>
+            <dd>
+                @String.Format("Rp {0:n}", Model.Delivery)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Total)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.Total):
+            </dt>
 
-        <dd>
-            @String.Format("Rp {0:n}", Model.Total)
-        </dd>
+            <dd>
+                @String.Format("Rp {0:n}", Model.Total)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.AmountPaid)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.AmountPaid):
+            </dt>
 
-        <dd>
-            @String.Format("Rp {0:n}", Model.AmountPaid)
-        </dd>
+            <dd>
+                @String.Format("Rp {0:n}", Model.AmountPaid)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Bank)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.Bank):
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Bank)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.Bank)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.AccountName)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.AccountName):
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.AccountName)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.AccountName)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.AccountNumber)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.AccountNumber):
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.AccountNumber)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.AccountNumber)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Status)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.Status):
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Status)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.Status)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.OrderDate)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.OrderDate):
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.OrderDate)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.ConfirmDate)
-        </dt>
+            <dd>
+                @Html.DisplayFor(model => model.OrderDate)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.ConfirmDate):
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.ConfirmDate)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.ConfirmDate)
+            </dd>
 
-    </dl>
+        </dl>
+    </div>
+    <div class="col-sm-6">
+        <h4>Customer Information</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.OrderInfo.FirstName):
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.OrderInfo.FirstName)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.OrderInfo.LastName):
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.OrderInfo.LastName)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.OrderInfo.Phone):
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.OrderInfo.Phone)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.OrderInfo.Address):
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.OrderInfo.Address)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.OrderInfo.Country):
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.OrderInfo.Country)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.OrderInfo.City):
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.OrderInfo.City)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.OrderInfo.State):
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.OrderInfo.State)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.OrderInfo.PostalCode):
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.OrderInfo.PostalCode)
+            </dd>
+        </dl>
+
+        <hr />
+        <h4>Shipping Information</h4>
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.OrderInfo.ShippingAddress):
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.OrderInfo.ShippingAddress)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.OrderInfo.ShippingState):
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.OrderInfo.ShippingState)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.OrderInfo.ShippingCity):
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.OrderInfo.ShippingCity)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.OrderInfo.ShippingPostalCode):
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.OrderInfo.ShippingPostalCode)
+            </dd>
+        </dl>
+    </div>
 </div>
 
-<div style="float:left">
-    <h4>Customer Information</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.OrderInfo.FirstName)
-        </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.OrderInfo.FirstName)
-        </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.OrderInfo.LastName)
-        </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.OrderInfo.LastName)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.OrderInfo.Phone)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.OrderInfo.Phone)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.OrderInfo.Address)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.OrderInfo.Address)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.OrderInfo.Country)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.OrderInfo.Country)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.OrderInfo.City)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.OrderInfo.City)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.OrderInfo.State)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.OrderInfo.State)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.OrderInfo.PostalCode)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.OrderInfo.PostalCode)
-        </dd>
-    </dl>
-</div>
-<div class="clear"></div>
 <p>
     @Html.ActionLink("Edit", "EditOrder", new { id = Model.OrderId }) |
     @Html.ActionLink("Back to List", "OrderIndex")

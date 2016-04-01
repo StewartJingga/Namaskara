@@ -6,6 +6,7 @@
 
 <h2>Edit Information</h2>
 
+
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
@@ -32,13 +33,6 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DisplayFor(model => model.Email)
-            </div>
-        </div>
-
-        <div class="form-group">
             @Html.LabelFor(model => model.Address, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control" } })
@@ -47,18 +41,26 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.City, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.Country, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.City, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.City, "", new { @class = "text-danger" })
+                @Html.DropDownListFor(model => model.Country, ViewBag.Countries as IEnumerable<SelectListItem>, "-- Select Country --")
+                @Html.ValidationMessageFor(model => model.Country, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
             @Html.LabelFor(model => model.State, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.State, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.DropDownListFor(model => model.State, ViewBag.States as IEnumerable<SelectListItem>, "-- Select State --")
                 @Html.ValidationMessageFor(model => model.State, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.City, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(m => m.City, ViewBag.Cities as IEnumerable<SelectListItem>, "-- Select City --")
+                @Html.ValidationMessageFor(model => model.City, "", new { @class = "text-danger" })
             </div>
         </div>
 
@@ -67,14 +69,6 @@
             <div class="col-md-10">
                 @Html.EditorFor(model => model.PostalCode, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.PostalCode, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Country, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Country, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Country, "", new { @class = "text-danger" })
             </div>
         </div>
 
@@ -93,5 +87,30 @@
         </div>
     </div>
 }
+
+@*@section scripts {
+    <script>
+        $("#State").change(function () {
+            var state = $(this).val();
+            if (state != 0) {
+                $.post("/Checkout/GetCities", { state: state },
+                function (data) {
+                    if (data != null) {
+
+                        var output = "";
+                        for (var i = 0; i < data.length; i++) {
+                            output += '<option value=\"' + data[i] + '\">' + data[i] + '</option>';
+                        }
+                        $("#City").empty().append(output);
+                    }
+                });
+            }
+            else {
+                $("#City").empty().append("<option>--Select City--</option>");
+            }
+
+        });
+    </script>
+    }*@
 
 

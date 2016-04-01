@@ -61,34 +61,35 @@
                 </div>
 
                 <div class="form-group">
-                    @Html.LabelFor(model => model.City, htmlAttributes: new { @class = "control-label col-md-2" })
+                    @Html.LabelFor(model => model.Country, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
-                        @Html.EditorFor(model => model.City, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.City, "", new { @class = "text-danger" })
+                        @Html.DropDownListFor(model => model.Country, ViewBag.Countries as IEnumerable<SelectListItem>, "-- Select Country --")
+                        @Html.ValidationMessageFor(model => model.Country, "", new { @class = "text-danger" })
                     </div>
                 </div>
 
                 <div class="form-group">
                     @Html.LabelFor(model => model.State, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
-                        @Html.DropDownList("State")
+
+                        @Html.DropDownListFor(m => m.State, ViewBag.States as IEnumerable<SelectListItem>, "-- Select State --")
                         @Html.ValidationMessageFor(model => model.State, "", new { @class = "text-danger" })
                     </div>
                 </div>
 
                 <div class="form-group">
+                    @Html.LabelFor(model => model.City, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.DropDownListFor(m => m.City, ViewBag.Cities as IEnumerable<SelectListItem>, "-- Select City --")
+                        @Html.ValidationMessageFor(model => model.City, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+  
+                <div class="form-group">
                     @Html.LabelFor(model => model.PostalCode, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
                         @Html.EditorFor(model => model.PostalCode, new { htmlAttributes = new { @class = "form-control" } })
                         @Html.ValidationMessageFor(model => model.PostalCode, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    @Html.LabelFor(model => model.Country, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.EditorFor(model => model.Country, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.Country, "", new { @class = "text-danger" })
                     </div>
                 </div>
 
@@ -250,98 +251,6 @@
    
 <script src="~/Scripts/jquery.validate.min.js"></script> 
 <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
-    <script>
-        var form = $("#checkoutForm");
-        
-        function checkDelCost() {
-            var city = $("#ShippingState").val();
-            $.post("/Checkout/CheckDelCost", { dest: city },
-                function (data) {
-                    if (data != null) {
-                        $("#city").text(city);
-                        $(".deliveryCost").text(data.Cost);
-                    }
-                });
-        }
-        function sameDelAddress() {
-            $("#ShippingState").val($("#State").val());
-            checkDelCost();
-            $("#contactDetails").addClass("col-md-6").removeClass("col-md-4");
-            $("#deliveryDetails").addClass("col-md-6").removeClass("col-md-4");
-
-            $("#shippingDetails").hide();
-        }
-
-        function diffDelAddress() {
-            $("#ShippingAddress").val("");
-            $("#contactDetails").addClass("col-md-4").removeClass("col-md-6");
-            $("#deliveryDetails").addClass("col-md-4").removeClass("col-md-6");
-            $("#shippingDetails").show();
-        }
-
-        $("#ShippingState").change(checkDelCost);
-        $("#State").change(function () {
-            if ($("#SameDeliveryAddress").is(":checked")) {
-                $("#ShippingState").val($("#State").val());
-                checkDelCost();
-            }
-        });
-
-        $("#SameDeliveryAddress").change(function () {
-            var checked = $(this).is(":checked");
-            if (checked) {
-                sameDelAddress();
-            } else {
-                diffDelAddress();
-            }
-        });
-
-        $("#checkPromo").click(function (e) {
-            e.preventDefault();
-            var codee = $("#Code").val();
-            $.post("/Checkout/CheckPromo", { code: codee },
-                function (data) {
-                    if (data == "1") {
-
-                        $("#Code").attr("disabled", true);
-                        $("#PromoCode").val($("#Code").val());
-                        $("#PromoActivated").prop("checked", true);
-                        $("#PromoActivated").val(true);
-
-                        $("#promoResult").text("Promo Activated!");
-                        $(this).prop("disabled", true);
-                    }
-                    else {
-                        $("#promoResult").text("Wrong Code!");
-                    }
-                }).fail(function () {
-                    $("#promoResult").text("Wrong Code!");
-                });
-        });
-
-        
-        $("#return").click(function(){
-            $("#reviewOrder").hide();
-            $("#preCheckout").show();
-        });
-       
-        $("#preCheckoutSubmit").click(function (e) {
-            e.preventDefault();
-            form.removeAttr("novalidate");
-            if ($("#checkoutForm").valid()) {
-                var city = $("#ShippingState").val();
-                $.post("/Checkout/GetTotalPrice", { dest: city },
-                    function (data) {
-                        $("#totalPrice").text(data);
-                        $("#preCheckout").hide();
-                        $("#reviewOrder").show();
-                    });
-            }
-            
-           
-            
-        });
-    </script>
-    
+<script src="~/Scripts/CheckoutJS.js"></script>
     }
 

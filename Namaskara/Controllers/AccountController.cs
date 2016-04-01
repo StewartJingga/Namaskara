@@ -11,6 +11,7 @@ using Microsoft.Owin.Security;
 using Namaskara.Models;
 using System.Collections.Generic;
 using Namaskara.ViewModels;
+using System.Diagnostics;
 
 namespace Namaskara.Controllers
 {
@@ -82,40 +83,63 @@ namespace Namaskara.Controllers
 
         public ActionResult UserInformation()
         {
-            string userEmail = User.Identity.GetUserName();
-            UserInformation userInfo = ndb.UserInformations.Single(m => m.Email == userEmail);
-            UserAccountViewModel model = new UserAccountViewModel();
+            
 
-            model.Address = userInfo.Address;
-            model.City = userInfo.City;
-            model.Country = userInfo.Country;
-            model.Email = userEmail;
-            model.FirstName = userInfo.FirstName;
-            model.LastName = userInfo.LastName;
-            model.Phone = userInfo.Phone;
-            model.PostalCode = userInfo.PostalCode;
-            model.State = userInfo.State;
+            string userEmail = User.Identity.GetUserName();
+            try
+            {
+                UserInformation userInfo = ndb.UserInformations.Single(m => m.Email == userEmail);
+                UserAccountViewModel model = new UserAccountViewModel();
+
+                model.Address = userInfo.Address;
+                model.City = userInfo.City;
+                model.Country = userInfo.Country;
+                model.Email = userEmail;
+                model.FirstName = userInfo.FirstName;
+                model.LastName = userInfo.LastName;
+                model.Phone = userInfo.Phone;
+                model.PostalCode = userInfo.PostalCode;
+                model.State = userInfo.State;
+
+                return View(model);
+            }
+            catch { }
+            
  
-            return View(model);
+            return View();
         }
 
         public ActionResult EditInformation()
         {
+            //var states = ndb.States.Select(s => new SelectListItem { Text = s.StateName, Value = s.StateName , Selected = (s.StateName == "Jawa Timur") }).ToList();
+            //ViewBag.States = states;
+            ViewBag.States = new SelectList(ndb.States, "StateName", "StateName");
+            ViewBag.Cities = new SelectList(ndb.Cities, "CityName", "CityName");
+            string[] countries = { "Indonesia" };
+            ViewBag.Countries = new SelectList(countries);
+
             string userEmail = User.Identity.GetUserName();
-            UserInformation userInfo = ndb.UserInformations.Single(m => m.Email == userEmail);
-            UserAccountViewModel model = new UserAccountViewModel();
+            try
+            {
+                UserInformation userInfo = ndb.UserInformations.Single(m => m.Email == userEmail);
+                UserAccountViewModel model = new UserAccountViewModel();
 
-            model.Address = userInfo.Address;
-            model.City = userInfo.City;
-            model.Country = userInfo.Country;
-            model.Email = userEmail;
-            model.FirstName = userInfo.FirstName;
-            model.LastName = userInfo.LastName;
-            model.Phone = userInfo.Phone;
-            model.PostalCode = userInfo.PostalCode;
-            model.State = userInfo.State;
+                model.Address = userInfo.Address;
+                model.Email = userEmail;
+                model.FirstName = userInfo.FirstName;
+                model.LastName = userInfo.LastName;
+                model.Phone = userInfo.Phone;
+                model.PostalCode = userInfo.PostalCode;
+                Debug.Print(userInfo.State);
+                model.State = userInfo.State;
+                model.City = userInfo.City;
+                model.Country = userInfo.Country;
+                
 
-            return View(model);
+                return View(model);
+            }catch { }
+            return View();
+            
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -124,7 +148,9 @@ namespace Namaskara.Controllers
             if (ModelState.IsValid)
             {
                 string userEmail = User.Identity.GetUserName();
-                UserInformation userInfo = ndb.UserInformations.Single(m => m.Email == userEmail);
+                bool infoExists = ndb.UserInformations.Any(m => m.Email == userEmail);
+                UserInformation userInfo = infoExists ? ndb.UserInformations.Single(m => m.Email == userEmail) : new UserInformation();
+
                 userInfo.Address = model.Address;
                 userInfo.City = model.City;
                 userInfo.Country = model.Country;
@@ -133,8 +159,11 @@ namespace Namaskara.Controllers
                 userInfo.Phone = model.Phone;
                 userInfo.PostalCode = model.PostalCode;
                 userInfo.State = model.State;
+                userInfo.Email = userEmail;
 
-                ndb.Entry(userInfo).State = System.Data.Entity.EntityState.Modified;
+                if (infoExists) ndb.Entry(userInfo).State = System.Data.Entity.EntityState.Modified;
+                else ndb.UserInformations.Add(userInfo);
+
                 ndb.SaveChanges();
 
                 return RedirectToAction("UserInformation");

@@ -29,34 +29,44 @@ namespace Namaskara.Controllers
         public ActionResult AddressAndPayment()
         {
             var cart = ShoppingCart.GetCart(this.HttpContext);
+
             if(cart.GetTotal() == 0)
             {
                 return RedirectToAction("Index", "Home");
             }
+            ViewBag.Weight = cart.GetCartWeight().ToString();
+            ViewBag.States = new SelectList(ndb.States, "StateName", "StateName");
+            ViewBag.Cities = new SelectList(ndb.Cities, "CityName", "CityName");
+            string[] countries = { "Indonesia" };
+            ViewBag.Countries = new SelectList(countries);
+ 
+
+            CheckoutViewModel oi = new CheckoutViewModel()
+            {
+                CartItems = cart.GetCartItems(),
+                CartTotalPrice = String.Format("Rp {0:n}", cart.GetTotal())
+            };
+
             //If user has created an order information
             if (ndb.UserInformations.Any(m => m.Email == User.Identity.Name))
             {
                 UserInformation info = ndb.UserInformations.Single(m => m.Email == User.Identity.Name);
+                State state = ndb.States.Single(m => m.StateName == info.State);
                 
-                ViewBag.Weight = cart.GetCartWeight().ToString();
-                ViewBag.State = new SelectList(Config.CityList);
-                ViewBag.ShippingState = new SelectList(Config.CityList);
-                CheckoutViewModel oi = new CheckoutViewModel()
-                {
-                    Address = info.Address,
-                    City = info.City,
-                    State = info.State,
-                    FirstName = info.FirstName,
-                    LastName = info.LastName,
-                    PostalCode = info.PostalCode,
-                    Country = info.Country,
-                    Phone = info.Phone,
-                    CartItems = cart.GetCartItems(),
-                    CartTotalPrice = String.Format("Rp {0:n}", cart.GetTotal())
-                };
-                return View(oi);
+                ViewBag.Cities = new SelectList(ndb.Cities.Where(m => m.StateId == state.StateId), "CityName", "CityName");
+
+                oi.Address = info.Address;
+                oi.City = info.City;
+                oi.FirstName = info.FirstName;
+                oi.LastName = info.LastName;
+                oi.PostalCode = info.PostalCode;
+                oi.Country = info.Country;
+                oi.Phone = info.Phone;
+                oi.State = info.State;
+                    
             }
-            else return View();
+
+            return View(oi);
         }
 
         [HttpPost]
@@ -98,8 +108,12 @@ namespace Namaskara.Controllers
             }
             
             ViewBag.Weight = cart.GetCartWeight().ToString();
-            ViewBag.State = new SelectList(Config.CityList);
-            ViewBag.ShippingState = new SelectList(Config.CityList);
+            ViewBag.States = new SelectList(ndb.States, "StateName", "StateName");
+            ViewBag.ShippingState = new SelectList(ndb.States, "StateName", "StateName");
+            ViewBag.Cities = new SelectList(ndb.Cities, "CityName", "CityName");
+            string[] countries = { "Indonesia" };
+            ViewBag.Countries = new SelectList(countries);
+
             var model = new CheckoutViewModel
             {
                 CartItems = cart.GetCartItems(),
@@ -142,7 +156,7 @@ namespace Namaskara.Controllers
         public ActionResult CheckDelCost(string dest)
         {
             var cart = ShoppingCart.GetCart(this.HttpContext);
-            var model = new CheckWeightViewModel { Cost = String.Format("Rp {0:n}", Utilities.FindDeliveryCost(dest, cart.GetCartWeight())) };
+            var model = new CheckWeightViewModel { Cost = String.Format("Rp {0:n}", Utilities.FindDeliveryCost(dest, cart.GetCartWeight(), ndb)) };
             return Json(model);
         }
 
@@ -156,9 +170,31 @@ namespace Namaskara.Controllers
 
         [AllowAnonymous]
         [HttpPost]
-        public string GetTotalPrice(string dest)
+        public ActionResult GetTotalPrice(string dest, string code = "")
         {
-            return String.Format("Rp {0:n}", Utilities.GetTotalPrice(ShoppingCart.GetCart(this.HttpContext), dest));
+            var cart = ShoppingCart.GetCart(this.HttpContext);
+
+            double discount = Utilities.CheckPromoDiscount(code, ndb);
+            decimal discountPrice = Utilities.FindReducingPrice(cart.GetTotal(), discount);
+            decimal total = Utilities.GetTotalPrice(cart, dest, ndb, discount);
+            
+            return Json(new ReviewOrderViewModel { TotalPrice = String.Format("Rp {0:n}", total), PromoDiscount = String.Format("- Rp {0:n}", discountPrice) });
+        }
+
+        [AllowAnonymous]
+        [HttpPost]
+        public JsonResult GetCities(string state)
+        {
+            State st = ndb.States.Single(m => m.StateName == state);
+            
+            var cities = ndb.Cities.Where(m => m.StateId == st.StateId).ToList();
+            var result = new List<string>();
+            result.Add("--Select City--");
+            foreach(var city in cities)
+            {
+                result.Add(city.CityName);
+            }
+            return Json(result);
         }
 
         [AllowAnonymous]
@@ -255,10 +291,10 @@ namespace Namaskara.Controllers
             order.OrderDate = DateTime.Now;
             order.ConfirmDate = order.OrderDate.AddDays(Config.DaysToConfirm);
             order.Status = "Order Submitted";
-            order.Delivery = Utilities.FindDeliveryCost(orderInfo.ShippingState, cart.GetCartWeight());
+            order.Delivery = Utilities.FindDeliveryCost(orderInfo.ShippingState, cart.GetCartWeight(), ndb);
             order.Price = cart.GetTotal();    
             order.PromoDiscount = Utilities.CheckPromoDiscount(order.PromoCode, ndb);
-            order.Total = Utilities.GetTotalPrice(cart, orderInfo.ShippingState, order.PromoDiscount);
+            order.Total = Utilities.GetTotalPrice(cart, orderInfo.ShippingState, ndb, order.PromoDiscount);
             
             //Save Order
             ndb.Orders.Add(order);

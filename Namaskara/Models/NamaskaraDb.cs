@@ -20,6 +20,9 @@ namespace Namaskara.Models
         public DbSet<UserInformation> UserInformations { get; set; }
         public DbSet<PromoCode> PromoCodes { get; set; }
 
+        public DbSet<State> States { get; set; }
+        public DbSet<City> Cities { get; set; }
+
 
     }
 }
