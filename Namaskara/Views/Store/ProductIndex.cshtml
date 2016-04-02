@@ -4,41 +4,47 @@
     ViewBag.Title = ViewData["CatName"];
 }
 
-@section categories {
-    <div id="categories">
-    <h3>Categories</h3>
-    @{Html.RenderAction("CategoryList", "Store"); }
-</div>
-}
 
+<div id="productIndex">
+    <div>
+        @{ Html.RenderAction("CategoryList", "Store");}
+    </div>
 
-<h2>@ViewData["CatName"]</h2>
-
-
-<div id="products">
-    @foreach (var item in Model)
-    {
-        <a href=@Url.Action("Details", new { id=item.ProductId })>
-            <div class="box">
-                @if (item.ImageUrl == "" || item.ImageUrl == null)
+    <div>
+        <h2>@ViewData["CatName"]</h2>
+        <div id="products">
+            @foreach (var item in Model)
+            {
+                <a href=@Url.Action("Details", new { id=item.ProductId })>
+                    <div class="box">
+                        @if (item.ImageUrl == "" || item.ImageUrl == null)
                 {
-                    <div><img src="~/Images/amaranth.jpg" /></div>
-                }
-                else
-                {
-                    string a = "/Images/"+@item.ImageUrl+".jpg";
-                    
-                    <div><img src= "@a" /></div>
-                }
-                
-                <div>
-                    <p>@item.Name</p>
-                </div>
-            </div>
-        </a>
+                            <div><img src="~/Images/amaranth.jpg" /></div>
+                        }
+                        else
+                        {
+                            string a = "/Images/" + @item.ImageUrl + ".jpg";
 
-    }
+                            <div><img src="@a" /></div>
+                        }
+
+                        <div>
+                            <p>@item.Name</p>
+                        </div>
+                    </div>
+                </a>
+
+            }
+        </div>
+    </div>
 </div>
+<div class="clear"></div>
+
+
+
+
+
+
 
 
 

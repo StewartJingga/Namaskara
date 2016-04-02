@@ -27,6 +27,11 @@ namespace Namaskara
                       "~/Content/bootstrap.css",
                       "~/Content/site.css",
                       "~/Content/bootstrap-overriding.css"));
+
+            bundles.Add(new StyleBundle("~/Content/css2").Include(
+                     "~/Content/bootstrap.css",
+                     "~/Content/site2.css",
+                     "~/Content/bootstrap-overriding.css"));
         }
     }
 }

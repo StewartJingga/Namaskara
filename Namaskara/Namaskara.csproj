@@ -255,6 +255,8 @@
     <Content Include="Content\bootstrap-overriding.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\reset.css" />
+    <Content Include="Content\Site2.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -364,6 +366,7 @@
     <Content Include="Images\muesli magic.jpg" />
     <Content Include="Images\mung beans.jpg" />
     <Content Include="Images\mungbeans chip muso.jpg" />
+    <Content Include="Images\NamaskaraLogoTest.png" />
     <Content Include="Images\navy beans canned %28eden%29.jpg" />
     <Content Include="Images\navy beans.jpg" />
     <Content Include="Images\niigita rice.jpg" />
@@ -533,6 +536,7 @@
     <Content Include="Views\StoreManager\PromoIndex.cshtml" />
     <Content Include="Views\StoreManager\CreatePromo.cshtml" />
     <Content Include="Views\Shared\_CheckoutPartial.cshtml" />
+    <Content Include="Views\Shared\_Layout2.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="PaymentImages\" />

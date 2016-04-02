@@ -1,8 +1,19 @@
 ﻿@{
     ViewBag.Title = "Home Page";
 }
+<div id="home">
+    <div>
+        @{ Html.RenderAction("CategoryList", "Store");}
+    </div>
 
-<div>
-    <h1>Namaskara Superfood</h1>
+    <div>
+        <div style="background-color: red; width:700px; height: 430px;"></div>
+        <div>
+            Logo Mobil<span><strong>Delivery to all areas in Indonesia</strong></span>
+        </div>
+    </div>
 </div>
+<div class="clear"></div>
+
+
 

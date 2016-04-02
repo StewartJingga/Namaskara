@@ -1,0 +1,99 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Namaskara Superfood</title>
+    
+    <link href="~/Content/reset.css" rel="stylesheet" />
+    @Styles.Render("~/Content/css2")
+    @Scripts.Render("~/bundles/modernizr")
+    <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+    <script src="~/Scripts/jquery-2.2.1.js"></script>
+
+</head>
+<body>
+    <div id="wrapper">
+        <div id="header">
+            <div id="leftHeader">
+                <div id="logo">
+                    <a href="#">
+                        <img src="~/Images/NamaskaraLogoTest.png" />
+                    </a>
+                </div>
+                <div id="navigation">
+                    <nav>
+                        <ul>
+                            <li><a href="#">HOME</a></li>
+                            <li><a href="#">ABOUT</a></li>
+                            <li><a href="#">HOW TO BUY</a></li>
+                            <li><a href="#">CONTACT US</a></li>
+                            <li><a href="#">PAYMENT CONFIRMATION</a></li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+            <div id="rightHeader">
+                <div>
+                    <a href="#">SIGN IN</a><span> / </span><a href="#">REGISTER</a>
+                    <div>
+                        <h6>Cart Image</h6>
+                        <a href="#">0 ITEM // IDR 0</a>
+                    </div>
+                </div>
+                <div>
+                    <input type="text" placeholder="Search Box" />
+                </div>
+            </div>
+        </div><div class="clear"></div>
+        <div id="mainBody">
+            @RenderBody()
+        </div>
+        <div id="footer">
+            <div>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <h4>Information</h4>
+                        <br />
+                        <ul>
+                            <li><a href="#">about us</a></li>
+                            <li><a href="#">how to order</a></li>
+                            <li><a href="#">payment confirmation</a></li>
+                            <li><a href="#">shipping charges</a></li>
+                            <li><a href="#">delivery information</a></li>
+                            <li><a href="#">contact us</a></li>
+                            <li><a href="#">FAQ</a></li>
+                            <li><a href="#">Terms & Conditions</a></li>
+                        </ul>
+                        <div>
+                            <span>LogoIns</span><span>LogoF</span>
+                        </div>
+                    </div>
+                    <div class="col-sm-5">
+                        <h4>My Account</h4>
+                        <br />
+                        <ul>
+                            <li><a href="#">my account</a></li>
+                            <li><a href="#">order history</a></li>
+                            <li><a href="#">wish list</a></li>
+                            <li><a href="#">newsletter</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-sm-4">
+                        <div>
+                            LOGO WEBSITE
+                        </div>
+                        <div>
+                            <img /><span>NAMASKARAINDONESIA</span>
+                        </div>
+                        <div>
+                            <img /><span>081232225941</span>
+                        </div>
+                    </div>
+                </div>
+            </div>  
+        </div>
+    </div>
+    @RenderSection("scripts", false)
+</body>
+</html>

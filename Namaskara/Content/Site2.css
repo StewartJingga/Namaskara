@@ -1,0 +1,133 @@
+﻿/*----------------------- RESET ------------------------------*/
+p, h1,h2,h3,h4,h5,h6 {
+    margin: 0;
+}
+
+
+#wrapper {
+    padding: 20px 30px;
+    margin: 0 auto;
+    width: 1040px;
+    background-color: lightgray;
+}
+
+#wrapper > div {
+    padding: 0 10px;
+    display: block;
+}
+
+/* ----------------------- HEADER CSS -----------------------*/
+div#header {
+    height: 161px;
+}
+
+#header > div{
+    
+    float:left;
+    padding: 5px 10px;
+}
+
+#leftHeader {
+    width: 730px;
+}
+
+#logo {
+    height: 121px;
+    background-color: red;
+}
+
+#logo img{
+    height: 121px;
+    width: 710px;
+    
+}
+
+#navigation li{
+    display: inline-block;
+    padding: 0 15px;
+}
+
+#navigation a{
+    font-size: 12px;
+    font-weight: bold;
+    color: rgb(70, 141, 57);
+    font-family: 'Roboto', sans-serif;
+}
+
+#navigation a:hover{
+    text-decoration: none;
+    color: grey;
+    border-bottom: 2px solid grey;
+}
+
+#rightHeader {
+    background-color: lightgreen;
+    text-align: center;
+}
+
+#rightHeader > div{
+    padding: 5px 5px;
+}
+
+#rightHeader a{
+    font-size: 12px;
+}
+/* ----------------------- BODY CSS ------------------------*/
+/* ----------------------- HOME CSS ------------------------*/
+#home > div{
+    float: left;
+    padding: 5px 10px;
+}
+
+#home strong {
+    font-size: 30px;
+
+}
+#categories li{
+    line-height: 24px;
+}
+
+#categories a{
+    font-size: 14px;
+    color: rgb(70, 141, 57);
+    font-family: 'Roboto', sans-serif;
+}
+
+/*------------------------- PRODUCT INDEX --------------------*/
+#productIndex > div{
+    float: left;
+    padding: 5px 10px;
+}
+
+#productIndex img{
+    width: 200px;
+    height: 200px;
+}
+
+.box {
+    margin: 10px 10px;
+    float: left;
+    width: 200px;
+    height: 240px;
+}
+
+#products p{
+    text-align: center;
+}
+
+/* ------------------------ END OF BODY CSS------------------*/
+/* ----------------------- FOOTER CSS ------------------------*/
+div#footer {
+    padding-top: 20px;
+    border-top: 1px solid grey;
+}
+
+#footer a{
+    color: black;
+    font-family: 'Roboto', sans-serif;
+}
+
+/* ----------------------- HELPER CSS ------------------------*/
+.clear {
+    clear: both;
+}
