@@ -160,6 +160,7 @@ namespace Namaskara.Controllers
                 userInfo.PostalCode = model.PostalCode;
                 userInfo.State = model.State;
                 userInfo.Email = userEmail;
+                userInfo.isSet = true;
 
                 if (infoExists) ndb.Entry(userInfo).State = System.Data.Entity.EntityState.Modified;
                 else ndb.UserInformations.Add(userInfo);

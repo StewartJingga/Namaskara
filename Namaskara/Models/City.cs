@@ -11,5 +11,6 @@ namespace Namaskara.Models
         [Key]
         public string CityName { get; set; }
         public int StateId { get; set; }
+        public State State { get; set; }
     }
 }

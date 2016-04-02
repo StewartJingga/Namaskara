@@ -532,6 +532,7 @@
     <Content Include="Views\EmailMessage\SendingEmailConfirmationMessage.cshtml" />
     <Content Include="Views\StoreManager\PromoIndex.cshtml" />
     <Content Include="Views\StoreManager\CreatePromo.cshtml" />
+    <Content Include="Views\Shared\_CheckoutPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="PaymentImages\" />

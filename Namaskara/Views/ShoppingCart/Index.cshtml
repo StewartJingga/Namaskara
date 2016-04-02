@@ -12,18 +12,7 @@
 @if (Model.CartTotal != 0)
 {
     <p class="button">
-        @if (!Request.IsAuthenticated)
-        {
-            @Html.ActionLink("Checkout >> ", "AnonymousAddressAndPayment", "Checkout", new { id = "checkout" }, null);
-        }
-        else
-        {
-            @Html.ActionLink("Checkout >> ", "AddressAndPayment", "Checkout");
-        }
-
-
-
-
+        @Html.ActionLink("Checkout >> ", "AddressAndPayment", "Checkout")
     </p>
     <div id="update-message">
     </div>

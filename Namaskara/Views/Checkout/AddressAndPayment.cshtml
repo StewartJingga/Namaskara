@@ -3,11 +3,15 @@
 
 @{
     ViewBag.Title = "AddressAndPayment";
+    string header = User.Identity.IsAuthenticated ? "Checkout" : "Guest Checkout";
 }
 
-<h2>Guest Checkout</h2>
+<h2>@header</h2>
 
-
+@if (!User.Identity.IsAuthenticated)
+{
+    @Html.ActionLink("Existing Customer", "Login", "Account", new { returnUrl = "/Checkout/AddressAndPayment" }, null)
+}
 
 @using (Html.BeginForm("AddressAndPayment", "Checkout", FormMethod.Post, new { id = "checkoutForm" }))
 {
@@ -19,8 +23,12 @@
         <div class="row" id="preCheckout">
 
             <div class="col-md-6" id="contactDetails">
-                @Html.Hidden("Email", User.Identity.Name)
-                @Html.Hidden("ConfirmEmail", User.Identity.Name)
+                @if (User.Identity.IsAuthenticated)
+                {
+                    @Html.Hidden("Email", User.Identity.Name)
+                    @Html.Hidden("ConfirmEmail", User.Identity.Name)
+                }
+                
                 
                 <h4>Contact Detail</h4>
                 <hr />
@@ -46,6 +54,25 @@
                         @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
                     </div>
                 </div>
+
+                @if (!User.Identity.IsAuthenticated)
+                {
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.ConfirmEmail, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.ConfirmEmail, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.ConfirmEmail, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                }
 
                 <div class="form-group">
                     @Html.LabelFor(model => model.Country, htmlAttributes: new { @class = "control-label col-md-2" })

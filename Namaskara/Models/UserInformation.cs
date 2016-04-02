@@ -20,5 +20,6 @@ namespace Namaskara.Models
         public string PostalCode { get; set; }
         public string Country { get; set; }
         public string Phone { get; set; }
+        public bool isSet { get; set; }
     }
 }

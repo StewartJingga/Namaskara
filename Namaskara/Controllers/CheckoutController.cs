@@ -14,7 +14,7 @@ using System.Diagnostics;
 
 namespace Namaskara.Controllers
 {
-    [Authorize]
+    
     public class CheckoutController : Controller
     {
         NamaskaraDb ndb = new NamaskaraDb();
@@ -29,6 +29,7 @@ namespace Namaskara.Controllers
         public ActionResult AddressAndPayment()
         {
             var cart = ShoppingCart.GetCart(this.HttpContext);
+            bool authenticated = User.Identity.IsAuthenticated;
 
             if(cart.GetTotal() == 0)
             {
@@ -39,16 +40,18 @@ namespace Namaskara.Controllers
             ViewBag.Cities = new SelectList(ndb.Cities, "CityName", "CityName");
             string[] countries = { "Indonesia" };
             ViewBag.Countries = new SelectList(countries);
- 
+
 
             CheckoutViewModel oi = new CheckoutViewModel()
             {
+                Email = authenticated ? User.Identity.Name : null,
+                ConfirmEmail = authenticated ? User.Identity.Name : null,
                 CartItems = cart.GetCartItems(),
                 CartTotalPrice = String.Format("Rp {0:n}", cart.GetTotal())
             };
 
             //If user has created an order information
-            if (ndb.UserInformations.Any(m => m.Email == User.Identity.Name))
+            if (authenticated && ndb.UserInformations.Any(m => m.Email == User.Identity.Name))
             {
                 UserInformation info = ndb.UserInformations.Single(m => m.Email == User.Identity.Name);
                 State state = ndb.States.Single(m => m.StateName == info.State);
@@ -63,6 +66,7 @@ namespace Namaskara.Controllers
                 oi.Country = info.Country;
                 oi.Phone = info.Phone;
                 oi.State = info.State;
+               
                     
             }
 
@@ -73,10 +77,11 @@ namespace Namaskara.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult AddressAndPayment(CheckoutViewModel model)
         {
-
+            bool authenticated = User.Identity.IsAuthenticated;
             OrderInfo orderInfo = new OrderInfo();
             TryUpdateModel(orderInfo);
-            orderInfo.Email = User.Identity.Name;
+            if(authenticated) orderInfo.Email = User.Identity.Name;
+
             if (model.SameDeliveryAddress)
             {
                 Utilities.DuplicateDeliveryAddress(orderInfo);
@@ -87,71 +92,47 @@ namespace Namaskara.Controllers
             try
             {
                 Order order = new Order();
+                if (authenticated) order.isAuthenticatedPurchase = true;
                 TryUpdateModel(order);
                 ProcessOrder(order, orderInfo);
+
+                //Save the user information if it hasnt been set before (for authenticated user)
+                if (authenticated)
+                {
+                    try
+                    {
+                        UserInformation ui = ndb.UserInformations.Single(m => m.Email == User.Identity.Name);
+                        if (!ui.isSet)
+                        {
+                            ui.FirstName = orderInfo.FirstName;
+                            ui.LastName = orderInfo.LastName;
+                            ui.Address = orderInfo.Address;
+                            ui.Country = orderInfo.Country;
+                            ui.State = orderInfo.State;
+                            ui.City = orderInfo.City;
+                            ui.PostalCode = orderInfo.PostalCode;
+                            ui.Phone = orderInfo.Phone;
+                            ui.isSet = true;
+                            ndb.Entry(ui).State = System.Data.Entity.EntityState.Modified;
+                            ndb.SaveChanges();
+
+                        }
+                        
+                    }
+                    catch { }
+                }
                 return RedirectToAction("Complete", new { id = order.OrderId });
 
             }
             catch
             {
-                return View("Error");
+                return View(model);
             }
         }
 
-        [AllowAnonymous]
-        public ActionResult AnonymousAddressAndPayment()
-        {
-            var cart = ShoppingCart.GetCart(this.HttpContext);
-            if (cart.GetTotal() == 0)
-            {
-                return RedirectToAction("Index", "Home");
-            }
-            
-            ViewBag.Weight = cart.GetCartWeight().ToString();
-            ViewBag.States = new SelectList(ndb.States, "StateName", "StateName");
-            ViewBag.ShippingState = new SelectList(ndb.States, "StateName", "StateName");
-            ViewBag.Cities = new SelectList(ndb.Cities, "CityName", "CityName");
-            string[] countries = { "Indonesia" };
-            ViewBag.Countries = new SelectList(countries);
+        
 
-            var model = new CheckoutViewModel
-            {
-                CartItems = cart.GetCartItems(),
-                CartTotalPrice = String.Format("Rp {0:n}", cart.GetTotal())
-
-            };
-            return View(model);
-            
-        }
-
-        [AllowAnonymous]
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult AnonymousAddressAndPayment(CheckoutViewModel model)
-        {
-            OrderInfo orderInfo = new OrderInfo();
-            TryUpdateModel(orderInfo);
-            if (model.SameDeliveryAddress)
-            {
-                Utilities.DuplicateDeliveryAddress(orderInfo);
-            }
-            ndb.OrderInformation.Add(orderInfo);
-            ndb.SaveChanges();
-
-            try
-            {
-                Order order = new Order();
-                TryUpdateModel(order);
-                ProcessOrder(order, orderInfo);
-                return RedirectToAction("Complete", new { id = order.OrderId });
-            }
-            catch
-            {
-                return View(orderInfo);
-            }
-        }
-
-        [AllowAnonymous]
+        
         [HttpPost]
         public ActionResult CheckDelCost(string dest)
         {
@@ -160,7 +141,7 @@ namespace Namaskara.Controllers
             return Json(model);
         }
 
-        [AllowAnonymous]
+        
         [HttpPost]
         public string CheckPromo(string code)
         {
@@ -168,7 +149,7 @@ namespace Namaskara.Controllers
             return ndb.PromoCodes.Any(m => m.Code == code) ? "1" : null;
         }
 
-        [AllowAnonymous]
+       
         [HttpPost]
         public ActionResult GetTotalPrice(string dest, string code = "")
         {
@@ -181,7 +162,7 @@ namespace Namaskara.Controllers
             return Json(new ReviewOrderViewModel { TotalPrice = String.Format("Rp {0:n}", total), PromoDiscount = String.Format("- Rp {0:n}", discountPrice) });
         }
 
-        [AllowAnonymous]
+        
         [HttpPost]
         public JsonResult GetCities(string state)
         {
@@ -197,19 +178,19 @@ namespace Namaskara.Controllers
             return Json(result);
         }
 
-        [AllowAnonymous]
+       
         public ActionResult OrderReview(int id)
         {
             return View();
         }
         
-        [AllowAnonymous]
+        
         public ActionResult Complete(int id)
         {
             return View(id);
         }
 
-        [AllowAnonymous]
+        
         public ActionResult ConfirmPayment(int orderId, string code)
         {
             bool isValid = ndb.PaymentConfirmations.Any(m => m.OrderId == orderId && m.Code == code);
@@ -223,7 +204,7 @@ namespace Namaskara.Controllers
                 
                 if (order.ConfirmDate >= DateTime.Now)
                 {
-                    UploadImageModel model = new UploadImageModel { OrderId = orderId };
+                    UploadImageModel model = new UploadImageModel { OrderId = orderId, OrderTotal = String.Format("Rp {0:n}", order.Total) };
                     return View(model);
                 }
                 else
@@ -238,33 +219,33 @@ namespace Namaskara.Controllers
 
         }
 
-        [AllowAnonymous]
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult ConfirmPayment(UploadImageModel model, HttpPostedFileBase PaymentImage)
+        public ActionResult ConfirmPayment(UploadImageModel model)
         {
             if (ModelState.IsValid)
             {
                 Order order = ndb.Orders.Find(model.OrderId);
-                order.Bank = model.Bank;
-                order.AccountName = model.AccountName;
-                order.AccountNumber = model.AccountNumber;
-                try
-                {
-                    order.AmountPaid = Decimal.Parse(model.AmountPaid);
-                }
-                catch { return View("Error"); }
-                
+                TryUpdateModel(order);
 
-                if (PaymentImage != null)
-                {
-                    var fileName = "OrderId=" + model.OrderId.ToString() + " " + Path.GetFileName(PaymentImage.FileName);
-                    var path = Path.Combine(Server.MapPath("~/PaymentImages/"), fileName);
-                    PaymentImage.SaveAs(path);
+                //order.Bank = model.Bank;
+                //order.AccountName = model.AccountName;
+                //order.AccountNumber = model.AccountNumber;
+                //order.AmountPaid = model.AmountPaid;
+                
+                
+                //Uncomment if you want to enable uploading payment confirmation
+                //if (PaymentImage != null)
+                //{
+                //    var fileName = "OrderId=" + model.OrderId.ToString() + " " + Path.GetFileName(PaymentImage.FileName);
+                //    var path = Path.Combine(Server.MapPath("~/PaymentImages/"), fileName);
+                //    PaymentImage.SaveAs(path);
                     
-                    order.PaymentImage = fileName;
+                //    order.PaymentImage = fileName;
                     
-                }
+                //}
+
                 order.Status = "Waiting For Confirmation";
                 ndb.Entry(order).State = System.Data.Entity.EntityState.Modified;
                 ndb.SaveChanges();
@@ -274,7 +255,7 @@ namespace Namaskara.Controllers
             return View("Error");
         }
 
-        [AllowAnonymous]
+        
         public ActionResult PaymentUploaded()
         {
             return View();

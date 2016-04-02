@@ -15,6 +15,7 @@ namespace Namaskara.Models
         public string Name { get; set; }
        
         public string Origin { get; set; }
+        public string Description { get; set; }
 
         public string ImageUrl { get; set; }
         public bool IsOnSale { get; set; }

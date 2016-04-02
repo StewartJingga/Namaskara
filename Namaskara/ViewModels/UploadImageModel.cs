@@ -18,7 +18,9 @@ namespace Namaskara.ViewModels
         [Display(Name = "Account Number")]
         public string AccountNumber { get; set; }
         [Display(Name = "Amount Paid (Rp)")]
-        public string AmountPaid { get; set; }
+        [RegularExpression("[0-9]+", ErrorMessage = "Please enter number only")]
+        public decimal AmountPaid { get; set; }
+        public string OrderTotal { get; set; }
 
 
     }

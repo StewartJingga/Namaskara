@@ -108,7 +108,7 @@ namespace Namaskara.Controllers
             return View(model);
         }
 
-        public ActionResult Edit(int id)
+        public ActionResult Edit(int id=1)
         {
             Product product = ndb.Products.Find(id);
             
@@ -125,6 +125,7 @@ namespace Namaskara.Controllers
             {
                 Product prod = ndb.Products.Find(model.ProductId);
                 prod.Origin = model.Origin;
+                prod.Description = model.Description;
                 ndb.Entry(prod).State = System.Data.Entity.EntityState.Modified;
                 ndb.SaveChanges();
                 return RedirectToAction("ProductIndex");
