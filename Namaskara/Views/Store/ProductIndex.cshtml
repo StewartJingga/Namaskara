@@ -5,17 +5,25 @@
 }
 
 
-<div id="productIndex">
+
+<!-- MODAL CONTENT -->
+<div id="productDetails" class="modal fade" role="dialog">
+    
+</div>
+
+
+<!-- MAIN CONTENT -->
+<div id="productIndex" class="fleft-main">
     <div>
         @{ Html.RenderAction("CategoryList", "Store");}
     </div>
 
-    <div>
+    <div class="fleft-right">
         <h2>@ViewData["CatName"]</h2>
         <div id="products">
             @foreach (var item in Model)
             {
-                <a href=@Url.Action("Details", new { id=item.ProductId })>
+                <a href=@Url.Action("DetailsPartial", new { id=item.ProductId }) class="modal-link">
                     <div class="box">
                         @if (item.ImageUrl == "" || item.ImageUrl == null)
                 {
@@ -41,7 +49,34 @@
 <div class="clear"></div>
 
 
+@section scripts {
+    <script type="text/javascript">
+        $(function () {
+            
+            $('body').on('click', '.modal-link', function (e) {
+                e.preventDefault();
+                $(this).attr('data-target', '#productDetails');
+                $(this).attr('data-toggle', 'modal');
+            });
 
+            $('body').on('click', '.modal-close-btn', function () {
+                $("#productDetails").modal('hide');
+            });
+
+            $(".modal-body").on('click', function () {
+                $("#productDetails").find(".modal-dialog").css("padding-top", 300);
+            });
+
+            $("#productDetails").on('hidden.bs.modal', function () {
+                $(this).removeData('bs.modal');
+            });
+
+            $("#CancelModal").on('click', function () {
+                return false;
+            });
+        });
+    </script>
+    }
 
 
 

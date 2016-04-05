@@ -21,5 +21,7 @@ namespace Namaskara.Models
         public string Country { get; set; }
         public string Phone { get; set; }
         public bool isSet { get; set; }
+        public List<WishList> WishLists { get; set; }
+        public bool SubscribedToNewsletter { get; set; }
     }
 }

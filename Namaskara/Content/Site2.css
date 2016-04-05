@@ -1,6 +1,31 @@
-﻿/*----------------------- RESET ------------------------------*/
+﻿/*-------------------- DECLARING FONT FACE -----------------*/
+
+@font-face {
+    font-family: 'BebasNeue';
+    src: url('../fonts/BebasNeue.otf') format('opentype');
+}
+
+/* -------------------- KEYFRAMES ---------------------------*/
+
+@keyframes indent-animation{
+    100% {text-indent: 20px;}
+}
+
+/*----------------------- RESET ------------------------------*/
 p, h1,h2,h3,h4,h5,h6 {
     margin: 0;
+}
+
+a {
+    color: black;
+}
+
+.fleft-main > div {
+    float: left;
+}
+
+.fleft-right {
+    width: 740px;
 }
 
 
@@ -8,27 +33,30 @@ p, h1,h2,h3,h4,h5,h6 {
     padding: 20px 30px;
     margin: 0 auto;
     width: 1040px;
-    background-color: lightgray;
+    
 }
 
 #wrapper > div {
-    padding: 0 10px;
+    width: 970px;
+    padding: 0 35px;
+    
     display: block;
+    margin: 0 auto;
 }
+
+
 
 /* ----------------------- HEADER CSS -----------------------*/
 div#header {
     height: 161px;
 }
 
-#header > div{
-    
-    float:left;
-    padding: 5px 10px;
+#header > div {
+    float: left;
 }
 
 #leftHeader {
-    width: 730px;
+    width: 710px;
 }
 
 #logo {
@@ -44,24 +72,24 @@ div#header {
 
 #navigation li{
     display: inline-block;
-    padding: 0 15px;
+    padding-right: 15px;
 }
 
 #navigation a{
-    font-size: 12px;
-    font-weight: bold;
-    color: rgb(70, 141, 57);
-    font-family: 'Roboto', sans-serif;
+    font-size: 15px;
+    letter-spacing: 0px;
+    font-family: 'Montserrat', sans-serif;
+    text-transform: capitalize;
 }
 
 #navigation a:hover{
     text-decoration: none;
-    color: grey;
-    border-bottom: 2px solid grey;
+    color: rgb(127, 162, 81);
+    border-bottom: 2px solid rgb(127, 162, 81);
 }
 
 #rightHeader {
-    background-color: lightgreen;
+    
     text-align: center;
 }
 
@@ -70,39 +98,92 @@ div#header {
 }
 
 #rightHeader a{
-    font-size: 12px;
+    font-size: 11px;
+    font-family: 'Roboto', sans-serif;
+    font-weight: bold;
+
 }
+
+#rightHeader img{
+    width: 40px;
+    height: 40px; 
+}
+
+#rightHeader input{
+   background-color: lightgray;
+   outline: none;
+   box-shadow: none;
+   -webkit-box-shadow: none;
+   
+
+}
+
+
+
 /* ----------------------- BODY CSS ------------------------*/
-/* ----------------------- HOME CSS ------------------------*/
-#home > div{
-    float: left;
-    padding: 5px 10px;
+div#mainBody {
+    padding-top: 30px;
+    padding-bottom: 30px;
 }
+
+/* ------- HOME CSS -------*/
 
 #home strong {
     font-size: 30px;
 
 }
 #categories li{
-    line-height: 24px;
+    line-height: 34px;
+    width: 200px; 
+}
+
+#categories h2, #categories a{
+    font-family: 'Montserrat', sans-serif;
+    text-transform: lowercase;
+}
+
+#categories h2{
+    font-size: 19px;
+    font-weight: bold;
+    margin-bottom: 9px;    
 }
 
 #categories a{
     font-size: 14px;
-    color: rgb(70, 141, 57);
-    font-family: 'Roboto', sans-serif;
+    display: block;
+    color: black;
+    width: inherit;
+    
 }
 
-/*------------------------- PRODUCT INDEX --------------------*/
-#productIndex > div{
-    float: left;
-    padding: 5px 10px;
+#categories a:hover{
+    text-decoration: none;
+    color: white;
+    
 }
+
+#categories li:hover{ 
+    background-color: rgb(127, 162, 81);
+    animation: indent-animation 0.5s forwards;
+    -webkit-animation: indent-animation 1s forwards;
+    
+}
+
+#slideshow {
+    width: 700px;
+    height: 425px;
+}
+
+
+
+/*------ PRODUCT INDEX -----*/
+
 
 #productIndex img{
     width: 200px;
     height: 200px;
 }
+
 
 .box {
     margin: 10px 10px;
@@ -115,11 +196,47 @@ div#header {
     text-align: center;
 }
 
+/*-------------------- SHOPPING CART -----------------------*/
+#shoppingCart {
+    width: 900px;
+}
+
+#shoppingCart h3{
+    font-family: BebasNeue;
+    font-weight: bold;
+}
+
+
+#shoppingCart table {
+    width: inherit;
+}
+
+#shoppingCart tr {
+    border-bottom: 1px solid black;
+    line-height: 90px;
+    text-align: center;
+    font-weight: bold;
+}
+
+#shoppingCart .table-head {
+    border-top: 1px solid black;
+    line-height: 50px;
+    background-color: rgb(127, 162, 81);
+    
+}
+
+#shoppingCart .cartButtons {
+    background-color: rgb(127, 162, 81);
+    margin: 10px 10px;
+    padding: 10px 10px;
+}
+
 /* ------------------------ END OF BODY CSS------------------*/
 /* ----------------------- FOOTER CSS ------------------------*/
 div#footer {
-    padding-top: 20px;
+    padding-top: 40px;
     border-top: 1px solid grey;
+    
 }
 
 #footer a{
@@ -130,4 +247,24 @@ div#footer {
 /* ----------------------- HELPER CSS ------------------------*/
 .clear {
     clear: both;
+}
+
+.float-left {
+    float:left;
+}
+
+.float-right {
+    float: right;
+}
+
+.logo {
+    width: 30px;
+    height: 30px;
+    margin: 5px 5px;
+}
+
+/* ----------------------- BOOTSTRAP OVERRIDE -------------------*/
+
+.modal-dialog {
+    margin-top: 150px;
 }

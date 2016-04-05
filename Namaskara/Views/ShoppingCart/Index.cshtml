@@ -7,8 +7,8 @@
 
 
 
-<script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
-<h2>Shopping Cart</h2>
+
+@*<h2>Shopping Cart</h2>
 @if (Model.CartTotal != 0)
 {
     <p class="button">
@@ -86,10 +86,11 @@
 else
 {
     <h1>Your cart is Empty.</h1>
-}
+}*@
 
 
 @section scripts{
+<script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
 <script type="text/javascript">
     $(document).ready(function (e) {
 
@@ -128,3 +129,75 @@ else
 </script>
 
     }
+
+<div id="shoppingCart">
+    <table>
+        <tr class="table-head">
+            <td></td>
+            <td>Product Name</td>
+            <td>Unit Price</td>
+            <td>Qty</td>
+            <td>Total</td>
+            <td></td>
+        </tr>
+        @foreach (var item in Model.CartItems)
+        {
+
+            <tr id="row-@item.RecordId">
+                <td></td>
+                <td>
+                    @Html.ActionLink(item.Item.DisplayName, "Details", "Store", new { id = item.Item.ProductId }, null)
+                </td>
+                <td id="itemPrice-@item.RecordId" data-id="@item.Item.RetailPrice">
+                    @if (item.Item.Product.IsOnSale)
+                {
+
+                        <span style="color:red">@String.Format("{0:n}", item.Item.RetailPrice)</span>
+                        <span>--></span>
+                        <span style="color:green">@String.Format("{0:n}", Utilities.FindReducedPrice(item.Item.RetailPrice, item.Item.Product.DiscountPercentage))</span>
+
+                    }
+                    else
+                    {
+                        @String.Format("{0:n}", item.Item.RetailPrice)
+                    }
+                </td>
+                <td id="item-count-@item.RecordId">
+                    @item.Count
+                </td>
+                <td id="total-price-@item.RecordId">
+                    @if (item.Item.Product.IsOnSale)
+                {
+                        @Html.Raw(String.Format("Rp {0:n}", Utilities.FindReducedPrice(item.Item.RetailPrice, item.Item.Product.DiscountPercentage) * item.Count));
+                }
+                else
+                {
+                        @Html.Raw(String.Format("Rp {0:n}", @item.Item.RetailPrice * @item.Count));
+                }
+
+                </td>
+                <td>
+                    <a href="#" class="RemoveLink" data-id="@item.RecordId">
+                        X
+                    </a>
+                </td>
+            </tr>
+        }
+    </table>
+
+    <div class="cartButtons float-right">
+        <h3>TOTAL : @String.Format("Rp {0:n}", @Model.CartTotal)</h3>
+    </div>
+    <div class="clear"></div>
+
+    <div class="cartButtons float-left">
+        <a href="#"><h3>Continue Shopping</h3></a>
+    </div>
+    <div class="clear"></div>
+
+    <div class="cartButtons float-left">
+        <a href="#"><h3>Checkout</h3></a>
+    </div>
+    <div class="clear"></div>
+    
+</div>

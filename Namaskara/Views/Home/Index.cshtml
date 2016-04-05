@@ -1,13 +1,15 @@
 ﻿@{
     ViewBag.Title = "Home Page";
 }
-<div id="home">
+<div id="home" class="fleft-main">
     <div>
         @{ Html.RenderAction("CategoryList", "Store");}
     </div>
 
-    <div>
-        <div style="background-color: red; width:700px; height: 430px;"></div>
+    <div class="fleft-right">
+        <div>
+            <img id="slideshow" src="~/Images/Sample Slideshow.png" />
+        </div>
         <div>
             Logo Mobil<span><strong>Delivery to all areas in Indonesia</strong></span>
         </div>

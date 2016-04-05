@@ -1,6 +1,6 @@
-﻿@model Namaskara.Models.Product
+﻿
+@model Namaskara.Models.Product
 @using Namaskara.Models
-
 @{
     ViewBag.Title = Model.Name;
     string a = "/Images/" + Model.ImageUrl + ".jpg";
@@ -9,19 +9,7 @@
 
 }
 
-<script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
-
-@section categories {
-    <div id="categories">
-        <h3>Categories</h3>
-        @{Html.RenderAction("CategoryList", "Store"); }
-    </div>
-}
-
 <h2>@Model.Name</h2>
-
-
-
 <div>
     <div class="alert alert-success" id="update-message" style="display: none;">
     </div>
@@ -29,7 +17,7 @@
     <hr />
     <div class="container">
         <div class="row">
-            <div class="col-md-3"><img src="@a" height="200" width="200"/></div>
+            <div class="col-md-3"><img src="@a" height="200" width="200" /></div>
             <div class="col-sm-6">
                 <table>
                     <tr>
@@ -51,8 +39,8 @@
                                     if (Model.IsOnSale)
                                     {
                                         <span style="color:red">@String.Format("Rp {0:n}", item.RetailPrice)</span>
-                                        <span>--></span>
-                                        <span style="color:green">@String.Format("Rp {0:n}", Utilities.FindReducedPrice(item.RetailPrice, Model.DiscountPercentage))</span>
+                                            <span>--></span>
+                                                    <span style="color:green">@String.Format("Rp {0:n}", Utilities.FindReducedPrice(item.RetailPrice, Model.DiscountPercentage))</span>
                                     }
                                     else
                                     {
@@ -60,7 +48,7 @@
                                     }
 
                                     <input type="number" min="0" max="10" id="count-@item.Id" class="count" />
-                                    <button class="addCart" data-id="@item.Id">Add to Cart</button>
+                                        <button class="addCart" data-id="@item.Id">Add to Cart</button>
                                 }
                                 else
                                 {
@@ -73,13 +61,15 @@
             </div>
         </div>
     </div>
- 
 </div>
+
 <p>
     @Html.ActionLink("Back to List", "Index")
 </p>
 
-<script type="text/javascript">
+@section scripts {
+    <script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
+    <script type="text/javascript">
     $(document).ready(function (e) {
 
         $(".addCart").click(function () {
@@ -92,10 +82,10 @@
                 $.post('@Url.Action("AddToCart", "ShoppingCart")', { id: itemToAdd, count: itemCount },
                     function (data) {
                         $("#update-message").text(data.Message).show();
-                        
+
                         $("#cart").load('@Url.Action("CartSummary", "ShoppingCart")');
                         $(".count").val("0");
-                        
+
 
                     }, "json");
             }
@@ -105,4 +95,5 @@
 
 
 
-</script>
+    </script>
+}

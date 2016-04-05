@@ -230,6 +230,7 @@
     <Compile Include="Models\State.cs" />
     <Compile Include="Models\UserInformation.cs" />
     <Compile Include="Models\Utilities.cs" />
+    <Compile Include="Models\WishList.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\CheckoutViewModel.cs" />
@@ -302,6 +303,7 @@
     <Content Include="Images\cane sugar - gold light.jpg" />
     <Content Include="Images\cane sugar light.jpg" />
     <Content Include="Images\carob powder.jpg" />
+    <Content Include="Images\cart.png" />
     <Content Include="Images\chandrika ayurvedic soap.jpg" />
     <Content Include="Images\chestnut dried.jpg" />
     <Content Include="Images\chickpeas.jpg" />
@@ -323,6 +325,7 @@
     <Content Include="Images\edensoy vanilla extra02.jpg" />
     <Content Include="Images\edensoy vanilla.jpg" />
     <Content Include="Images\edensoy vanilla02.jpg" />
+    <Content Include="Images\facebook-logo.png" />
     <Content Include="Images\figs - dried &amp; diced.JPG" />
     <Content Include="Images\figs - whole &amp; dried.jpg" />
     <Content Include="Images\flaxseed broken.jpg" />
@@ -339,6 +342,7 @@
     <Content Include="Images\himalayan rock salt - coarse.jpg" />
     <Content Include="Images\himalayan rock salt - fine.jpg" />
     <Content Include="Images\himalayan rock salt - med.jpg" />
+    <Content Include="Images\instagram-logo.png" />
     <Content Include="Images\instant baby oats.jpg" />
     <Content Include="Images\kale powder.jpg" />
     <Content Include="Images\kamut flour.jpg" />
@@ -354,6 +358,7 @@
     <Content Include="Images\kuranda muesli - banana &amp; date.jpg" />
     <Content Include="Images\kuranda.jpg" />
     <Content Include="Images\lecithin granule.jpg" />
+    <Content Include="Images\Line_logo.png" />
     <Content Include="Images\maca powder.jpg" />
     <Content Include="Images\macadamia nuts.jpg" />
     <Content Include="Images\manioc startch.jpg" />
@@ -396,6 +401,7 @@
     <Content Include="Images\rolled oats - coarse.jpg" />
     <Content Include="Images\rolled oats.jpg" />
     <Content Include="Images\rye flour.jpg" />
+    <Content Include="Images\Sample Slideshow.png" />
     <Content Include="Images\SampleLogo.png" />
     <Content Include="Images\sea vegs chips.jpg" />
     <Content Include="Images\sesame hulled.jpg" />
@@ -422,6 +428,7 @@
     <Content Include="Images\vicco toothpaste.jpg" />
     <Content Include="Images\walnut diced.JPG" />
     <Content Include="Images\walnut halves.jpg" />
+    <Content Include="Images\WhatsApp-icon.png" />
     <Content Include="Images\wheat gluten flour.jpg" />
     <Content Include="Images\wheat grain.jpg" />
     <Content Include="Images\wheatgrass powder.jpg" />
@@ -445,6 +452,7 @@
     <Content Include="Scripts\jquery-2.2.1.js" />
     <Content Include="Scripts\jquery-2.2.1.min.js" />
     <Content Include="Scripts\jquery-2.2.1.min.map" />
+    <Content Include="fonts\BebasNeue.otf" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
@@ -537,6 +545,7 @@
     <Content Include="Views\StoreManager\CreatePromo.cshtml" />
     <Content Include="Views\Shared\_CheckoutPartial.cshtml" />
     <Content Include="Views\Shared\_Layout2.cshtml" />
+    <Content Include="Views\Store\DetailsPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="PaymentImages\" />

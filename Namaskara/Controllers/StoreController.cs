@@ -40,6 +40,11 @@ namespace Namaskara.Controllers
             return PartialView(categories);
         }
 
+        public ActionResult DetailsPartial()
+        {
+            return PartialView();
+        }
+
         [HttpPost]
         public ActionResult SearchBox(string searchString)
         {
