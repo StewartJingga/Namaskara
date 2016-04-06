@@ -32,7 +32,9 @@ namespace Namaskara.Models
             {
                 return Name + " - " + Size;
             }
-        }     
+        }
+        
+
         public bool IsAvailable { get; set; }
         [DisplayName("Retail Price")]
         public decimal RetailPrice { get; set; }

@@ -25,20 +25,20 @@
                 <div id="navigation">
                     <nav>
                         <ul>
-                            <li><a href="#">HOME</a></li>
-                            <li><a href="#">ABOUT</a></li>
-                            <li><a href="#">HOW TO BUY</a></li>
-                            <li><a href="#">CONTACT US</a></li>
-                            <li><a href="#">PAYMENT CONFIRMATION</a></li>
+                            <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                            <li>@Html.ActionLink("About", "About", "Home")</li>
+                            <li>@Html.ActionLink("How To Buy", "HowToBuy", "Home")</li>
+                            <li>@Html.ActionLink("Contact Us", "Contact", "Home")</li>
+                            <li>@Html.ActionLink("Payment Confirmation", "PaymentConfirmation", "Home")</li>
                         </ul>
                     </nav>
                 </div>
             </div>
             <div id="rightHeader">
                 <div>
-                    &nbsp;&nbsp;&nbsp;&nbsp; <a href="#">SIGN IN</a><span>  /  </span><a href="#">REGISTER</a>
+                    @Html.ActionLink("Sign In", "Login", "Account")<span>  /  </span>@Html.ActionLink("Register", "Register", "Account")
                     <div>
-                        <a href="#"><img src="~/Images/cart.png" /></a> 
+                        <a href="@Url.Action("Index","ShoppingCart")"><img src="~/Images/cart.png" /></a> 
                     </div>
                     <a href="#">0 ITEM // IDR 0</a>
                 </div>
@@ -52,8 +52,10 @@
             <a href="#">Home</a> -> <a href="#">Test</a>
         </div>
         <div id="mainBody">
-           
-            @RenderBody()
+           <div>
+               @RenderBody()
+           </div>
+            
         </div>
         <div id="footer">
             <div>

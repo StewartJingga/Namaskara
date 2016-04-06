@@ -18,6 +18,7 @@ p, h1,h2,h3,h4,h5,h6 {
 
 a {
     color: black;
+    text-decoration: none;
 }
 
 .fleft-main > div {
@@ -25,7 +26,8 @@ a {
 }
 
 .fleft-right {
-    width: 740px;
+    width: 690px;
+    margin-left: 10px;
 }
 
 
@@ -59,9 +61,9 @@ div#header {
     width: 710px;
 }
 
-#logo {
+div#logo {
     height: 121px;
-    background-color: red;
+    
 }
 
 #logo img{
@@ -126,6 +128,13 @@ div#mainBody {
     padding-bottom: 30px;
 }
 
+#mainBody > div {
+    margin: 0 auto;
+
+}
+
+
+
 /* ------- HOME CSS -------*/
 
 #home strong {
@@ -178,25 +187,148 @@ div#mainBody {
 
 /*------ PRODUCT INDEX -----*/
 
+.catName {
+    background-color: rgb(127, 162, 81);
+    padding: 10px 15px;
+    margin-bottom: 10px;
+}
 
 #productIndex img{
-    width: 200px;
-    height: 200px;
+    width: 206px;
+    height: 185px;
+    display: block;
+    margin: 0 auto;
 }
 
 
 .box {
     margin: 10px 10px;
     float: left;
-    width: 200px;
-    height: 240px;
+    width: 210px;
+    height: 320px;
+    font-family: 'Montserrat', sans-serif;
+    border: 2px solid white;
+    position: relative;
+    
 }
+
+.box:hover {
+    border-color: lightgrey;
+    box-shadow: 0 0 13px 4px lightgrey;
+}
+
+div.wish-list-icon {
+    background-image: url("../Images/iconwishlist.png");
+    position: absolute;
+    right: 0;
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+    
+}
+
+div.wish-list-icon:hover {
+    background-image: url("../Images/iconwishlist_hover.png");
+    
+}
+
 
 #products p{
     text-align: center;
+    margin: 0 5px;
+    font-size: 14px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-top: 5px;
 }
 
-/*-------------------- SHOPPING CART -----------------------*/
+a.addCart {
+    text-decoration: none;
+    color: white;
+}
+
+.addCart div {
+    padding: 7px 5px;
+    margin: 0 auto;
+    margin-top: 5px;
+    width: 100px;
+    text-align: center;
+    background-color: black;
+    border-radius: 10px;
+    
+}
+.addCart div:hover {
+    background-color: rgb(127, 162, 81);
+    
+    /*rgb(127, 162, 81)*/
+}
+
+
+#detailsPartial {
+    margin-top: 150px;
+    width: 650px;
+    
+}
+
+#detailsPartial img{
+    width: 200px;
+    height: 190px;
+}
+
+#detailsPartial select{
+    margin-top: 15px;
+}
+
+#detailsPartial input[type="number"]{
+    width: 50px;
+    text-align: center;
+}
+
+#detailsPartial input[type="number"]::-webkit-inner-spin-button,
+#detailsPartial input[type="number"]::-webkit-outer-spin-button{
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+
+#detailsPartial button{
+    height: 50px;
+    padding: 0 20px;
+    outline: none;
+    border: none;
+    background-color: black;
+    color: white;
+}
+
+#detailsPartial button:hover{
+    background-color: mediumpurple;
+}
+
+#detailsPartial .row .col-sm-6 > div{
+    margin: 15px 0;
+   
+}
+
+#detailsPartial, #detailsPartial p, #detailsPartial h5 {
+    font-family: 'Montserrat', sans-serif;
+}
+
+.old-price {
+    font-size: 15px;
+    color: green;
+}
+
+.new-price {
+    font-size: 17px;
+    color: red;
+}
+
+.normal-price {
+    font-size: 17px;
+    color: green;
+}
+/*------ SHOPPING CART ------*/
 #shoppingCart {
     width: 900px;
 }
@@ -204,6 +336,11 @@ div#mainBody {
 #shoppingCart h3{
     font-family: BebasNeue;
     font-weight: bold;
+}
+
+#shoppingCart img {
+    height: 80px;
+    width: 80px;
 }
 
 
@@ -231,6 +368,155 @@ div#mainBody {
     padding: 10px 10px;
 }
 
+/*------- CHECKOUT CSS ------*/
+
+div.label-checkout {
+    background-color: rgb(127, 162, 81);
+    padding: 0 1px;
+}
+
+.detail-template {
+    float: left;
+    width: 310px;
+    margin: 20px 10px;
+    padding: 20px 0;   
+}
+
+#shippingDetails {
+    display: none;
+}
+
+.label-checkout + div {
+    border: 1px solid grey;
+    padding-bottom: 20px;
+}
+
+.detail-template h6,
+.detail-template h5,
+#checkout {
+    font-family: 'Montserrat', sans-serif;
+}
+
+.label-checkout h4 {
+    color: white;
+    line-height: 40px;
+    padding: 0 10px;
+    font-family: BebasNeue;
+}
+
+.detailsBox {
+    width: 133px;
+    float: left;
+    margin: 10px 10px;
+}
+
+#checkout .detailsBox input,
+#checkout .detailsBox select {
+    width: inherit;
+    height: 30px;
+    font-size: 12px;
+}
+
+div.address {
+    width: 286px;
+}
+
+
+#same-addr-div{
+    margin-left: 10px;
+}
+
+#same-addr-div{
+    font-size: 12px;
+    
+}
+
+#same-addr-div input[type=checkbox]{
+    height: 14px;
+    display: inline-block;
+    position: relative;
+    top: 3px;
+    
+}
+
+.detail-template#shippingMethod {
+    width: 500px;
+    font-size: 14px;
+}
+
+.detail-template#shippingMethod p,
+.detail-template#shippingMethod p + input[type=radio],
+.detail-template#payment-method p,
+.detail-template#payment-method p + input[type=radio] {
+    
+    margin-left: 10px;
+    margin-top: 10px;
+    font-weight: bold;
+    font-size: 12px;
+    
+}
+
+span.deliveryCost {
+    display: block;
+    margin-left: 26px;
+    color: blue;
+    
+}
+
+#promo-input {
+    margin-bottom: 20px;
+}
+
+#checkout .cartButtons {
+    width: 150px;
+    padding: 5px 0;
+    background-color: rgb(127, 162, 81);
+    margin-top: 10px;
+    text-align: center;
+    font-family: BebasNeue;
+    font-size: 20px;
+    border: none;
+    outline: none;
+    color: white;
+    cursor: pointer;
+}
+
+#checkout .cartButtons:hover {
+    color: black;
+}
+
+
+#reviewOrder {
+    display:none;
+}
+
+#reviewOrder > .detail-template{
+    float:none;
+    width: auto;
+}
+
+#order-review table{
+    width: 878px;
+}
+
+
+#order-review td {
+    padding: 10px 10px;
+    text-align: center;
+    font-size: 13px;
+}
+
+#order-review tbody tr {
+    border-top: 1px solid black;
+}
+    
+#order-review thead td{
+    background-color: lightgray;
+    text-align: center;
+}
+
+
+
 /* ------------------------ END OF BODY CSS------------------*/
 /* ----------------------- FOOTER CSS ------------------------*/
 div#footer {
@@ -257,6 +543,18 @@ div#footer {
     float: right;
 }
 
+.align-right {
+    text-align: right !important;
+}
+
+.align-left {
+    text-align: left !important;
+}
+
+.align-center {
+    text-align: center !important;
+}
+
 .logo {
     width: 30px;
     height: 30px;
@@ -265,6 +563,6 @@ div#footer {
 
 /* ----------------------- BOOTSTRAP OVERRIDE -------------------*/
 
-.modal-dialog {
-    margin-top: 150px;
+.glyphicon-remove {
+    cursor: pointer;
 }

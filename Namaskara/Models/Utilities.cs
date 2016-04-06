@@ -29,6 +29,9 @@ namespace Namaskara.Models
 
         public static void DuplicateDeliveryAddress(OrderInfo orderInfo)
         {
+            orderInfo.ShippingFirstName = orderInfo.FirstName;
+            orderInfo.ShippingLastName = orderInfo.LastName;
+            orderInfo.ShippingPhone = orderInfo.Phone;
             orderInfo.ShippingAddress = orderInfo.Address;
             orderInfo.ShippingCity = orderInfo.City;
             orderInfo.ShippingCountry = orderInfo.Country;

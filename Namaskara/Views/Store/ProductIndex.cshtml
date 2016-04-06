@@ -6,10 +6,6 @@
 
 
 
-<!-- MODAL CONTENT -->
-<div id="productDetails" class="modal fade" role="dialog">
-    
-</div>
 
 
 <!-- MAIN CONTENT -->
@@ -19,28 +15,40 @@
     </div>
 
     <div class="fleft-right">
-        <h2>@ViewData["CatName"]</h2>
+        <div class="catName">
+            <h2>@ViewData["CatName"]</h2>
+        </div>
+        
+        
         <div id="products">
+           
             @foreach (var item in Model)
             {
-                <a href=@Url.Action("DetailsPartial", new { id=item.ProductId }) class="modal-link">
-                    <div class="box">
-                        @if (item.ImageUrl == "" || item.ImageUrl == null)
-                {
-                            <div><img src="~/Images/amaranth.jpg" /></div>
-                        }
-                        else
-                        {
-                            string a = "/Images/" + @item.ImageUrl + ".jpg";
+                <div class="box">
+                    <div data-wl="@item.ProductId" class="wish-list-icon" data-toggle="tooltip" title="Add to Wishlist"></div>
+                    @if (item.ImageUrl == "" || item.ImageUrl == null)
+                    {
+                        <div><img src="~/Images/amaranth.jpg" /></div>
+                    }
+                    else
+                    {
+                        <div><img src="@Url.Content("/Images/" + @item.ImageUrl + ".jpg")" /></div>
+                    }
 
-                            <div><img src="@a" /></div>
-                        }
-
+                    @if (item.Items.Count > 0)
+                    {
                         <div>
-                            <p>@item.Name</p>
+                            <p>@item.Items[0].Name</p>
+                            <p>@item.Items[0].Size</p>
+                            <p>@String.Format("Rp {0:n}", item.Items[0].RetailPrice)</p>
                         </div>
-                    </div>
-                </a>
+                    }
+
+                    <a href="@Url.Action("DetailsPartial", new { id = @item.ProductId })" class="modal-link addCart">
+                        <div>Add To Cart</div>
+                    </a>
+
+                </div>
 
             }
         </div>
@@ -48,11 +56,27 @@
 </div>
 <div class="clear"></div>
 
+<!-- MODAL CONTENT -->
+<div id="productDetails" class="modal fade" role="dialog">
+
+</div>
+
+<div id="wl-modal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+
+            </div>
+        </div>
+    </div>
+</div>
 
 @section scripts {
+    @*Modal scripts*@
     <script type="text/javascript">
         $(function () {
-            
+            $('[data-toggle="tooltip"]').tooltip();
+
             $('body').on('click', '.modal-link', function (e) {
                 e.preventDefault();
                 $(this).attr('data-target', '#productDetails');
@@ -69,10 +93,25 @@
 
             $("#productDetails").on('hidden.bs.modal', function () {
                 $(this).removeData('bs.modal');
+                
             });
 
             $("#CancelModal").on('click', function () {
                 return false;
+            });
+        });
+    </script>
+
+    @*Function Scripts*@
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(".wish-list-icon").click(function () {
+                var prodId = $(this).attr("data-wl");
+                $.post("/Store/AddToWishlist/", { id : prodId },
+                    function(data){
+                        $("#wl-modal .modal-body").text(data);
+                        $("#wl-modal").modal('show');
+                    });
             });
         });
     </script>

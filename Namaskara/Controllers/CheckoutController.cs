@@ -47,7 +47,7 @@ namespace Namaskara.Controllers
                 Email = authenticated ? User.Identity.Name : null,
                 ConfirmEmail = authenticated ? User.Identity.Name : null,
                 CartItems = cart.GetCartItems(),
-                CartTotalPrice = String.Format("Rp {0:n}", cart.GetTotal())
+                CartTotalPrice = String.Format("{0:n}", cart.GetTotal())
             };
 
             //If user has created an order information
@@ -130,14 +130,17 @@ namespace Namaskara.Controllers
             }
         }
 
-        
-
-        
         [HttpPost]
         public ActionResult CheckDelCost(string dest)
         {
             var cart = ShoppingCart.GetCart(this.HttpContext);
-            var model = new CheckWeightViewModel { Cost = String.Format("Rp {0:n}", Utilities.FindDeliveryCost(dest, cart.GetCartWeight(), ndb)) };
+            string days = "3-5 days";
+            var model = new CheckWeightViewModel
+            {
+                Cost = String.Format("{0:n}", Utilities.FindDeliveryCost(dest, cart.GetCartWeight(), ndb)),
+                Days = "3-5 days"
+            };
+
             return Json(model);
         }
 
@@ -159,7 +162,7 @@ namespace Namaskara.Controllers
             decimal discountPrice = Utilities.FindReducingPrice(cart.GetTotal(), discount);
             decimal total = Utilities.GetTotalPrice(cart, dest, ndb, discount);
             
-            return Json(new ReviewOrderViewModel { TotalPrice = String.Format("Rp {0:n}", total), PromoDiscount = String.Format("- Rp {0:n}", discountPrice) });
+            return Json(new ReviewOrderViewModel { TotalPrice = String.Format("{0:n}", total), PromoDiscount = String.Format("- {0:n}", discountPrice) });
         }
 
         

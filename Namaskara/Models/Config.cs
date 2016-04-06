@@ -9,6 +9,10 @@ namespace Namaskara.Models
     {
         public static int DaysToConfirm = 2; //Day before the submitted order becomes expired.
 
+        public static string WishlistFailed = "You need to login to access this feature";
+
+        public static string WishlistSuccess = "Item has been added to your wishlist.";
+
         public static string[] StatusList = { "","Order Submitted",
                                      "Waiting For Confirmation",
                                     "Confirmed", "Completed", "Postponed", "Expired"};

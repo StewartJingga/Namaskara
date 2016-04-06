@@ -144,7 +144,9 @@ else
         {
 
             <tr id="row-@item.RecordId">
-                <td></td>
+                <td>
+                    <img src="@Url.Content("/Images/" + @item.Item.Product.ImageUrl + ".jpg")" />
+                </td>
                 <td>
                     @Html.ActionLink(item.Item.DisplayName, "Details", "Store", new { id = item.Item.ProductId }, null)
                 </td>
@@ -152,9 +154,9 @@ else
                     @if (item.Item.Product.IsOnSale)
                 {
 
-                        <span style="color:red">@String.Format("{0:n}", item.Item.RetailPrice)</span>
+                        <span style="color:green">@String.Format("{0:n}", item.Item.RetailPrice)</span>
                         <span>--></span>
-                        <span style="color:green">@String.Format("{0:n}", Utilities.FindReducedPrice(item.Item.RetailPrice, item.Item.Product.DiscountPercentage))</span>
+                        <span style="color:red">@String.Format("{0:n}", Utilities.FindReducedPrice(item.Item.RetailPrice, item.Item.Product.DiscountPercentage))</span>
 
                     }
                     else
@@ -167,13 +169,13 @@ else
                 </td>
                 <td id="total-price-@item.RecordId">
                     @if (item.Item.Product.IsOnSale)
-                {
+                    {
                         @Html.Raw(String.Format("Rp {0:n}", Utilities.FindReducedPrice(item.Item.RetailPrice, item.Item.Product.DiscountPercentage) * item.Count));
-                }
-                else
-                {
+                    }
+                    else
+                    {
                         @Html.Raw(String.Format("Rp {0:n}", @item.Item.RetailPrice * @item.Count));
-                }
+                    }
 
                 </td>
                 <td>
@@ -188,15 +190,14 @@ else
     <div class="cartButtons float-right">
         <h3>TOTAL : @String.Format("Rp {0:n}", @Model.CartTotal)</h3>
     </div>
-    <div class="clear"></div>
 
     <div class="cartButtons float-left">
-        <a href="#"><h3>Continue Shopping</h3></a>
+        <a href="@Url.Action("ProductIndex", "Store")"><h3>Continue Shopping</h3></a>
     </div>
     <div class="clear"></div>
 
-    <div class="cartButtons float-left">
-        <a href="#"><h3>Checkout</h3></a>
+    <div class="cartButtons float-right">
+        <a href="@Url.Action("AddressAndPayment", "Checkout")"><h3>Checkout</h3></a>
     </div>
     <div class="clear"></div>
     

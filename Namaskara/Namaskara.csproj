@@ -342,6 +342,8 @@
     <Content Include="Images\himalayan rock salt - coarse.jpg" />
     <Content Include="Images\himalayan rock salt - fine.jpg" />
     <Content Include="Images\himalayan rock salt - med.jpg" />
+    <Content Include="Images\iconwishlist.png" />
+    <Content Include="Images\iconwishlist_hover.png" />
     <Content Include="Images\instagram-logo.png" />
     <Content Include="Images\instant baby oats.jpg" />
     <Content Include="Images\kale powder.jpg" />

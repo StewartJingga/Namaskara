@@ -9,8 +9,8 @@
         $.post("/Checkout/CheckDelCost", { dest: city },
             function (data) {
                 if (data != null) {
-                    $("#city").text(city);
-                    $(".deliveryCost").text(data.Cost);
+                    $(".deliveryDays").text("| "+data.Days);
+                    $(".deliveryCost").text("Rp "+data.Cost);
                 }
             });
     }
@@ -18,9 +18,7 @@
     function sameDelAddress() {
         $("#ShippingState").val($("#State").val());
         checkDelCost();
-        $("#contactDetails").addClass("col-md-6").removeClass("col-md-4");
-        $("#deliveryDetails").addClass("col-md-6").removeClass("col-md-4");
-
+        $("#shippingMethod").css("width", 500);
         $("#shippingDetails").hide();
     }
 
@@ -28,10 +26,14 @@
         $("#ShippingAddress").val("");
         $("#contactDetails").addClass("col-md-4").removeClass("col-md-6");
         $("#deliveryDetails").addClass("col-md-4").removeClass("col-md-6");
+        $("#shippingMethod").css("width", 250);
         $("#shippingDetails").show();
     }
 
     function duplicateDeliveryAddress() {
+        $("#ShippingFirstName").val($("#FirstName").val());
+        $("#ShippingLastName").val($("#LastName").val());
+        $("#ShippingPhone").val($("#Phone").val());
         $("#ShippingAddress").val($("#Address").val());
         $("#ShippingState").val($("#State").val());
         $("#ShippingCity").val($("#City").val());
@@ -44,7 +46,6 @@
             $.post("/Checkout/GetCities", { state: state },
             function (data) {
                 if (data != null) {
-
                     var output = "";
                     for (var i = 0; i < data.length; i++) {
                         output += '<option value=\"' + data[i] + '\">' + data[i] + '</option>';
@@ -52,15 +53,11 @@
                     $("#ShippingCity").empty().append(output);
                 }
             });
-
-            
             checkDelCost();
-        }
-        
+        } 
         else {
             $("#ShippingCity").empty().append("<option>--Select City--</option>");
         }
-
     });
 
     $("#State").change(function () {

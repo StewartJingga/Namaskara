@@ -5,271 +5,273 @@
     ViewBag.Title = "AddressAndPayment";
     string header = User.Identity.IsAuthenticated ? "Checkout" : "Guest Checkout";
 }
-
 <h2>@header</h2>
-
-@if (!User.Identity.IsAuthenticated)
-{
-    @Html.ActionLink("Existing Customer", "Login", "Account", new { returnUrl = "/Checkout/AddressAndPayment" }, null)
-}
-
+<hr />
 @using (Html.BeginForm("AddressAndPayment", "Checkout", FormMethod.Post, new { id = "checkoutForm" }))
 {
     @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-    <div class="form-horizontal">
-
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div id="checkout">
         <div class="row" id="preCheckout">
 
-            <div class="col-md-6" id="contactDetails">
-                @if (User.Identity.IsAuthenticated)
+            <div class="detail-template" id="contactDetails">
+                <div class="label-checkout">
+                    <h4><span class="glyphicon glyphicon-user"></span>  1. Contact Details</h4>
+                </div>
+                <div>
+                    @if (User.Identity.IsAuthenticated)
                 {
-                    @Html.Hidden("Email", User.Identity.Name)
-                    @Html.Hidden("ConfirmEmail", User.Identity.Name)
-                }
-                
-                
-                <h4>Contact Detail</h4>
-                <hr />
-                <div class="form-group">
-                    @Html.LabelFor(model => model.FirstName, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-6">
-                        @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.Hidden("Email", User.Identity.Name)
+                        @Html.Hidden("ConfirmEmail", User.Identity.Name)
+                    }
+                    <div class="detailsBox">
+                        <h6>@Html.LabelFor(model => model.FirstName)</h6>
+                        @Html.EditorFor(model => model.FirstName)
                         @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
                     </div>
-                </div>
-                <div class="form-group">
-                    @Html.LabelFor(model => model.LastName, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control" } })
+                    <div class="detailsBox">
+                        <h6>@Html.LabelFor(model => model.LastName)</h6>
+                        @Html.EditorFor(model => model.LastName)
                         @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
                     </div>
-                </div>
-
-                <div class="form-group">
-                    @Html.LabelFor(model => model.Address, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control" } })
+                    <div class="detailsBox address">
+                        <h6>@Html.LabelFor(model => model.Address)</h6>
+                        @Html.EditorFor(model => model.Address)
                         @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
                     </div>
-                </div>
-
-                @if (!User.Identity.IsAuthenticated)
+                    @if (!User.Identity.IsAuthenticated)
                 {
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
-                        <div class="col-md-10">
-                            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                        <div class="detailsBox">
+                            <h6>@Html.LabelFor(model => model.Email)</h6>
+                            @Html.EditorFor(model => model.Email)
                             @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
                         </div>
-                    </div>
-
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.ConfirmEmail, htmlAttributes: new { @class = "control-label col-md-2" })
-                        <div class="col-md-10">
-                            @Html.EditorFor(model => model.ConfirmEmail, new { htmlAttributes = new { @class = "form-control" } })
+                        <div class="detailsBox">
+                            <h6>@Html.LabelFor(model => model.ConfirmEmail)</h6>
+                            @Html.EditorFor(model => model.ConfirmEmail)
                             @Html.ValidationMessageFor(model => model.ConfirmEmail, "", new { @class = "text-danger" })
                         </div>
-                    </div>
-                }
+                    }
 
-                <div class="form-group">
-                    @Html.LabelFor(model => model.Country, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
+                    <div class="detailsBox">
+                        <h6>@Html.LabelFor(model => model.Country)</h6>
                         @Html.DropDownListFor(model => model.Country, ViewBag.Countries as IEnumerable<SelectListItem>, "-- Select Country --")
                         @Html.ValidationMessageFor(model => model.Country, "", new { @class = "text-danger" })
                     </div>
-                </div>
 
-                <div class="form-group">
-                    @Html.LabelFor(model => model.State, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        
+                    <div class="detailsBox">
+                        <h6>@Html.LabelFor(model => model.State)</h6>
                         @Html.DropDownListFor(m => m.State, ViewBag.States as IEnumerable<SelectListItem>, "-- Select State --")
                         @Html.ValidationMessageFor(model => model.State, "", new { @class = "text-danger" })
                     </div>
-                </div>
 
-                <div class="form-group">
-                    @Html.LabelFor(model => model.City, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
+                    <div class="detailsBox">
+                        <h6>@Html.LabelFor(model => model.City)</h6>
                         @Html.DropDownListFor(m => m.City, ViewBag.Cities as IEnumerable<SelectListItem>, "-- Select City --")
                         @Html.ValidationMessageFor(model => model.City, "", new { @class = "text-danger" })
                     </div>
-                </div>
-
-                <div class="form-group">
-                    @Html.LabelFor(model => model.PostalCode, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.EditorFor(model => model.PostalCode, new { htmlAttributes = new { @class = "form-control" } })
+                    <div class="detailsBox">
+                        <h6>@Html.LabelFor(model => model.PostalCode)</h6>
+                        @Html.EditorFor(model => model.PostalCode)
                         @Html.ValidationMessageFor(model => model.PostalCode, "", new { @class = "text-danger" })
                     </div>
-                </div>
-
-                <div class="form-group">
-                    @Html.LabelFor(model => model.Phone, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.EditorFor(model => model.Phone, new { htmlAttributes = new { @class = "form-control" } })
+                    <div class="detailsBox">
+                        <h6>@Html.LabelFor(model => model.Phone)</h6>
+                        @Html.EditorFor(model => model.Phone)
                         @Html.ValidationMessageFor(model => model.Phone, "", new { @class = "text-danger" })
                     </div>
-                </div>
 
-                <hr />
-
-                <div class="form-group">
-                    <div>
+                    <div class="clear" id="same-addr-div">
+                        <h6><strong>** All fields are required</strong></h6>
                         <span>@Html.CheckBox("SameDeliveryAddress", true)</span>
-                        <span>@Html.LabelFor(model => model.SameDeliveryAddress)</span>
+                        <span><strong>@Html.LabelFor(m => m.SameDeliveryAddress)</strong></span>
+                    </div>
+                </div>
+                
+            </div>
+            <div class="detail-template" id="shippingDetails">
+                <div class="label-checkout">
+                    <h4><span class="glyphicon glyphicon-home"></span>  1a. Shipping Details</h4>
+                </div>
+                
+                <div>
+                    <div class="detailsBox">
+                        <h6>@Html.LabelFor(model => model.ShippingFirstName)</h6>
+                        @Html.EditorFor(model => model.ShippingFirstName)
+                        @Html.ValidationMessageFor(model => model.ShippingFirstName, "", new { @class = "text-danger" })
                     </div>
 
-                </div>
+                    <div class="detailsBox">
+                        <h6>@Html.LabelFor(model => model.ShippingLastName)</h6>
+                        @Html.EditorFor(model => model.LastName)
+                        @Html.ValidationMessageFor(model => model.ShippingLastName, "", new { @class = "text-danger" })
+                    </div>
 
-            </div>
-            <div class="col-md-4" id="shippingDetails" style="display:none;">
-                <h4>Shipping Address</h4>
-                <hr />
-                <div class="form-group">
-                    @Html.LabelFor(model => model.ShippingAddress, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.EditorFor(model => model.ShippingAddress, new { htmlAttributes = new { @class = "form-control" } })
+                    <div class="detailsBox address">
+                        <h6>@Html.LabelFor(model => model.ShippingAddress)</h6>
+                        @Html.EditorFor(model => model.ShippingAddress)
                         @Html.ValidationMessageFor(model => model.ShippingAddress, "", new { @class = "text-danger" })
                     </div>
-                </div>
 
-                <div class="form-group">
-                    @Html.LabelFor(model => model.ShippingCountry, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.DropDownListFor(model => model.ShippingCountry, ViewBag.Countries as IEnumerable<SelectListItem>, "-- Select Country --")
+                    <div class="detailsBox">
+                        <h6>@Html.LabelFor(model => model.ShippingCountry)</h6>
+                        @Html.DropDownListFor(m => m.ShippingCountry, ViewBag.Countries as IEnumerable<SelectListItem>, "-- Select Country --")
                         @Html.ValidationMessageFor(model => model.ShippingCountry, "", new { @class = "text-danger" })
                     </div>
-                </div>
 
-                <div class="form-group">
-                    @Html.LabelFor(model => model.ShippingState, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
+                    <div class="detailsBox">
+                        <h6>@Html.LabelFor(model => model.ShippingState)</h6>
                         @Html.DropDownListFor(m => m.ShippingState, ViewBag.States as IEnumerable<SelectListItem>, "-- Select State --")
                         @Html.ValidationMessageFor(model => model.ShippingState, "", new { @class = "text-danger" })
                     </div>
-                </div>
 
-                <div class="form-group">
-                    @Html.LabelFor(model => model.ShippingCity, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
+                    <div class="detailsBox">
+                        <h6>@Html.LabelFor(model => model.ShippingCity)</h6>
                         @Html.DropDownListFor(m => m.ShippingCity, ViewBag.Cities as IEnumerable<SelectListItem>, "-- Select City --")
                         @Html.ValidationMessageFor(model => model.ShippingCity, "", new { @class = "text-danger" })
                     </div>
-                </div>
 
-                <div class="form-group">
-                    @Html.LabelFor(model => model.ShippingPostalCode, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.EditorFor(model => model.ShippingPostalCode, new { htmlAttributes = new { @class = "form-control" } })
+                    <div class="detailsBox">
+                        <h6>@Html.LabelFor(model => model.ShippingPostalCode)</h6>
+                        @Html.EditorFor(model => model.ShippingPostalCode)
                         @Html.ValidationMessageFor(model => model.ShippingPostalCode, "", new { @class = "text-danger" })
                     </div>
+
+                    <div class="detailsBox">
+                        <h6>@Html.LabelFor(model => model.ShippingPhone)</h6>
+                        @Html.EditorFor(model => model.ShippingPhone)
+                        @Html.ValidationMessageFor(model => model.ShippingPhone, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="clear"></div>
                 </div>
+                
 
-                <hr />
             </div>
-            <div class="col-md-6" id="deliveryDetails">
-                <h4>Delivery Details</h4>
-                <hr />
-                <table>
-                    <tr>
-                        <td>Destination City: </td>
-                        <td id="city">-</td>
-                    </tr>
-                    <tr>
-                        <td>Item Weight: </td>
-                        <td>@ViewBag.Weight</td>
-                    </tr>
-                    <tr>
-                        <td>Delivery Cost: </td>
-                        <td class="deliveryCost">-</td>
-                    </tr>
-
-                </table>
-
-                <hr />
-
-                <h6>Enter Promo Code:</h6>
-                <input name="Code" id="Code" type="text" />
-                <span>
-                    <input type="button" id="checkPromo" value="Enter" />
-                </span>
-                <div id="promoResult"></div>
-                <input type="checkbox" name="PromoActivated" id="PromoActivated" hidden />
-                <input name="PromoCode" id="PromoCode" type="text" hidden/>
-
-                <hr />
-                <div class="form-group" style="float:right;">
-                    <div class="col-md-offset-2 col-md-10">
-                        <input id="preCheckoutSubmit" value="Submit Order" class="btn btn-default" />
+            <div class="detail-template" id="shippingMethod">
+                <div class="label-checkout">
+                    <h4>2. Shipping Method</h4>
+                </div>
+                <div>
+                    <div>
+                        <p>Please select shipping method :</p>
+                        
+                        <input type="radio" checked/> JNE Service REG <span class="deliveryDays"></span>
+                        <span class="deliveryCost"></span>
+                        <div class="clear"></div>
                     </div>
                 </div>
+                <hr />
+                <div id="promo-input">
+                    <h5>Coupon Code:</h5>
+                    <input name="Code" id="Code" type="text" />
+                    <input type="button" id="checkPromo" value="Enter" checked />
+                    <div id="promoResult"></div>
+                    <input type="checkbox" name="PromoActivated" id="PromoActivated" hidden />
+                    <input name="PromoCode" id="PromoCode" type="text" hidden />
+                </div>
 
+                
+                <input type="button" id="preCheckoutSubmit" value="Proceed" class="cartButtons" />
+                    
+                
+            </div>
+            <div class="clear"></div>
+        </div>
+
+        <div id="reviewOrder">
+            <div class="detail-template" id="payment-method">
+                <div class="label-checkout">
+                    <h4><span class="glyphicon glyphicon-credit-card"></span>  3. Payment Method</h4>
+                </div>
+                <div>
+                    <p>Please select the preferred payment method to use for this order:</p>
+                    <input type="radio" checked/> Transfer to Bank BCA A/N Angel Halim (091209323223)
+                    <br />
+                    <br />
+                    <p style="color:red"><strong>** Please confirm your payment once it has been made. An link to the confirmation page will be sent to you via email.</strong></p>
+                    <p style="color:red"><strong>Your order will only be processed once it has been confirmed.</strong></p>
+                </div>
+            </div>
+
+            <div class="detail-template" id="order-review">
+                <div class="label-checkout">
+                    <h4><span class="glyphicon glyphicon-ok"></span>  4. Order Review</h4>
+                </div>
+
+                <div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <td class="align-left">Product Name</td>
+                                <td>Size</td>
+                                <td>Unit Price</td>
+                                <td>Qty</td>
+                                <td class="align-right">Total</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.CartItems)
+                            {
+                                <tr>
+                                    <td class="align-left">
+                                        @item.Item.Name
+                                    </td>
+                                    <td>
+                                        @item.Item.Size
+                                    </td>
+                                    <td>
+                                        @if (item.Item.Product.IsOnSale)
+                                        {
+                                            @String.Format("{0:n}", Utilities.FindReducedPrice(item.Item.RetailPrice, item.Item.Product.DiscountPercentage));
+                                        }
+                                        else
+                                        {
+                                            @String.Format("{0:n}", @item.Item.RetailPrice);
+                                        }
+                                    </td>
+                                    <td>
+                                        @item.Count
+                                    </td>
+                                    <td class="align-right">
+                                        @if (item.Item.Product.IsOnSale)
+                                        {
+                                            @Html.Raw(String.Format("{0:n}", Utilities.FindReducedPrice(item.Item.RetailPrice, item.Item.Product.DiscountPercentage) * item.Count));
+                                        }
+                                        else
+                                        {
+                                            @Html.Raw(String.Format("{0:n}", @item.Item.RetailPrice * @item.Count));
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                            <tr>
+                                <td colspan="4" class="align-right">Subtotal:</td>
+                                <td style="text-align:right">@Model.CartTotalPrice</td>
+                            </tr>
+                            <tr>
+                                <td colspan="4" class="align-right">Delivery Cost:</td>
+                                <td class="deliveryCost" style="text-align:right"></td>
+                            </tr>
+                            <tr id="promoRow">
+                                <td colspan="4" class="align-right">Promo Discount:</td>
+                                <td id="promoDiscount" style="text-align:right">0.00</td>
+                            </tr>
+                            <tr>
+                                <td colspan="4" class="align-right">Total Price (Rp):</td>
+                                <td id="totalPrice" style="text-align:right"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+
+                <input type="submit" value="Confirm Order" class="cartButtons float-right"/>
+                <input id="return" value="return" type="button" class="cartButtons float-left"/>
+                <div class="clear"></div>
             </div>
         </div>
-        <div id="reviewOrder" style="display:none;">
-            <input id="return" value="return" type="button" />
-            <table>
-                <tr>
-                    <th>Item</th>
-                    <th>Quantity</th>
-                    <th>Price</th>
-                </tr>
-                @foreach (var item in Model.CartItems)
-                {
-                    <tr id="row-@item.RecordId">
-                        <td>
-                            @item.Item.DisplayName
-                        </td>
-
-                        <td>
-                            @item.Count
-                        </td>
-
-                        <td style="text-align:right">
-                            @if (item.Item.Product.IsOnSale)
-                            {
-                                @Html.Raw(String.Format("Rp {0:n}", Utilities.FindReducedPrice(item.Item.RetailPrice, item.Item.Product.DiscountPercentage) * item.Count));
-                            }
-                            else
-                            {
-                                @Html.Raw(String.Format("Rp {0:n}", @item.Item.RetailPrice * @item.Count));
-                            }
-
-                        </td>
-                    </tr>
-                }
-                <tr style="border-top: 2px solid black">
-                    <td>Total Item Price</td>
-                    <td></td>
-                    <td style="text-align:right">@Model.CartTotalPrice</td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td>Delivery Cost</td>
-                    <td class="deliveryCost" style="text-align:right"></td>
-                </tr>
-                
-                <tr id="promoRow">
-                    <td></td>
-                    <td>Promo Discount</td>
-                    <td id="promoDiscount" style="text-align:right">0.00</td>
-                </tr>
-                <tr style="border-top: 2px solid black">
-                    <td></td>
-                    <td>Total Price (Rp)</td>
-                    <td id="totalPrice" style="text-align:right"></td>
-                </tr>
-            </table>
-
-            <input type="submit" value="Finalise Order" />
-        </div>
-
-
-
     </div>
 }
 
@@ -283,3 +285,32 @@
 
 
 
+@*@if (!User.Identity.IsAuthenticated)
+    {
+        @Html.ActionLink("Existing Customer", "Login", "Account", new { returnUrl = "/Checkout/AddressAndPayment" }, null)
+    }*@
+
+@*<div class="col-md-6" id="deliveryDetails">
+        <h4>Delivery Details</h4>
+        <hr />
+        <table>
+            <tr>
+                <td>Destination City: </td>
+                <td id="city">-</td>
+            </tr>
+            <tr>
+                <td>Item Weight: </td>
+                <td>@ViewBag.Weight</td>
+            </tr>
+            <tr>
+                <td>Delivery Cost: </td>
+                <td class="deliveryCost">-</td>
+            </tr>
+
+        </table>
+
+        <hr />
+
+
+
+    </div>*@

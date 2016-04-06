@@ -25,6 +25,9 @@ namespace Namaskara.Models
         public string PostalCode { get; set; }
         public string Country { get; set; }
         public string Phone { get; set; }
+        public string ShippingFirstName { get; set; }
+        public string ShippingLastName { get; set; }
+        public string ShippingPhone { get; set; }
         public string ShippingAddress { get; set; }
         public string ShippingCity { get; set; }
         public string ShippingState { get; set; }
