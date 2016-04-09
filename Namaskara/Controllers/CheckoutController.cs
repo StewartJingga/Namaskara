@@ -232,6 +232,7 @@ namespace Namaskara.Controllers
             {
                 Order order = ndb.Orders.Find(model.OrderId);
                 TryUpdateModel(order);
+                order.ConfirmDate = DateTime.Now;
 
                 //order.Bank = model.Bank;
                 //order.AccountName = model.AccountName;
