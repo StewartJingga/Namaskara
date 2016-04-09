@@ -81,6 +81,17 @@ namespace Namaskara.Controllers
             return View(model);
         }
 
+        [ChildActionOnly]
+        public ActionResult AccountNavigation()
+        {
+            return PartialView();
+        }
+
+        public ActionResult Index()
+        {
+
+            return View();
+        }
         public ActionResult UserInformation()
         {
             
@@ -175,10 +186,10 @@ namespace Namaskara.Controllers
         public ActionResult OrderHistory()
         {
             string userEmail = User.Identity.GetUserName();
-            List<Order> orders = ndb.Orders.Where(m=>m.Email == userEmail).ToList();
+            List<Order> orders = ndb.Orders.Where(m=>m.Email == userEmail && m.isAuthenticatedPurchase == true).ToList();
             return View(orders);
         }
-
+    
         public ActionResult OrderDetails(int id)
         {
             
@@ -187,7 +198,15 @@ namespace Namaskara.Controllers
             {
                 od.Item = ndb.Items.Include("Product").Single(m=> m.Id == od.ItemId);
             }
-            return View(orderDetails);
+            ViewData["OrderNumber"] = id;
+            return PartialView(orderDetails);
+        }
+
+     
+        public ActionResult ShippingDetails(int id)
+        {
+            ViewData["OrderNumber"] = id;
+            return PartialView(ndb.Orders.Include("OrderInfo").Single(m => m.OrderId == id));
         }
 
         //Migrating shopping cart to logged in user

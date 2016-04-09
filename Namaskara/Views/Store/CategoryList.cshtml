@@ -1,12 +1,16 @@
 ﻿@model IEnumerable<Namaskara.Models.Category>
 
 <div id="categories">
-    <h2>Categories</h2>
+    <div class="catName">
+        <h2>Categories</h2>
+    </div>
+    
     
     <ul>
         @foreach (var item in Model)
         {
-            <li>@Html.ActionLink(item.Name, "ProductIndex", "Store", new { id = item.CategoryId, cat = item.Name }, null)</li>
+            <li>@Html.ActionLink(item.Name, "ProductIndex", "Store", new { id = item.CategoryId }, null)</li>
+            
 
         }
     </ul>

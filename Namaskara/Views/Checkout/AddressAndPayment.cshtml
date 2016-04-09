@@ -49,7 +49,7 @@
                         </div>
                         <div class="detailsBox">
                             <h6>@Html.LabelFor(model => model.ConfirmEmail)</h6>
-                            @Html.EditorFor(model => model.ConfirmEmail)
+                            @Html.TextBoxFor(model => model.ConfirmEmail, new { autocomplete = "off" })
                             @Html.ValidationMessageFor(model => model.ConfirmEmail, "", new { @class = "text-danger" })
                         </div>
                     }
@@ -83,7 +83,7 @@
                     </div>
 
                     <div class="clear" id="same-addr-div">
-                        <h6><strong>** All fields are required</strong></h6>
+                        <h6 style="color:red"><strong>** All fields are required</strong></h6>
                         <span>@Html.CheckBox("SameDeliveryAddress", true)</span>
                         <span><strong>@Html.LabelFor(m => m.SameDeliveryAddress)</strong></span>
                     </div>
@@ -165,7 +165,7 @@
                 <hr />
                 <div id="promo-input">
                     <h5>Coupon Code:</h5>
-                    <input name="Code" id="Code" type="text" />
+                    <input name="Code" id="Code" type="text" autocomplete="off"/>
                     <input type="button" id="checkPromo" value="Enter" checked />
                     <div id="promoResult"></div>
                     <input type="checkbox" name="PromoActivated" id="PromoActivated" hidden />
@@ -190,10 +190,12 @@
                     <input type="radio" checked/> Transfer to Bank BCA A/N Angel Halim (091209323223)
                     <br />
                     <br />
-                    <p style="color:red"><strong>** Please confirm your payment once it has been made. An link to the confirmation page will be sent to you via email.</strong></p>
+                    <p style="color:red"><strong>** Please confirm your payment once it has been made. A link to the confirmation page will be sent to you via email.</strong></p>
                     <p style="color:red"><strong>Your order will only be processed once it has been confirmed.</strong></p>
                 </div>
             </div>
+
+            <br />
 
             <div class="detail-template" id="order-review">
                 <div class="label-checkout">
@@ -252,7 +254,7 @@
                             </tr>
                             <tr>
                                 <td colspan="4" class="align-right">Delivery Cost:</td>
-                                <td class="deliveryCost" style="text-align:right"></td>
+                                <td class="deliveryCost2" style="text-align:right"></td>
                             </tr>
                             <tr id="promoRow">
                                 <td colspan="4" class="align-right">Promo Discount:</td>

@@ -3,97 +3,93 @@
 @using Namaskara.Models
 @{
     ViewBag.Title = Model.Name;
-    string a = "/Images/" + Model.ImageUrl + ".jpg";
-
-    
 
 }
 
-<h2>@Model.Name</h2>
-<div>
-    <div class="alert alert-success" id="update-message" style="display: none;">
-    </div>
-
-    <hr />
-    <div class="container">
-        <div class="row">
-            <div class="col-md-3"><img src="@a" height="200" width="200" /></div>
-            <div class="col-sm-6">
-                <table>
-                    <tr>
-                        <td>@Html.DisplayNameFor(model => model.Name) :</td>
-                        <td>@Html.DisplayFor(model => model.Name)</td>
-                    </tr>
-                    <tr>
-                        <td>@Html.DisplayNameFor(model => model.Origin) :</td>
-                        <td>@Html.DisplayFor(model => model.Origin)</td>
-                    </tr>
-                    <tr>Available Sizes</tr>
-                    @foreach (var item in Model.Items)
+<div id="details-product">
+    <h2>@Model.Name</h2>
+    <div class="alert alert-success" id="update-message" style="display: none;"></div>
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-5"><img src="@Url.Content("/Images/" + Model.ImageUrl + ".jpg")" /></div>
+                <div class="col-sm-6">
+                    @if (Model.IsOnSale)
+            {
+                        <p class="price">
+                            <span class="old-price">@String.Format("Rp {0:n}", Model.Items[0].RetailPrice)</span>
+                            <span class="glyphicon glyphicon-arrow-right"></span>
+                            <span class="new-price">@String.Format("Rp {0:n}", Utilities.FindReducedPrice(Model.Items[0].RetailPrice, Model.DiscountPercentage))</span>
+                        </p>
+                    }
+                    else
                     {
-                        <tr>
-                            <td>@item.Size</td>
-                            <td>
-                                @if (item.IsAvailable)
-                                {
-                                    if (Model.IsOnSale)
-                                    {
-                                        <span style="color:red">@String.Format("Rp {0:n}", item.RetailPrice)</span>
-                                            <span>--></span>
-                                                    <span style="color:green">@String.Format("Rp {0:n}", Utilities.FindReducedPrice(item.RetailPrice, Model.DiscountPercentage))</span>
-                                    }
-                                    else
-                                    {
-                                        <span>@String.Format("Rp {0:n}", item.RetailPrice)</span>
-                                    }
+                        <p class="price normal-price">@String.Format("Rp {0:n}", Model.Items[0].RetailPrice)</p>
+                    }
 
-                                    <input type="number" min="0" max="10" id="count-@item.Id" class="count" />
-                                        <button class="addCart" data-id="@item.Id">Add to Cart</button>
+                    <div>
+                        <h5><strong>Available Sizes</strong></h5>
+                        <select class="items">
+                            @for (int i = 0; i < Model.Items.Count; i++)
+                            {
+                                if (i == 0)
+                                {
+                                    <option value="@Model.Items[i].Id" selected>@Model.Items[i].Size</option>
                                 }
                                 else
                                 {
-                                    @Html.Raw("Not Available")
+                                    <option value="@Model.Items[i].Id">@Model.Items[i].Size</option>
                                 }
-                            </td>
-                        </tr>
-                    }
-                </table>
+                            }
+
+                        </select>
+                    </div>
+                    <div>
+                        <strong>Qty: </strong><input class="count" type="number" value="1" max="20" min="0" />
+                    </div>
+                    <button class="addToCart">Add To Cart</button>
+                </div>
             </div>
         </div>
+        
+        <br />
+        <p>
+            @Html.ActionLink("Back to List", "ProductIndex", new { id = @Model.CategoryId })
+        </p>
     </div>
-</div>
-
-<p>
-    @Html.ActionLink("Back to List", "Index")
-</p>
 
 @section scripts {
     <script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
     <script type="text/javascript">
-    $(document).ready(function (e) {
+                $(document).ready(function () {
 
-        $(".addCart").click(function () {
+                    $(".items").on('change', function () {
+                        var id = $(this).val();
+                        $.post('@Url.Action("UpdatePrice", "Store")', { id: id },
+                            function (data) {
+                                $(".price").text(data);
+                            });
+                    });
 
-            var itemToAdd = $(this).attr("data-id");
-            var itemCount = $("#count-" + itemToAdd).val();
+                    $(".addToCart").click(function () {
 
-            if (itemToAdd != "" & itemCount != 0) {
+                        var itemToAdd = $(".items").val();
+                        var itemCount = $(".count").val();
 
-                $.post('@Url.Action("AddToCart", "ShoppingCart")', { id: itemToAdd, count: itemCount },
-                    function (data) {
-                        $("#update-message").text(data.Message).show();
+                        if (itemToAdd != "" & itemCount != 0) {
 
-                        $("#cart").load('@Url.Action("CartSummary", "ShoppingCart")');
-                        $(".count").val("0");
+                        $.post('@Url.Action("AddToCart", "ShoppingCart")', { id: itemToAdd, count: itemCount },
+                            function (data) {
 
+                                $("#update-message").empty().text(data.Message).show();
 
-                    }, "json");
-            }
-        });
-    });
+                                $("#cart").load('@Url.Action("CartSummary", "ShoppingCart")');
+                                $(".count").val(1);
 
 
-
-
-    </script>
+                            }, "json");
+                        }
+                   });
+                });
+</script>
 }
+    

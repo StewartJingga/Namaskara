@@ -20,5 +20,7 @@ namespace Namaskara.Models
         public static string SendingEmailConfirmationMessage =
             String.Format("<h2>Thank you for purchasing at our store!</h2><br>Your order has been submitted.<br>Please review your order below.<br>"
                             +"");
+
+        public static string[] BankAccount = { "BCA", "Angel", "-" };//Bank, Account Name, Account Number
     }
 }

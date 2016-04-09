@@ -25,7 +25,8 @@ namespace Namaskara.Models
         [DisplayName("Item Name")]
         [ScaffoldColumn(false)]
         public string Name { get; set; }
-        public string Size { get; set; } 
+        public string Size { get; set; }
+        [DisplayName("Item Name")]
         public string DisplayName
         {
             get
@@ -55,6 +56,8 @@ namespace Namaskara.Models
                 return Regex.Replace(Size, @"[^a-z]", "");
             }
         }
+
+        
 
 
 

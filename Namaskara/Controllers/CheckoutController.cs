@@ -134,11 +134,11 @@ namespace Namaskara.Controllers
         public ActionResult CheckDelCost(string dest)
         {
             var cart = ShoppingCart.GetCart(this.HttpContext);
-            string days = "3-5 days";
+            string days = Utilities.FindDeliveryDays(dest, ndb);
             var model = new CheckWeightViewModel
             {
                 Cost = String.Format("{0:n}", Utilities.FindDeliveryCost(dest, cart.GetCartWeight(), ndb)),
-                Days = "3-5 days"
+                Days = days
             };
 
             return Json(model);
@@ -194,17 +194,17 @@ namespace Namaskara.Controllers
         }
 
         
-        public ActionResult ConfirmPayment(int orderId, string code)
+        public ActionResult ConfirmPayment(int orderId, string code)/*int orderId, string code*/
         {
             bool isValid = ndb.PaymentConfirmations.Any(m => m.OrderId == orderId && m.Code == code);
-            if(ndb.Orders.Find(orderId).Status != "Order Submitted")
+            if (ndb.Orders.Find(orderId).Status != "Order Submitted")
             {
                 return View("Error");
             }
             if (isValid)
             {
                 Order order = ndb.Orders.Find(orderId);
-                
+
                 if (order.ConfirmDate >= DateTime.Now)
                 {
                     UploadImageModel model = new UploadImageModel { OrderId = orderId, OrderTotal = String.Format("Rp {0:n}", order.Total) };
@@ -216,9 +216,10 @@ namespace Namaskara.Controllers
                     ndb.Entry(order).State = System.Data.Entity.EntityState.Modified;
                     ndb.SaveChanges();
                     return View("Expired");
-                } 
-            } 
+                }
+            }
             else return View("Error");
+            
 
         }
 

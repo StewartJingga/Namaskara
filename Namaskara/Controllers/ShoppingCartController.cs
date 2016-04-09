@@ -58,7 +58,7 @@ namespace Namaskara.Controllers
             var results = new ShoppingCartRemoveViewModel
             {
                 Message = Server.HtmlEncode(itemName) + " has been removed from your shopping cart.",
-                CartTotal = cart.GetTotal(),
+                CartTotal = String.Format("Rp {0:n}", cart.GetTotal()),
                 CartCount = cart.GetCount(),
                 ItemCount = itemCount,
                 DeleteId = id
@@ -66,13 +66,42 @@ namespace Namaskara.Controllers
             return Json(results);
         }
 
-        
-        public ActionResult CartSummary()
+        [HttpPost]
+        public ActionResult DeleteFromCart(int id)
         {
             var cart = ShoppingCart.GetCart(this.HttpContext);
 
+            CartItem cartItem = ndb.CartItems.Single(m => m.RecordId == id);
+            ndb.CartItems.Remove(cartItem);
+            ndb.SaveChanges();
+
+            var items = cart.GetCartItems();
+
+
+            var results = new ShoppingCartRemoveViewModel
+            {
+                CartTotal = String.Format("Rp {0:n}", cart.GetTotal()),
+                Summary = String.Format("{0} Items // Rp {1:n}", items.Count, cart.GetTotal()),
+                IsEmpty = (items.Count == 0),
+                DeleteId = cartItem.RecordId
+            };
+            return Json(results);
+        }
+
+
+        public ActionResult CartSummary()
+        {
+            var cart = ShoppingCart.GetCart(this.HttpContext);
+            var viewModel = new ShoppingCartViewModel
+            {
+                CartItems = cart.GetCartItems(),
+                CartTotal = cart.GetTotal()
+
+            };
+
             ViewData["CartCount"] = cart.GetCount();
-            return PartialView("CartSummary");
+            
+            return PartialView(viewModel);
         }
     }
 }

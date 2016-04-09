@@ -8,7 +8,7 @@ namespace Namaskara.Models
 {
     public class Order
     {
-        [Display(Name = "Order ID")]
+        [Display(Name = "Ord No.")]
         public int OrderId { get; set; }
         [ScaffoldColumn(false)]
         public int OrderInfoId { get; set; }
@@ -24,6 +24,7 @@ namespace Namaskara.Models
         public string PromoCode { get; set; }
         public bool PromoActivated { get; set; }
         public double PromoDiscount { get; set; }
+        [Display(Name = "Tracking Number")]
         public string TrackingNumber { get; set; }
         public bool isAuthenticatedPurchase { get; set; }
         public string Bank { get; set; }

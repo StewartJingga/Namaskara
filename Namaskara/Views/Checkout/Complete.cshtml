@@ -3,11 +3,22 @@
     ViewBag.Title = "Checkout Complete";
 }
 
-<h2>Checkout Complete</h2>
+<div id="complete">
+    <div>
+        <img src="~/Images/Namaskara Alternatives-01.png" />
+        <p>
+            Thank you for purchasing with Namaskara !
+            <br />
+            Your order number is : @Model
+        </p>
 
-<p>Thanks for your order! Your order number is: @Model</p>
-<p>
-    How about shopping for some more products in our
-    @Html.ActionLink("store",
-"Index", "Home")
-</p>
+        <p>
+            An Email will be sent to you with a link to confirm your payment
+            <br />
+            Please confirm within 2 days (2 x 24 hours)
+            <br />
+            If payment has not been received within two days, order will then be cancelled.
+        </p>
+        
+    </div>
+</div>

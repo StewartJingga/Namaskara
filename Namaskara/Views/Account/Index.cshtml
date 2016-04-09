@@ -1,0 +1,56 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<div id="account-index">
+    <div class="left-content">
+        <div class="detail-template">
+            <div class="label-checkout">
+                <h4>My Account</h4>
+            </div>
+            <div>
+                <div>
+                    <ul>
+                        <li>
+                            @Html.ActionLink("Account Information", "UserInformation")
+                        </li>
+                        <li>
+                            @Html.ActionLink("Edit Account Information", "EditInformation")
+                        </li>
+                        <li>
+                            @Html.ActionLink("Change Password", "Login", new { returnUrl = "/Manage/ChangePassword" })
+                        </li>
+                        <li>
+                            @Html.ActionLink("My Wishlist", "Wishlist")
+                        </li>
+                    </ul>
+                    
+                </div>
+            </div>
+        </div>
+        <div class="detail-template">
+            <div class="label-checkout">
+                <h4>My Orders</h4>
+            </div>
+            <div>
+                <div>
+                    <ul>
+                        <li>
+                            @Html.ActionLink("Order History", "OrderHistory")
+                        </li>
+                        
+                    </ul>
+                    
+                </div>
+            </div>
+        </div>
+        <div class="clear"></div>
+    </div>
+    
+    <div>
+        @{Html.RenderAction("AccountNavigation");}
+    </div>
+    <div class="clear"></div>
+</div>
+

@@ -10,7 +10,8 @@
             function (data) {
                 if (data != null) {
                     $(".deliveryDays").text("| "+data.Days);
-                    $(".deliveryCost").text("Rp "+data.Cost);
+                    $(".deliveryCost").text("Rp " + data.Cost);
+                    $(".deliveryCost2").text(data.Cost);
                 }
             });
     }

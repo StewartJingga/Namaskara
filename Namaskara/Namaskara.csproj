@@ -211,7 +211,7 @@
     <Compile Include="Models\CartItem.cs" />
     <Compile Include="Models\Category.cs" />
     <Compile Include="Models\City.cs" />
-    <Compile Include="Models\Config.cs" />
+    <Compile Include="Config.cs" />
     <Compile Include="Models\CreateNewProduct.cs" />
     <Compile Include="Models\EmailFormModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -358,7 +358,9 @@
     <Content Include="Images\kuranda - pecan &amp; pistachio.jpg" />
     <Content Include="Images\kuranda mesli - berry blend.jpeg" />
     <Content Include="Images\kuranda muesli - banana &amp; date.jpg" />
+    <Content Include="Images\kuranda-chiacacao.jpg" />
     <Content Include="Images\kuranda.jpg" />
+    <Content Include="Images\kurandachia-berry.jpg" />
     <Content Include="Images\lecithin granule.jpg" />
     <Content Include="Images\Line_logo.png" />
     <Content Include="Images\maca powder.jpg" />
@@ -373,6 +375,7 @@
     <Content Include="Images\muesli magic.jpg" />
     <Content Include="Images\mung beans.jpg" />
     <Content Include="Images\mungbeans chip muso.jpg" />
+    <Content Include="Images\Namaskara Alternatives-01.png" />
     <Content Include="Images\NamaskaraLogoTest.png" />
     <Content Include="Images\navy beans canned %28eden%29.jpg" />
     <Content Include="Images\navy beans.jpg" />
@@ -548,6 +551,9 @@
     <Content Include="Views\Shared\_CheckoutPartial.cshtml" />
     <Content Include="Views\Shared\_Layout2.cshtml" />
     <Content Include="Views\Store\DetailsPartial.cshtml" />
+    <Content Include="Views\Account\ShippingDetails.cshtml" />
+    <Content Include="Views\Account\Index.cshtml" />
+    <Content Include="Views\Account\AccountNavigation.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="PaymentImages\" />

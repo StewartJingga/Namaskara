@@ -4,46 +4,102 @@
     ViewBag.Title = "Order History";
 }
 
-<h2>My Order History</h2>
 
 
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.OrderId)
-        </th>
-        
-        <th>
-            @Html.DisplayNameFor(model => model.Total)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Status)
-        </th>
-        
-        <th>
-            @Html.DisplayNameFor(model => model.OrderDate)
-        </th>
-        <th></th>
-    </tr>
+<div id="order-history">
+    <div class="left-content">
+        <div class="detail-template">
+            <div class="label-checkout">
+                <h4>Order History</h4>
+            </div>
+            <div>
+                <div>
+                    <table class="table">
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.OrderId)
+                            </th>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.OrderId)
-        </td>
-        <td>
-            @String.Format("{0:n}", item.Total)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Status)
-        </td> 
-        <td>
-            @Html.DisplayFor(modelItem => item.OrderDate)
-        </td>
-        <td>
-            @Html.ActionLink("Details", "OrderDetails", new { id=item.OrderId }) 
-        </td>
-    </tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Total)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Status)
+                            </th>
+
+                            <th>
+                                @Html.DisplayNameFor(model => model.OrderDate)
+                            </th>
+                            <th></th>
+                        </tr>
+
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.OrderId)
+                                </td>
+                                <td>
+                                    @String.Format("{0:n}", item.Total)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Status)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.OrderDate)
+                                </td>
+                                <td>
+                                    @Html.ActionLink("Details", "ShippingDetails", new { id = item.OrderId }, htmlAttributes: new { @class = "modal-link"}) |
+                                    @Html.ActionLink("Items", "OrderDetails", new { id = item.OrderId }, htmlAttributes: new { @class = "modal-link" })
+                                </td>
+                            </tr>
+                        }
+
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div>
+        @{Html.RenderAction("AccountNavigation");}
+    </div>
+    <div class="clear"></div>
+</div>
+
+
+<div id="orderModal" class="modal fade" role="dialog">
+
+</div>
+
+@section scripts {
+    @*Modal scripts*@
+    <script type="text/javascript">
+        $(function () {
+
+            $('body').on('click', '.modal-link', function (e) {
+                e.preventDefault();
+                $(this).attr('data-target', '#orderModal');
+                $(this).attr('data-toggle', 'modal');
+            });
+
+            $('body').on('click', '.modal-close-btn', function () {
+                $("#orderModal").modal('hide');
+            });
+
+            $(".modal-body").on('click', function () {
+                $("#orderModal").find(".modal-dialog").css("padding-top", 300);
+            });
+
+            $("#orderModal").on('hidden.bs.modal', function () {
+                $(this).removeData('bs.modal');
+
+            });
+
+            $("#CancelModal").on('click', function () {
+                return false;
+            });
+        });
+    </script>
+
 }
-
-</table>

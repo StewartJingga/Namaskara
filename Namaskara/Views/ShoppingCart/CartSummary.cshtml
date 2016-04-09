@@ -1,2 +1,94 @@
-﻿
-@Html.ActionLink("Cart(" + ViewData["CartCount"] + ")", "Index", "ShoppingCart", new { id = "cart-status" })
+﻿@model Namaskara.ViewModels.ShoppingCartViewModel
+@using Namaskara.Models
+
+<div id="cartDiv">
+    <a href="@Url.Action("Index","ShoppingCart")">
+        <div class="cartImage">
+            
+        </div>
+        <p id="cart">@String.Format("{0} Items // Rp {1:n}", ViewData["CartCount"], Model.CartTotal)</p>
+        
+    </a>
+
+    <div>
+        @if(Model.CartItems.Count == 0)
+        {
+            <p>Cart is empty.</p>
+        }
+        else
+        {
+            <table>
+                @foreach (var item in Model.CartItems)
+                {
+                    <tr id="row-partial-@item.RecordId">
+                        <td>@item.Item.DisplayName</td>
+                        <td>@item.Count</td>
+                        <td class="price">
+                            @if (item.Item.Product.IsOnSale)
+                            {
+                                @Html.Raw(String.Format("Rp {0:n}", Utilities.FindReducedPrice(item.Item.RetailPrice, item.Item.Product.DiscountPercentage) * item.Count));
+                            }
+                            else
+                            {
+                                @Html.Raw(String.Format("Rp {0:n}", @item.Item.RetailPrice * @item.Count));
+                            }
+                        </td>
+                        <td><a href="#" class="RemoveCartItems" data-id="@item.RecordId">X</a></td>
+                    </tr>
+                }
+                <tr>
+                    <td colspan="2" class="align-right">
+                        Total:
+                    </td>
+                    <td class="align-right" id="cart-total-partial">
+                        @String.Format("Rp {0:n}", Model.CartTotal)
+                    </td>
+                </tr>
+                <tr>
+
+                    <td colspan="3" class="align-right cartsum-button" style="border: none; color: black;">
+                        @Html.ActionLink("Go to Cart", "Index", "ShoppingCart", null, htmlAttributes: new { @class = "button-namas"})
+                        @Html.ActionLink("Checkout", "AddressAndPayment", "Checkout", null,  htmlAttributes: new { @class = "button-namas" })
+                    </td>
+                </tr>
+            </table>
+        }
+        
+    </div>
+</div>
+
+<script type="text/javascript">
+    $("#cartDiv").hover(
+        function () {
+            $("div.cartImage").toggleClass("hovered");
+            $("#cart").toggleClass("hovered");
+            $("#cartDiv > div").show();
+        },
+        function () {
+            $("div.cartImage").toggleClass("hovered");
+            $("#cart").toggleClass("hovered");
+            $("#cartDiv > div").hide();
+        });
+
+    $(".RemoveCartItems").click(function () {
+
+        var recordToDelete = $(this).attr("data-id");
+
+
+        if (recordToDelete != "") {
+
+            $.post('@Url.Action("DeleteFromCart", "ShoppingCart")', { id: recordToDelete },
+                function (data) {
+                    if (data.IsEmpty) {
+                        $("#cart-reload").load('@Url.Action("CartSummary", "ShoppingCart")');
+                    }
+                    else {
+                        $("#row-partial-" + data.DeleteId).fadeOut("slow");
+                        $("#cart-total-partial").text(data.CartTotal);
+                        $("#cart").text(data.Summary);
+                    }
+                    
+                    });
+        }
+    });
+</script>

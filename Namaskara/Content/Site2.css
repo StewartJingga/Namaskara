@@ -11,10 +11,15 @@
     100% {text-indent: 20px;}
 }
 
-/*----------------------- RESET ------------------------------*/
-p, h1,h2,h3,h4,h5,h6 {
+/*rgb(127, 162, 81)*/
+
+/*----------------------- BASIC TEMPLATE ------------------------------*/
+
+p, h1,h2,h3,h4,h5,h6, a, dd, dt, td, th {
     margin: 0;
+    font-family: 'Montserrat', sans-serif;
 }
+
 
 a {
     color: black;
@@ -30,12 +35,116 @@ a {
     margin-left: 10px;
 }
 
+button.button-namas{
+    background-color: #6ab40a;
+    font-size: 18px;
+    display: inline-block;
+    text-align: center;
+    margin: 15px 0;
+    text-decoration: none;
+    padding: 5px 10px;
+    font-family: BebasNeue;
+    color: white;
+    border: none;
+    min-width: 100px;
+}
+
+button.button-namas:hover{
+    color: black;
+}
+
+a.button-namas{
+    background-color: #6ab40a;
+    font-size: 18px;
+    display: inline-block;
+    text-align: center;
+    margin: 15px 0;
+    text-decoration: none;
+    padding: 5px 10px;
+    font-family: BebasNeue;
+    color: white;
+    border: none;
+    min-width: 100px;
+}
+
+a.button-namas:hover{
+    color: black;
+}
+
+.detail-template {
+    float: left;
+    width: 310px;
+    margin: 0 10px;
+    
+}
+
+div.label-checkout {
+    background-color: #6ab40a;
+    padding: 0 1px;
+}
+
+.label-checkout h4 {
+    
+    line-height: 40px;
+    padding: 0 10px;
+    font-family: BebasNeue;
+    color: white;
+}
+
+.label-checkout + div {
+    border: 1px solid grey;
+    padding-bottom: 20px;
+}
+
+.left-content {
+    float: left;
+    
+}
+
+.left-content .detail-template .label-checkout + div > div{
+    padding: 10px;
+    width: 80%;
+    margin: 0 auto;
+
+}
+
+.left-content li{
+    margin: 5px;
+    list-style-type: initial;
+}
+
+.right-sidebar ul{
+    margin: 0;
+    
+}
+
+.right-sidebar {
+    background-color: #6ab40a;
+    width: 200px;
+    float: right;
+   
+    padding: 15px;
+    padding-left: 40px;
+    
+}
+
+.right-sidebar li{
+    list-style-type: initial;
+    color: white;
+
+}
+
+.right-sidebar a{
+    font-family: BebasNeue;
+    font-size: 20px;
+    color: white;
+}
 
 #wrapper {
     padding: 20px 30px;
     margin: 0 auto;
     width: 1040px;
-    
+   
 }
 
 #wrapper > div {
@@ -46,11 +155,16 @@ a {
     margin: 0 auto;
 }
 
+body.modal-open {
+    margin-right: 0;
+}
+
 
 
 /* ----------------------- HEADER CSS -----------------------*/
 div#header {
     height: 161px;
+    border-bottom: 1px solid black;
 }
 
 #header > div {
@@ -63,25 +177,31 @@ div#header {
 
 div#logo {
     height: 121px;
+    padding-left: 250px;
     
 }
 
 #logo img{
     height: 121px;
-    width: 710px;
+    width: 410px;
     
+}
+
+#navigation {
+    margin-top: 10px;
 }
 
 #navigation li{
     display: inline-block;
     padding-right: 15px;
+    
 }
 
 #navigation a{
-    font-size: 15px;
+    font-size: 17px;
     letter-spacing: 0px;
     font-family: 'Montserrat', sans-serif;
-    text-transform: capitalize;
+    text-transform: uppercase;
 }
 
 #navigation a:hover{
@@ -101,23 +221,103 @@ div#logo {
 
 #rightHeader a{
     font-size: 11px;
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Montserrat', sans-serif;
     font-weight: bold;
 
 }
 
-#rightHeader img{
-    width: 40px;
-    height: 40px; 
+div.cartImage{
+    width: auto;
+    height: 50px;
+    
+    background: url("../Images/cartwarnahitam.gif") no-repeat center;
 }
+
+div.cartImage:hover,
+div.cartImage.hovered {
+    background: url("../Images/cartwarnaputih.gif") no-repeat center;
+}
+
+#cartDiv {
+    padding-top: 10px;
+}
+
+#cartDiv:hover {
+    background-color: #006347;
+}
+
+#cartDiv a:hover,
+#cartDiv #cart.hovered{
+    color: white;
+    text-decoration: none;
+}
+
+#cartDiv .cartsum-button a{
+    color: white;
+}
+
+#cartDiv .cartsum-button a:hover{
+    color: black;
+}
+
+#cartDiv .price {
+    text-align: right;
+}
+
+#cartDiv > div {
+    position: absolute;
+    background-color: white;
+    border: 10px solid #006347;
+    width: 400px;
+    margin-left: -200px;
+    display: none;
+    z-index: 4;
+    
+}
+
+#cartDiv td{
+    border-bottom: 1px solid black;
+    font-size: 13px;
+    padding: 10px 10px;
+}
+
+
+
 
 #rightHeader input{
    background-color: lightgray;
    outline: none;
    box-shadow: none;
    -webkit-box-shadow: none;
-   
+}
 
+#searchResult {
+    width: 170px;
+    position:absolute;
+    background-color: white;
+    border: 1px solid black;
+    display: none;
+    z-index: 4;
+    
+}
+
+#searchResult li{
+    list-style-type: none;
+    border-bottom: 1px solid black;
+    line-height: 30px;
+}
+
+#searchResult li:hover{
+    background: lightgrey;
+}
+
+#searchResult a{
+    text-decoration: none;
+    font-size: 12px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display:block;
 }
 
 
@@ -130,7 +330,7 @@ div#mainBody {
 
 #mainBody > div {
     margin: 0 auto;
-
+  
 }
 
 
@@ -141,20 +341,28 @@ div#mainBody {
     font-size: 30px;
 
 }
+
+
 #categories li{
     line-height: 34px;
     width: 200px; 
 }
 
-#categories h2, #categories a{
+#categories a{
     font-family: 'Montserrat', sans-serif;
     text-transform: lowercase;
 }
 
-#categories h2{
+/*#categories h2{
     font-size: 19px;
     font-weight: bold;
     margin-bottom: 9px;    
+}*/
+
+#categories h2{
+    color: white;
+    font-size: 20px;
+    text-transform: uppercase;
 }
 
 #categories a{
@@ -168,13 +376,17 @@ div#mainBody {
 #categories a:hover{
     text-decoration: none;
     color: white;
-    
 }
 
 #categories li:hover{ 
-    background-color: rgb(127, 162, 81);
+    background-color: #6ab40a;
     animation: indent-animation 0.5s forwards;
-    -webkit-animation: indent-animation 1s forwards;
+    -webkit-animation: indent-animation 1s forwards; 
+}
+
+#categories li.active{ 
+    background-color: #6ab40a;
+    text-indent: 20px;
     
 }
 
@@ -188,9 +400,15 @@ div#mainBody {
 /*------ PRODUCT INDEX -----*/
 
 .catName {
-    background-color: rgb(127, 162, 81);
+    background-color: #6ab40a;
     padding: 10px 15px;
     margin-bottom: 10px;
+}
+
+.catName h2{
+    font-size: 20px;
+    color:white;
+    text-transform: uppercase;
 }
 
 #productIndex img{
@@ -200,9 +418,13 @@ div#mainBody {
     margin: 0 auto;
 }
 
+#productIndex .tooltip-inner{
+    background-color: lightgray;
+    color: black;
+}
 
 .box {
-    margin: 10px 10px;
+    margin: 20px 10px;
     float: left;
     width: 210px;
     height: 320px;
@@ -215,6 +437,11 @@ div#mainBody {
 .box:hover {
     border-color: lightgrey;
     box-shadow: 0 0 13px 4px lightgrey;
+}
+
+.box p.price {
+    font-weight: bold;
+    color: orange;
 }
 
 div.wish-list-icon {
@@ -260,8 +487,7 @@ a.addCart {
 }
 .addCart div:hover {
     background-color: rgb(127, 162, 81);
-    
-    /*rgb(127, 162, 81)*/
+
 }
 
 
@@ -328,6 +554,59 @@ a.addCart {
     font-size: 17px;
     color: green;
 }
+/*------ Details-product-----*/
+
+#details-product h2{
+   margin-bottom: 30px;
+    
+}
+
+#details-product img{
+    width: 300px;
+    height: 300px;
+}
+
+#details-product select{
+    margin-top: 15px;
+}
+
+#details-product input[type="number"]{
+    width: 50px;
+    text-align: center;
+}
+
+#details-product input[type="number"]::-webkit-inner-spin-button,
+#details-product input[type="number"]::-webkit-outer-spin-button{
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+#details-product .row .col-sm-6 > div{
+    margin: 15px 0;
+   
+}
+
+#details-product input[type=text],
+#details-product h5 {
+    font-family: 'Montserrat', sans-serif;
+}
+
+
+#details-product button{
+    height: 50px;
+    padding: 0 20px;
+    outline: none;
+    border: none;
+    background-color: black;
+    color: white;
+    font-family: 'Montserrat', sans-serif;
+}
+
+#details-product button:hover{
+    background-color: mediumpurple;
+}
+
+
 /*------ SHOPPING CART ------*/
 #shoppingCart {
     width: 900px;
@@ -364,32 +643,23 @@ a.addCart {
 
 #shoppingCart .cartButtons {
     background-color: rgb(127, 162, 81);
-    margin: 10px 10px;
+    margin: 10px 0px;
     padding: 10px 10px;
+    color: black;
+}
+
+#shoppingCart .cartButtons a:hover{
+    text-decoration: none;
+    color: white;
 }
 
 /*------- CHECKOUT CSS ------*/
 
-div.label-checkout {
-    background-color: rgb(127, 162, 81);
-    padding: 0 1px;
-}
-
-.detail-template {
-    float: left;
-    width: 310px;
-    margin: 20px 10px;
-    padding: 20px 0;   
-}
 
 #shippingDetails {
     display: none;
 }
 
-.label-checkout + div {
-    border: 1px solid grey;
-    padding-bottom: 20px;
-}
 
 .detail-template h6,
 .detail-template h5,
@@ -397,12 +667,7 @@ div.label-checkout {
     font-family: 'Montserrat', sans-serif;
 }
 
-.label-checkout h4 {
-    color: white;
-    line-height: 40px;
-    padding: 0 10px;
-    font-family: BebasNeue;
-}
+
 
 .detailsBox {
     width: 133px;
@@ -470,15 +735,15 @@ span.deliveryCost {
 #checkout .cartButtons {
     width: 150px;
     padding: 5px 0;
-    background-color: rgb(127, 162, 81);
+    background-color: #6ab40a;
     margin-top: 10px;
     text-align: center;
     font-family: BebasNeue;
     font-size: 20px;
     border: none;
     outline: none;
-    color: white;
     cursor: pointer;
+    color: white;
 }
 
 #checkout .cartButtons:hover {
@@ -515,6 +780,142 @@ span.deliveryCost {
     text-align: center;
 }
 
+/*--------------------------------------- COMPLETE CSS ---------------------------*/
+
+
+#complete > div {
+    margin: 0 auto;
+    text-align: center;
+}
+
+#complete img {
+    height: 0;
+    width: 0;
+}
+
+#complete p {
+    margin: 20px 0;
+}
+
+#complete img + p {
+    font-size: 23px;
+}
+
+#complete img + p + p {
+    font-size: 12px;
+    color: red;
+}
+
+/*----------------------------------------- PAYMENT CONFIRMATION ---------------------------*/
+
+#payment-confirmation .detail-template{
+    width: 300px;
+    
+}
+
+#payment-confirmation .detailsBox{
+    width: 200px;
+    
+}
+
+#payment-confirmation .button-namas{
+    margin-left: 10px;
+    
+}
+
+#how-to-pay.detail-template {
+    width: 500px;
+}
+
+#how-to-pay.detail-template p{
+    margin: 10px;
+}
+
+/*----------------------------------------------------------------- STORE MANAGER CSS------------------------------*/
+table#itemList td,
+table#itemList th{
+    padding: 5px 25px;
+}
+
+table#itemList th{
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    background-color: lightgray;
+}
+
+/*------------------------------------------------------- LOGIN CSS -------------------------------------------------*/
+#login-page .detail-template{
+    width: 700px;
+    float:none;
+    margin: 0 auto;
+    font-family: 'Montserrat', sans-serif;
+}
+#login-page table{
+    margin: 20px auto;
+    width: 400px;
+}
+
+#login-page td{
+    padding: 5px;
+}
+
+
+
+/*------------------------------- ACCOUNT INFORMATION ---------------------------*/
+#user-information .detail-template{
+    width: 640px;
+    float: none;
+    margin: 0 auto;
+}
+
+#user-edit-information .detail-template{
+    width: 640px;
+    float: none;
+    margin: 0 auto;
+    
+}
+
+#user-edit-information .detail-template .label-checkout + div > div{
+    width: 60%;
+    
+}
+
+#user-edit-information .detailsBox input,
+#user-edit-information .detailsBox select {
+    width: inherit;
+    height: 30px;
+    font-size: 12px;
+}
+
+.label-checkout + div {
+    border: 1px solid grey;
+    padding-bottom: 20px;
+}
+
+/* --------------------------- ORDER HISTORY ----------------------------*/
+
+#order-history .detail-template{
+    width: 670px;
+    
+}
+
+#order-history .label-checkout + div > div{
+    width: 100%;
+}
+
+#order-history {
+    font-size: 13px;
+}
+
+
+#order-history .detail-template a{
+    color: blue;
+}
+
+#orderModal .modal-dialog {
+    width: 800px;
+    margin-top: 150px;
+}
 
 
 /* ------------------------ END OF BODY CSS------------------*/
@@ -522,6 +923,8 @@ span.deliveryCost {
 div#footer {
     padding-top: 40px;
     border-top: 1px solid grey;
+   
+    
     
 }
 
@@ -529,6 +932,13 @@ div#footer {
     color: black;
     font-family: 'Roboto', sans-serif;
 }
+
+#logo-footer-img img {
+    height: 100px;
+    width: 250px;
+    margin-top: -40px;
+}
+
 
 /* ----------------------- HELPER CSS ------------------------*/
 .clear {

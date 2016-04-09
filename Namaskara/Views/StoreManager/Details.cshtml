@@ -5,7 +5,7 @@
     ViewBag.Title = "Details";
 }
 
-<h2>Details</h2>
+
 @if (ViewBag.Message != "")
 {
     <div class="alert alert-success">
@@ -21,10 +21,11 @@
     @Html.ValidationSummary()
     <div class="row">
         <div class="col-md-6">
-            <h4>Product</h4>
-            @Html.HiddenFor(model => model.ProductId)
+            <h4>Product: @Html.DisplayFor(model => model.ProductId)</h4>
+            
             <hr />
-            <a href="#" class="editProductData">Edit</a>
+            <a href="#" style="color: blue" class="editProductData">Quick Edit</a>
+            
             <dl class="dl-horizontal">
                 <dt>
                     @Html.DisplayNameFor(model => model.Name)
@@ -43,11 +44,11 @@
                 </dd>
 
                 <dt>
-                    @Html.DisplayNameFor(model => model.IsOnSale)
+                    @Html.DisplayNameFor(model => model.IsAvailable)
                 </dt>
 
                 <dd>
-                    @Html.CheckBoxFor(model => model.IsOnSale, new { disabled = "disabled" })
+                    @Html.CheckBoxFor(model => model.IsAvailable, new { disabled = "disabled" })
                 </dd>
 
                 <dt>
@@ -56,6 +57,14 @@
 
                 <dd>
                     @Html.CheckBoxFor(model => model.IsFeatured, new { disabled = "disabled" })
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.IsOnSale)
+                </dt>
+
+                <dd>
+                    @Html.CheckBoxFor(model => model.IsOnSale, new { disabled = "disabled" })
                 </dd>
 
                 <dt>
@@ -86,6 +95,7 @@
                 {
                     <tr>
                         <td>@item.Size</td>
+
                         @if (Model.IsOnSale)
                         {
                             <td>
@@ -113,9 +123,10 @@
 }
 
 
-
 <p>
-    
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ProductId })
+</p>
+<p>
     @Html.ActionLink("Back to List", "ProductIndex")
 </p>
 
@@ -125,6 +136,7 @@
             $("#Origin").prop("disabled", function (i, v) { return !v; });
             $("#IsOnSale").prop("disabled", function (i, v) { return !v; });
             $("#IsFeatured").prop("disabled", function (i, v) { return !v; });
+            $("#IsAvailable").prop("disabled", function (i, v) { return !v; });
             $("#DiscountPercentage").prop("disabled", function (i, v) { return !v; });
             $("#submitProductChanges").prop("disabled", function (i, v) { return !v; });
 

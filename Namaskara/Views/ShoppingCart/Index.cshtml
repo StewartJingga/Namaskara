@@ -6,89 +6,6 @@
 }
 
 
-
-
-@*<h2>Shopping Cart</h2>
-@if (Model.CartTotal != 0)
-{
-    <p class="button">
-        @Html.ActionLink("Checkout >> ", "AddressAndPayment", "Checkout")
-    </p>
-    <div id="update-message">
-    </div>
-    <table>
-        <tr>
-            <th>
-                Item Name
-            </th>
-            <th>
-                Price (each)
-            </th>
-            <th>
-                Quantity
-            </th>
-            <th>Total</th>
-            <th></th>
-        </tr>
-        @foreach (var item in Model.CartItems)
-        {
-            <tr id="row-@item.RecordId">
-                <td>
-                    @Html.ActionLink(item.Item.DisplayName, "Details", "Store", new { id = item.Item.ProductId }, null)
-                </td>
-                <td id="itemPrice-@item.RecordId" data-id="@item.Item.RetailPrice">
-                    @if (item.Item.Product.IsOnSale)
-                    {
-
-                        <span style="color:red">@String.Format("{0:n}", item.Item.RetailPrice)</span>
-                        <span>--></span>
-                        <span style="color:green">@String.Format("{0:n}", Utilities.FindReducedPrice(item.Item.RetailPrice, item.Item.Product.DiscountPercentage))</span>
-
-                    }
-                    else
-                    {
-                        @String.Format("{0:n}", item.Item.RetailPrice)
-                    }
-                </td>
-                <td id="item-count-@item.RecordId">
-                    @item.Count
-                </td>
-                <td id="total-price-@item.RecordId">
-                    @if (item.Item.Product.IsOnSale)
-                    {
-                        @Html.Raw(String.Format("Rp {0:n}", Utilities.FindReducedPrice(item.Item.RetailPrice, item.Item.Product.DiscountPercentage) * item.Count));
-                    }
-                    else
-                    {
-                        @Html.Raw(String.Format("Rp {0:n}", @item.Item.RetailPrice * @item.Count));
-                    }
-
-                </td>
-                <td>
-                    <a href="#" class="RemoveLink" data-id="@item.RecordId">
-                        Remove from cart
-                    </a>
-                </td>
-            </tr>
-        }
-        <tr>
-            <td>
-                Total
-            </td>
-            <td></td>
-            <td></td>
-            <td id="cart-total">
-                @String.Format("Rp {0:n}", @Model.CartTotal)
-            </td>
-        </tr>
-    </table>
-}
-else
-{
-    <h1>Your cart is Empty.</h1>
-}*@
-
-
 @section scripts{
 <script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
 <script type="text/javascript">
@@ -130,75 +47,85 @@ else
 
     }
 
-<div id="shoppingCart">
-    <table>
-        <tr class="table-head">
-            <td></td>
-            <td>Product Name</td>
-            <td>Unit Price</td>
-            <td>Qty</td>
-            <td>Total</td>
-            <td></td>
-        </tr>
-        @foreach (var item in Model.CartItems)
-        {
-
-            <tr id="row-@item.RecordId">
-                <td>
-                    <img src="@Url.Content("/Images/" + @item.Item.Product.ImageUrl + ".jpg")" />
-                </td>
-                <td>
-                    @Html.ActionLink(item.Item.DisplayName, "Details", "Store", new { id = item.Item.ProductId }, null)
-                </td>
-                <td id="itemPrice-@item.RecordId" data-id="@item.Item.RetailPrice">
-                    @if (item.Item.Product.IsOnSale)
-                {
-
-                        <span style="color:green">@String.Format("{0:n}", item.Item.RetailPrice)</span>
-                        <span>--></span>
-                        <span style="color:red">@String.Format("{0:n}", Utilities.FindReducedPrice(item.Item.RetailPrice, item.Item.Product.DiscountPercentage))</span>
-
-                    }
-                    else
-                    {
-                        @String.Format("{0:n}", item.Item.RetailPrice)
-                    }
-                </td>
-                <td id="item-count-@item.RecordId">
-                    @item.Count
-                </td>
-                <td id="total-price-@item.RecordId">
-                    @if (item.Item.Product.IsOnSale)
-                    {
-                        @Html.Raw(String.Format("Rp {0:n}", Utilities.FindReducedPrice(item.Item.RetailPrice, item.Item.Product.DiscountPercentage) * item.Count));
-                    }
-                    else
-                    {
-                        @Html.Raw(String.Format("Rp {0:n}", @item.Item.RetailPrice * @item.Count));
-                    }
-
-                </td>
-                <td>
-                    <a href="#" class="RemoveLink" data-id="@item.RecordId">
-                        X
-                    </a>
-                </td>
+@if (Model.CartItems.Count > 0)
+{
+    <div id="shoppingCart">
+        <table>
+            <tr class="table-head">
+                <td></td>
+                <td>Product Name</td>
+                <td>Unit Price</td>
+                <td>Qty</td>
+                <td>Total</td>
+                <td></td>
             </tr>
-        }
-    </table>
+            @foreach (var item in Model.CartItems)
+            {
 
-    <div class="cartButtons float-right">
-        <h3>TOTAL : @String.Format("Rp {0:n}", @Model.CartTotal)</h3>
-    </div>
+                <tr id="row-@item.RecordId">
+                    <td>
+                        <img src="@Url.Content("/Images/" + @item.Item.Product.ImageUrl + ".jpg")" />
+                    </td>
+                    <td>
+                        @Html.ActionLink(item.Item.DisplayName, "Details", "Store", new { id = item.Item.ProductId }, null)
+                    </td>
+                    <td id="itemPrice-@item.RecordId" data-id="@item.Item.RetailPrice">
+                        @if (item.Item.Product.IsOnSale)
+                        {
 
-    <div class="cartButtons float-left">
-        <a href="@Url.Action("ProductIndex", "Store")"><h3>Continue Shopping</h3></a>
-    </div>
-    <div class="clear"></div>
+                            <span style="color:green">@String.Format("{0:n}", item.Item.RetailPrice)</span>
+                            <span>--></span>
+                            <span style="color:red">@String.Format("{0:n}", Utilities.FindReducedPrice(item.Item.RetailPrice, item.Item.Product.DiscountPercentage))</span>
 
-    <div class="cartButtons float-right">
-        <a href="@Url.Action("AddressAndPayment", "Checkout")"><h3>Checkout</h3></a>
+                        }
+                        else
+                        {
+                            @String.Format("{0:n}", item.Item.RetailPrice)
+                        }
+                    </td>
+                    <td id="item-count-@item.RecordId">
+                        @item.Count
+                    </td>
+                    <td id="total-price-@item.RecordId">
+                        @if (item.Item.Product.IsOnSale)
+                        {
+                            @Html.Raw(String.Format("Rp {0:n}", Utilities.FindReducedPrice(item.Item.RetailPrice, item.Item.Product.DiscountPercentage) * item.Count));
+                        }
+                        else
+                        {
+                            @Html.Raw(String.Format("Rp {0:n}", @item.Item.RetailPrice * @item.Count));
+                        }
+
+                    </td>
+                    <td>
+                        <a href="#" class="RemoveLink" data-id="@item.RecordId">
+                            X
+                        </a>
+                    </td>
+                </tr>
+            }
+        </table>
+
+        <div class="cartButtons float-right">
+            <h3 id="cart-total">TOTAL : @String.Format("Rp {0:n}", @Model.CartTotal)</h3>
+        </div>
+
+        <div class="cartButtons float-left">
+            <a href="@Url.Action("ProductIndex", "Store")"><h3>Continue Shopping</h3></a>
+        </div>
+        <div class="clear"></div>
+
+        <div class="cartButtons float-right">
+            <a href="@Url.Action("AddressAndPayment", "Checkout")"><h3>Checkout</h3></a>
+        </div>
+        <div class="clear"></div>
+
     </div>
-    <div class="clear"></div>
-    
-</div>
+}
+else
+{
+    <h3>You cart is empty.</h3>
+    <p>@Html.ActionLink("Browse through our products here", "ProductIndex", "Store")</p>
+}
+
+

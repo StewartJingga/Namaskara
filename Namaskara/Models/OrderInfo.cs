@@ -25,13 +25,21 @@ namespace Namaskara.Models
         public string PostalCode { get; set; }
         public string Country { get; set; }
         public string Phone { get; set; }
+        [Display(Name = "First Name")]
         public string ShippingFirstName { get; set; }
+        [Display(Name = "Last Name")]
         public string ShippingLastName { get; set; }
+        [Display(Name = "Phone")]
         public string ShippingPhone { get; set; }
+        [Display(Name = "Address")]
         public string ShippingAddress { get; set; }
+        [Display(Name = "City")]
         public string ShippingCity { get; set; }
+        [Display(Name = "State")]
         public string ShippingState { get; set; }
+        [Display(Name = "Postal Code")]
         public string ShippingPostalCode { get; set; }
+        [Display(Name = "Country")]
         public string ShippingCountry { get; set; }
 
     }

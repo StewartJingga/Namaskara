@@ -54,7 +54,7 @@
                     </div>
                     <br />
                     <br />
-                    <div class="float-right"><a href="#">View product details >></a></div>
+                    <div class="float-right">@Html.ActionLink("View product details >>", "Details", new { id = @Model.ProductId })</div>
                 </div>
             </div>
             <script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
@@ -78,10 +78,11 @@
 
                         $.post('@Url.Action("AddToCart", "ShoppingCart")', { id: itemToAdd, count: itemCount },
                             function (data) {
-                                
+
                                 $("#update-message").empty().text(data.Message).show();
 
-                                $("#cart").load('@Url.Action("CartSummary", "ShoppingCart")');
+                                $("#cart-reload").load('@Url.Action("CartSummary", "ShoppingCart")');
+                                
                                 $(".count").val(1);
 
 

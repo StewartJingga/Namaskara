@@ -1,0 +1,19 @@
+﻿<div class="right-sidebar">
+    <ul>
+        <li>
+            @Html.ActionLink("My Account", "Index")
+        </li>
+        <li>
+            @Html.ActionLink("Account Information", "UserInformation")
+        </li>
+        <li>
+            @Html.ActionLink("Change Password", "Login", new { returnUrl = "/Manage/ChangePassword" })
+        </li>
+        <li>
+            @Html.ActionLink("Order History", "OrderHistory")
+        </li>
+        <li>
+            @Html.ActionLink("My Wishlist", "Wishlist")
+        </li>
+    </ul>
+</div>

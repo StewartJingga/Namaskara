@@ -27,6 +27,14 @@ namespace Namaskara.Models
             return Convert.ToDecimal(cost);
         }
 
+        public static string FindDeliveryDays(string state, NamaskaraDb ndb)//weight in gram
+        {
+
+            string days = ndb.States.Single(m => m.StateName == state).DeliveryDuration;
+
+            return days;
+        }
+
         public static void DuplicateDeliveryAddress(OrderInfo orderInfo)
         {
             orderInfo.ShippingFirstName = orderInfo.FirstName;
@@ -57,10 +65,10 @@ namespace Namaskara.Models
             
         }
 
-        
-
-        
-
-        
+        public static string CheckEnquiry(decimal price)
+        {
+            return price == 0 ? "Please Enquire" : String.Format("Rp {0:n}", price);
+        }
+ 
     }
 }

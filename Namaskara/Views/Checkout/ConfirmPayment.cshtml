@@ -1,78 +1,99 @@
 ﻿@model Namaskara.ViewModels.UploadImageModel
+@using Namaskara.Models
 
 @{
     ViewBag.Title = "ConfirmPayment";
 }
 
-<h2>ConfirmPayment</h2>
+
+
+
 
 @using (Html.BeginForm("ConfirmPayment", "Checkout", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
-        <h4>UploadImageModel</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.OrderId)
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.OrderId)
+
+    <div id="payment-confirmation">
+        <div class="detail-template">
+            <div class="label-checkout">
+                <h4>Payment Confirmation</h4>
+            </div>
+            <div>
+                <div>
+                    <div class="detailsBox">
+                        <h6>Order Number : @Html.DisplayFor(m => m.OrderId)</h6>
+                        
+                    </div>
+                    <div class="detailsBox">
+                        <h6>Total Price : @String.Format("Rp {0:n}", Model.OrderTotal)</h6>
+                        
+                    </div>
+                    <div class="detailsBox">
+                        <h6>@Html.LabelFor(model => model.Bank)</h6>
+                        @Html.EditorFor(model => model.Bank)
+                        @Html.ValidationMessageFor(model => model.Bank, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="detailsBox">
+                        <h6>@Html.LabelFor(model => model.AccountName)</h6>
+                        @Html.EditorFor(model => model.AccountName)
+                        @Html.ValidationMessageFor(model => model.AccountName, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="detailsBox">
+                        <h6>@Html.LabelFor(model => model.AccountNumber)</h6>
+                        @Html.EditorFor(model => model.AccountNumber)
+                        @Html.ValidationMessageFor(model => model.AccountNumber, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="detailsBox">
+                        <h6>@Html.LabelFor(model => model.AmountPaid)</h6>
+                        @Html.EditorFor(model => model.AmountPaid)
+                        @Html.ValidationMessageFor(model => model.AmountPaid, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="clear"></div>
+
+                <button class="button-namas">Submit</button>
+            </div>
+        </div>
+
         
-            
-        <h3>Your Order Number is @Html.DisplayFor(m => m.OrderId)</h3>
 
-        <h4>Amount to be paid : @Html.DisplayFor(m => m.OrderTotal)</h4>    
+        <div class="detail-template" id="how-to-pay">
+            <div class="label-checkout">
+                <h4>How to Pay</h4>
+            </div>
+            <div>
+                <div>
+                    <p>
+                        Please transfer the total price of the order to :
+                        <br />
+                        <br />
+                        Bank Name : @Config.BankAccount[0]
+                        <br />
+                        Account Name : @Config.BankAccount[1]
+                        <br />
+                        Account Number : @Config.BankAccount[2]
+                        <br />
+                        <br />
+                        After the transfer has been made, please confirm your payment by filling the form with the accurate information.
+                        <br />
+                        <br />
+                        An email will be sent to you after our admin has confirmed the payment.
+                        <br />
+                        <br />
+                        Thank you.
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Bank, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Bank, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Bank, "", new { @class = "text-danger" })
+                    </p>
+                </div>
             </div>
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.AccountName, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.AccountName, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.AccountName, "", new { @class = "text-danger" })
-            </div>
-        </div>
+        <div class="clear"></div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.AccountNumber, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.AccountNumber, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.AccountNumber, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.AmountPaid, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.AmountPaid, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.AmountPaid, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        @*<div class="form-group">
-            @Html.LabelFor(model => model.PaymentImage, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                <input type="file" id="PaymentImage" name="PaymentImage" class="form-control" />
-                
-                @Html.ValidationMessageFor(model => model.PaymentImage, "", new { @class = "text-danger" })
-            </div>
-        </div>*@
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
-            </div>
-        </div>
     </div>
-}
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
+}
 
 @section scripts{
 <script src="~/Scripts/jquery.validate.min.js"></script>

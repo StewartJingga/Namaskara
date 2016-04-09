@@ -1,0 +1,133 @@
+﻿@model Namaskara.Models.Order
+
+
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-body">
+            <h2 class="float-left">Order No. @ViewData["OrderNumber"]</h2>
+            <span class="glyphicon glyphicon-remove pull-right modal-close-btn"></span>
+            <div class="clearfix"></div>
+            <br />
+
+            <div>
+                <div class="row">
+                    <div class="col-sm-5">
+                        <h4>Order Information</h4>
+                        <hr />
+                        <dl class="dl-horizontal">
+
+
+                            <dt>
+                                @Html.DisplayNameFor(model => model.OrderDate)
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.OrderDate)
+                            </dd>
+
+                            <dt>
+                                @Html.DisplayNameFor(model => model.Status)
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.Status)
+                            </dd>
+
+                            <dt>
+                                @Html.DisplayNameFor(model => model.AmountPaid)
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.AmountPaid)
+                            </dd>
+
+                            <dt>
+                                @Html.DisplayNameFor(model => model.Total)
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.Total)
+                            </dd>
+
+                        </dl>
+                    </div>
+                    <div class="col-sm-7">
+                        <h4>Shipping Information</h4>
+                        <hr />
+
+                        <dl class="dl-horizontal">
+
+                            <dt>
+                                @Html.DisplayNameFor(model => model.TrackingNumber)
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.TrackingNumber)
+                            </dd>
+
+                            <dt>
+                                @Html.DisplayNameFor(model => model.OrderInfo.ShippingFirstName)
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.OrderInfo.ShippingFirstName)
+                            </dd>
+
+                            <dt>
+                                @Html.DisplayNameFor(model => model.OrderInfo.ShippingLastName)
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.OrderInfo.ShippingLastName)
+                            </dd>
+
+                            <dt>
+                                @Html.DisplayNameFor(model => model.OrderInfo.ShippingPhone)
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.OrderInfo.ShippingPhone)
+                            </dd>
+
+                            <dt>
+                                @Html.DisplayNameFor(model => model.OrderInfo.ShippingAddress)
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.OrderInfo.ShippingAddress)
+                            </dd>
+
+                            <dt>
+                                @Html.DisplayNameFor(model => model.OrderInfo.ShippingCountry)
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.OrderInfo.ShippingCountry)
+                            </dd>
+
+                            <dt>
+                                @Html.DisplayNameFor(model => model.OrderInfo.ShippingState)
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.OrderInfo.ShippingState)
+                            </dd>
+
+                            <dt>
+                                @Html.DisplayNameFor(model => model.OrderInfo.ShippingCity)
+                            </dt>
+
+                            <dd>
+                                @Html.DisplayFor(model => model.OrderInfo.ShippingCity)
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+
+            </div>
+            
+
+        </div>
+    </div>
+</div>
+

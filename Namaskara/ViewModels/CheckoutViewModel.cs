@@ -53,6 +53,7 @@ namespace Namaskara.ViewModels
         [Required(ErrorMessage = "Please choose a city")]
         [Display(Name = "Country")]
         public string ShippingCountry { get; set; }
+        [Display(Name = "Same Delivery Address")]
         public bool SameDeliveryAddress { get; set; }
         public List<CartItem> CartItems { get; set; }
         public string CartTotalPrice { get; set; }

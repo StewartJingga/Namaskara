@@ -1,4 +1,5 @@
 ﻿@model IEnumerable<Namaskara.Models.Product>
+@using Namaskara.Models
 
 @{
     ViewBag.Title = ViewData["CatName"];
@@ -25,30 +26,41 @@
             @foreach (var item in Model)
             {
                 <div class="box">
-                    <div data-wl="@item.ProductId" class="wish-list-icon" data-toggle="tooltip" title="Add to Wishlist"></div>
-                    @if (item.ImageUrl == "" || item.ImageUrl == null)
-                    {
-                        <div><img src="~/Images/amaranth.jpg" /></div>
-                    }
-                    else
-                    {
-                        <div><img src="@Url.Content("/Images/" + @item.ImageUrl + ".jpg")" /></div>
-                    }
-
-                    @if (item.Items.Count > 0)
-                    {
+                    <div data-wl="@item.ProductId" class="wish-list-icon" data-toggle="tooltip" data-placement="right" title="Add to Wishlist"></div>
+                       <div data-toggle="tooltip" title="@item.Name" data-delay="200">
+                        <a href="@Url.Action("Details", new { id = item.ProductId })">
+                            <div>
+                                @if (item.ImageUrl == "" || item.ImageUrl == null)
+                                {
+                                    <img src="~/Images/amaranth.jpg" />
+                                }
+                                else
+                                {
+                                    <img src="@Url.Content("/Images/" + @item.ImageUrl + ".jpg")" />
+                                }
+                            </div>
+                        </a>
                         <div>
                             <p>@item.Items[0].Name</p>
                             <p>@item.Items[0].Size</p>
-                            <p>@String.Format("Rp {0:n}", item.Items[0].RetailPrice)</p>
+                            @if (item.IsOnSale)
+                            {
+                                <p class="price" style="color:red">@Utilities.CheckEnquiry(Utilities.FindReducedPrice(item.Items[0].RetailPrice, item.DiscountPercentage))</p>
+                            }
+                            else
+                            {
+                                <p class="price">@Utilities.CheckEnquiry(item.Items[0].RetailPrice)</p>
+                            }
+
                         </div>
+                    </div>
+                    @if (item.Items[0].RetailPrice != 0)
+                    {
+                        <a href="@Url.Action("DetailsPartial", new { id = @item.ProductId })" class="modal-link addCart">
+                            <div>Add To Cart</div>
+                        </a>
                     }
-
-                    <a href="@Url.Action("DetailsPartial", new { id = @item.ProductId })" class="modal-link addCart">
-                        <div>Add To Cart</div>
-                    </a>
-
-                </div>
+             </div>
 
             }
         </div>

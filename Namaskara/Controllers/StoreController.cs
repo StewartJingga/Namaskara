@@ -1,6 +1,7 @@
 ﻿using Namaskara.Models;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -14,20 +15,58 @@ namespace Namaskara.Controllers
         
         public ActionResult Index()
         {
-            return View();
-
-            
-        }
-
-        public ActionResult ProductIndex(int id=1)
-        {
-            List<Product> products = ndb.Products.Where(m => m.CategoryId == id).ToList();
-            foreach(var product in products)
+            List<Product> products = ndb.Products.Where(m => m.IsFeatured == true).ToList();
+            foreach (var product in products)
             {
                 product.Items = ndb.Items.Where(m => m.ProductId == product.ProductId).OrderByDescending(m => m.Id).ToList();
                 product.Category = ndb.Categories.Find(product.CategoryId);
             }
-            ViewData["CatName"] = products[0].Category.Name;
+            return View();
+
+        }
+
+        public ActionResult ProductIndex(int id=0, string src = null)
+        {
+            List<Product> products;
+            //If link brings you here
+            if(src == null && string.IsNullOrWhiteSpace(src))
+            {
+                switch (id)
+                {
+                    case (0):
+                        products = ndb.Products.Where(m => m.IsFeatured == true).ToList();
+                        break;
+                    default:
+                        products = ndb.Products.Where(m => m.CategoryId == id).ToList();
+                        break;
+                }
+
+                foreach (var product in products)
+                {
+                    product.Items = ndb.Items.Where(m => m.ProductId == product.ProductId).OrderByDescending(m => m.Id).ToList();
+                    product.Category = ndb.Categories.Find(product.CategoryId);
+                }
+                ViewData["CatName"] = id == 0 ? "Featured Products" : products[0].Category.Name;
+            }
+            else//If search brings you here
+            {
+                try
+                {
+                    products = ndb.Products.Where(m => m.Name.Contains(src)).ToList();
+                    foreach (var product in products)
+                    {
+                        product.Items = ndb.Items.Where(m => m.ProductId == product.ProductId).OrderByDescending(m => m.Id).ToList();
+                        product.Category = ndb.Categories.Find(product.CategoryId);
+                    }
+                    ViewData["CatName"] = "Search Results for \""+ src +"\"";
+                }
+                catch
+                {
+                    products = null;
+                    ViewData["CatName"] = "Can't find products";
+                }
+            }
+
             return View(products);
         }
 
@@ -101,11 +140,21 @@ namespace Namaskara.Controllers
         public ActionResult SearchBox(string searchString)
         {
             List<Product> result;
-            if (!string.IsNullOrWhiteSpace(searchString))
+            try
             {
-                result = ndb.Products.Where(m => m.Name.Contains(searchString)).ToList();
+                if (!string.IsNullOrWhiteSpace(searchString))
+                {
+                    result = ndb.Products.Where(m => m.Name.Contains(searchString)).Take(5).ToList();
+                    
+                    Debug.Print(result.Count.ToString());
+
+                }
+                else result = null;
             }
-            else result = null;
+            catch
+            {
+                result = null;
+            }
 
             return Json(result);
         }
