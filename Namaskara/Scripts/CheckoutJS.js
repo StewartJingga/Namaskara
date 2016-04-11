@@ -25,8 +25,8 @@
 
     function diffDelAddress() {
         $("#ShippingAddress").val("");
-        $("#contactDetails").addClass("col-md-4").removeClass("col-md-6");
-        $("#deliveryDetails").addClass("col-md-4").removeClass("col-md-6");
+        
+        
         $("#shippingMethod").css("width", 250);
         $("#shippingDetails").show();
     }
