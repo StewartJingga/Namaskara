@@ -9,7 +9,6 @@ namespace Namaskara.ViewModels
     {
         public int ProductId { get; set; }
         public string Origin { get; set; }
-
         public bool IsOnSale { get; set; }
         public bool IsFeatured { get; set; }
         public double DiscountPercentage { get; set; }

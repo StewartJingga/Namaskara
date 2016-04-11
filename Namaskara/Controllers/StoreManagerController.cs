@@ -215,7 +215,7 @@ namespace Namaskara.Controllers
             ndb.Entry(order).State = System.Data.Entity.EntityState.Modified;
             ndb.SaveChanges();
 
-            return RedirectToAction("WCOrder");
+            return RedirectToAction("WCOrders");
 
         }
 

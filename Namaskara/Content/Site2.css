@@ -441,6 +441,7 @@ div#mainBody {
 .box:hover {
     border-color: lightgrey;
     box-shadow: 0 0 13px 4px lightgrey;
+    -webkit-box-shadow: 0 0 13px 4px lightgrey;
 }
 
 .box p.price {
@@ -588,7 +589,8 @@ a.addCart {
 }
 
 #details-product input[type=text],
-#details-product h5 {
+#details-product h5,
+#details-product select {
     font-family: 'Montserrat', sans-serif;
 }
 
@@ -765,6 +767,13 @@ span.deliveryCost {
     color: black;
 }
 
+#checkout .cartButtons:disabled {
+    background-color: grey;
+}
+
+#checkout .cartButtons:hover:disabled {
+    color: white;
+}
 
 #reviewOrder {
     display:none;
@@ -932,6 +941,35 @@ table#itemList th{
     margin-top: 150px;
 }
 
+/*--------------------------------------- WISHLIST ---------------------------------*/
+
+#wishlist .detail-template {
+    width: 670px;
+}
+
+#wishlist .label-checkout + div > div{
+    width: 100%;
+    
+}
+
+#wishlist td,
+#wishlist th{
+    line-height: 15px;
+    padding: 5px 15px;
+}
+
+#wishlist td {
+    border-top: 1px solid black;
+}
+
+#wishlist a.addCart {
+    font-size: 11px;
+}
+
+#wishlist img {
+    width: 70px;
+    height: 60px;
+}
 
 /* ------------------------ END OF BODY CSS------------------*/
 /* ----------------------- FOOTER CSS ------------------------*/
@@ -990,4 +1028,8 @@ div#footer {
 
 .glyphicon-remove {
     cursor: pointer;
+}
+
+.modal-content {
+    font-family: 'Montserrat', sans-serif;
 }

@@ -187,9 +187,13 @@
                 </div>
                 <div>
                     <p>Please select the preferred payment method to use for this order:</p>
-                    <input type="radio" checked/> Transfer to Bank BCA A/N Angel Halim (091209323223)
+                    <input type="radio" checked/> Transfer to Bank @Config.BankAccount[0] account:
                     <br />
                     <br />
+                    <p>Account Number : @Config.BankAccount[2]</p>
+                    <p>Account Name : @Config.BankAccount[1]</p>
+                    <br />
+                
                     <p style="color:red"><strong>** Please confirm your payment once it has been made. A link to the confirmation page will be sent to you via email.</strong></p>
                     <p style="color:red"><strong>Your order will only be processed once it has been confirmed.</strong></p>
                 </div>
@@ -268,8 +272,10 @@
                     </table>
 
                 </div>
-
-                <input type="submit" value="Confirm Order" class="cartButtons float-right"/>
+                <input type="checkbox" id="tnc-checkout" />
+                I agree to Namaskarasuperfood.com's <a href="@Url.Action("TermsAndConditions", "Home")" target="_blank">Terms & Conditions</a>
+                <div class="clear"></div>
+                <input type="submit" id="confirm-order" value="Confirm Order" class="cartButtons float-right" disabled/>
                 <input id="return" value="return" type="button" class="cartButtons float-left"/>
                 <div class="clear"></div>
             </div>

@@ -209,6 +209,76 @@ namespace Namaskara.Controllers
             return PartialView(ndb.Orders.Include("OrderInfo").Single(m => m.OrderId == id));
         }
 
+        public ActionResult Wishlist()
+        {
+            List<WishList> model = ndb.Wishlists.Where(x => x.UserEmail == User.Identity.Name).ToList();
+
+            foreach (var wl in model)
+            {
+                wl.Item = ndb.Items.Include("Product").Single(m => m.Id == wl.ItemId);
+            }
+
+            return View(model);
+        }
+
+        [AllowAnonymous]
+        [HttpPost]
+        public string AddToWishlist(int id)
+        {
+            if (!User.Identity.IsAuthenticated) return Config.WishlistFailed;
+            else
+            {
+                try
+                {
+
+                    List<Item> items = ndb.Items.Where(m => m.ProductId == id).OrderByDescending(m => m.Id).ToList();
+                    int itemid = items[0].Id;
+                    bool wlexists = ndb.Wishlists.Any(m => m.ItemId == itemid && m.UserEmail == User.Identity.Name);
+
+                    if (wlexists)
+                    {
+                        return Config.WishlistExists;
+                    }
+
+                    ndb.Wishlists.Add(new WishList
+                    {
+                        ItemId = items[0].Id,
+                        UserEmail = User.Identity.Name,
+                        DateListed = DateTime.Now,
+                        Item = null
+                    });
+
+                    ndb.SaveChanges();
+
+                    return Config.WishlistSuccess;
+                }
+                catch
+                {
+                    return "Error inputting wishlist";
+                }
+
+            }
+        }
+
+        [HttpPost]
+        public ActionResult RemoveFromWishlist(int id)
+        {
+            WishList wl = ndb.Wishlists.Find(id);
+
+            string itemName = ndb.Items.Single(m => m.Id == wl.ItemId).Name;
+
+            ndb.Wishlists.Remove(wl);
+            ndb.SaveChanges();
+
+            var results = new ShoppingCartRemoveViewModel
+            {
+                Message = Server.HtmlEncode(itemName) + " has been removed from your Wishlist.",
+                DeleteId = id
+            };
+
+            return Json(results);
+        }
+
         //Migrating shopping cart to logged in user
         private void MigrateShoppingCart(string UserName)
         {
@@ -239,15 +309,16 @@ namespace Namaskara.Controllers
                 return View(model);
             }
 
-            var user = await UserManager.FindByNameAsync(model.Email);
-            if(user != null)
-            {
-                if (!await UserManager.IsEmailConfirmedAsync(user.Id))
-                {
-                    ViewBag.errorMessage = "You must have a confirmed email to log on.";
-                    return View("Error");
-                }
-            }
+            //Uncomment this to enable confirmation before logging in
+            //var user = await UserManager.FindByNameAsync(model.Email);
+            //if(user != null)
+            //{
+            //    if (!await UserManager.IsEmailConfirmedAsync(user.Id))
+            //    {
+            //        ViewBag.errorMessage = "You must have a confirmed email to log on.";
+            //        return View("Error");
+            //    }
+            //}
 
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, change to shouldLockout: true
@@ -337,26 +408,26 @@ namespace Namaskara.Controllers
                     //Adding user to Role
                     await UserManager.AddToRoleAsync(user.Id, "Member");
 
-                    //await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
+                    await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
 
-                    //MigrateShoppingCart(model.Email);
-                    string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+                    MigrateShoppingCart(model.Email);
+
+                    //Uncomment this to enable email confirmation
+                    //string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
                     //code = System.Web.HttpUtility.UrlEncode(code);
-                    var callbackUrl = Url.Action("ConfirmEmail", "Account",
-                        new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    await UserManager.SendEmailAsync(user.Id,
-                        "Confirm your account", "Please confirm your account by clicking <a href=\""
-                        + callbackUrl + "\">here</a>");
-                    // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
-                    // Send an email with this link
-                    // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                    // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
-                    ViewBag.Message = "Check your email and confirm account, you must be confirmed " +
-                        "before you can log in.";
+                    //var callbackUrl = Url.Action("ConfirmEmail", "Account",
+                    //    new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+                    //await UserManager.SendEmailAsync(user.Id,
+                    //    "Confirm your account", "Please confirm your account by clicking <a href=\""
+                    //    + callbackUrl + "\">here</a>");
 
-                    return View("Info");
-                    //return RedirectToAction("Index", "Home");
+                    // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
+                    
+                    //ViewBag.Message = "Check your email and confirm account, you must be confirmed " +
+                    //    "before you can log in.";
+
+                    //return View("Info");
+                    return RedirectToAction("Index", "Home");
                 }
                 AddErrors(result);
             }

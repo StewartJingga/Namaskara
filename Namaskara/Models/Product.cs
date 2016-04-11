@@ -11,13 +11,11 @@ namespace Namaskara.Models
     {
         [Key]
         public int ProductId { get; set; }
-
         public string Name { get; set; }
-       
         public string Origin { get; set; }
         public string Description { get; set; }
-
         public string ImageUrl { get; set; }
+        public PackagingEnum Packaging { get; set; }
         public bool IsOnSale { get; set; }
         public bool IsFeatured { get; set; }
         public bool IsAvailable { get; set; }
@@ -31,6 +29,12 @@ namespace Namaskara.Models
         public Category Category { get; set; }
 
         public List<Item> Items { get; set; }
+
+        public Product()
+        {
+            this.IsAvailable = true;
+            this.Packaging = PackagingEnum.Nothing;
+        }
 
     }
 }

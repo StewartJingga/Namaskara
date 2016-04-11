@@ -223,6 +223,7 @@
     <Compile Include="Models\Item.cs" />
     <Compile Include="Models\OrderInfo.cs" />
     <Compile Include="Models\OrderStatusEnum.cs" />
+    <Compile Include="Models\PackagingEnum.cs" />
     <Compile Include="Models\PaymentConfirmation.cs" />
     <Compile Include="Models\Product.cs" />
     <Compile Include="Models\PromoCode.cs" />
@@ -356,7 +357,7 @@
     <Content Include="Images\kuranda - macadamia &amp; hazelnut.jpg" />
     <Content Include="Images\kuranda - nut &amp; berry.jpg" />
     <Content Include="Images\kuranda - pecan &amp; pistachio.jpg" />
-    <Content Include="Images\kuranda mesli - berry blend.jpeg" />
+    <Content Include="Images\kuranda mesli - berry blend.jpg" />
     <Content Include="Images\kuranda muesli - banana &amp; date.jpg" />
     <Content Include="Images\kuranda-chiacacao.jpg" />
     <Content Include="Images\kuranda.jpg" />
@@ -554,6 +555,8 @@
     <Content Include="Views\Account\ShippingDetails.cshtml" />
     <Content Include="Views\Account\Index.cshtml" />
     <Content Include="Views\Account\AccountNavigation.cshtml" />
+    <Content Include="Views\Account\Wishlist.cshtml" />
+    <Content Include="Views\Home\TermsAndConditions.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="PaymentImages\" />

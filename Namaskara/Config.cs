@@ -9,9 +9,11 @@ namespace Namaskara.Models
     {
         public static int DaysToConfirm = 2; //Day before the submitted order becomes expired.
 
-        public static string WishlistFailed = "You need to login to access this feature";
+        public static string WishlistFailed = "You need to login to access this feature.";
 
-        public static string WishlistSuccess = "Item has been added to your wishlist.";
+        public static string WishlistSuccess = "Item has been successfully added to your wishlist.";
+
+        public static string WishlistExists = "Item is already in the wishlist.";
 
         public static string[] StatusList = { "","Order Submitted",
                                      "Waiting For Confirmation",
@@ -21,6 +23,15 @@ namespace Namaskara.Models
             String.Format("<h2>Thank you for purchasing at our store!</h2><br>Your order has been submitted.<br>Please review your order below.<br>"
                             +"");
 
-        public static string[] BankAccount = { "BCA", "Angel", "-" };//Bank, Account Name, Account Number
+        public static string[] BankAccount = { "BCA", "Ni Komang Ayu Novita Sari", "7730379573" };//Bank, Account Name, Account Number
+        public static string WhatsAppNumber = "0822 1155 5753";
+        public static string Email = "";
+
+        public static Dictionary<Enum, int> PackagingInGrams = new Dictionary<Enum, int>
+        {
+            [PackagingEnum.Bottle] = 500,
+            [PackagingEnum.Carton] = 200,
+            [PackagingEnum.Nothing] = 0
+        };
     }
 }

@@ -43,7 +43,7 @@ namespace Namaskara.Controllers
 
                 foreach (var product in products)
                 {
-                    product.Items = ndb.Items.Where(m => m.ProductId == product.ProductId).OrderByDescending(m => m.Id).ToList();
+                    product.Items = ndb.Items.Where(m => m.ProductId == product.ProductId && m.IsAvailable == true).OrderByDescending(m => m.Id).ToList();
                     product.Category = ndb.Categories.Find(product.CategoryId);
                 }
                 ViewData["CatName"] = id == 0 ? "Featured Products" : products[0].Category.Name;
@@ -55,7 +55,7 @@ namespace Namaskara.Controllers
                     products = ndb.Products.Where(m => m.Name.Contains(src)).ToList();
                     foreach (var product in products)
                     {
-                        product.Items = ndb.Items.Where(m => m.ProductId == product.ProductId).OrderByDescending(m => m.Id).ToList();
+                        product.Items = ndb.Items.Where(m => m.ProductId == product.ProductId && m.IsAvailable == true).OrderByDescending(m => m.Id).ToList();
                         product.Category = ndb.Categories.Find(product.CategoryId);
                     }
                     ViewData["CatName"] = "Search Results for \""+ src +"\"";
@@ -66,14 +66,14 @@ namespace Namaskara.Controllers
                     ViewData["CatName"] = "Can't find products";
                 }
             }
-
+            if (products != null) products = products.Where(m => m.IsAvailable == true).OrderBy(m => m.Name).ToList();
             return View(products);
         }
 
         public ActionResult Details(int id)
         {
             Product product = ndb.Products.Find(id);
-            product.Items = ndb.Items.Where(m => m.ProductId == id).ToList();
+            product.Items = ndb.Items.Where(m => m.ProductId == id && m.IsAvailable == true).ToList();
             return View(product);
         }
 
@@ -87,7 +87,7 @@ namespace Namaskara.Controllers
         public ActionResult DetailsPartial(int id)
         {
             Product product = ndb.Products.Find(id);
-            product.Items = ndb.Items.Where(m => m.ProductId == id).OrderByDescending(m => m.Id).ToList();
+            product.Items = ndb.Items.Where(m => m.ProductId == id && m.IsAvailable == true).OrderByDescending(m => m.Id).ToList();
             return PartialView(product);
         }
 
@@ -106,35 +106,7 @@ namespace Namaskara.Controllers
             }
         }
 
-        [HttpPost]
-        public string AddToWishlist(int id)
-        {
-            if (!User.Identity.IsAuthenticated) return Config.WishlistFailed;
-            else
-            {
-                try
-                {
-                    
-                    List<Item> items = ndb.Items.Where(m => m.ProductId == id).OrderByDescending(m => m.Id).ToList();
-                    ndb.Wishlists.Add(new WishList
-                    {
-                        ItemId = items[0].Id,
-                        UserEmail = User.Identity.Name,
-                        DateListed = DateTime.Now,
-                        Item = null
-                    });
-
-                    ndb.SaveChanges();
-
-                    return Config.WishlistSuccess;
-                }
-                catch
-                {
-                    return "Error inputting wishlist";
-                }
-                
-            }
-        }
+        
 
         [HttpPost]
         public ActionResult SearchBox(string searchString)

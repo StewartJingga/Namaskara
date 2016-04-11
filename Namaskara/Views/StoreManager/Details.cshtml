@@ -19,6 +19,7 @@
 {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary()
+    @Html.HiddenFor(model => model.ProductId)
     <div class="row">
         <div class="col-md-6">
             <h4>Product: @Html.DisplayFor(model => model.ProductId)</h4>

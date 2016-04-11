@@ -43,6 +43,7 @@
                         <div>
                             <p>@item.Items[0].Name</p>
                             <p>@item.Items[0].Size</p>
+                            
                             @if (item.IsOnSale)
                             {
                                 <p class="price" style="color:red">@Utilities.CheckEnquiry(Utilities.FindReducedPrice(item.Items[0].RetailPrice, item.DiscountPercentage))</p>
@@ -111,6 +112,9 @@
             $("#CancelModal").on('click', function () {
                 return false;
             });
+
+            
+
         });
     </script>
 
@@ -119,7 +123,7 @@
         $(document).ready(function () {
             $(".wish-list-icon").click(function () {
                 var prodId = $(this).attr("data-wl");
-                $.post("/Store/AddToWishlist/", { id : prodId },
+                $.post("/Account/AddToWishlist/", { id : prodId },
                     function(data){
                         $("#wl-modal .modal-body").text(data);
                         $("#wl-modal").modal('show');

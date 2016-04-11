@@ -297,13 +297,20 @@ namespace Namaskara.Controllers
             ndb.PaymentConfirmations.Add(pc);
             ndb.SaveChanges();
 
+            //Put order details into order object to create email message
+            order.OrderDetails = ndb.OrderDetails.Where(m => m.OrderId == order.OrderId).ToList();
+            foreach (var od in order.OrderDetails)
+            {
+                od.Item = ndb.Items.Single(m => m.Id == od.ItemId);
+            }
+
             //Create Email Form
             var callbackUrl = Url.Action("ConfirmPayment", "Checkout", new { orderId = order.OrderId, code = code }, protocol: Request.Url.Scheme);
+
             EmailFormModel email = new EmailFormModel
             {
                 Destination = order.Email,
-                Message = "Your order number is: " + order.OrderId + "<br>Please confirm your payment by clicking <a href=\""
-                        + callbackUrl + "\">here</a>"
+                Message = Utilities.CreateOrderSummaryEmail(order, callbackUrl)
             };
 
             sendPaymentConfirmationEmail(email);

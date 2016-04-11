@@ -26,5 +26,10 @@ namespace Namaskara.Controllers
 
             return View();
         }
+
+        public ActionResult TermsAndConditions()
+        {
+            return PartialView();
+        }
     }
 }

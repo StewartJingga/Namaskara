@@ -81,7 +81,7 @@
                         var id = $(this).val();
                         $.post('@Url.Action("UpdatePrice", "Store")', { id: id },
                             function (data) {
-                                $(".price").text(data);
+                                $(".price").html(data);
                             });
                     });
 
@@ -97,7 +97,7 @@
 
                                 $("#update-message").empty().text(data.Message).show();
 
-                                $("#cart").load('@Url.Action("CartSummary", "ShoppingCart")');
+                                $("#cart-reload").load('@Url.Action("CartSummary", "ShoppingCart")');
                                 $(".count").val(1);
 
 

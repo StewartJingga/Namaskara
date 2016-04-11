@@ -25,6 +25,7 @@ namespace Namaskara.Models
         [DisplayName("Item Name")]
         [ScaffoldColumn(false)]
         public string Name { get; set; }
+        
         public string Size { get; set; }
         [DisplayName("Item Name")]
         public string DisplayName
@@ -44,9 +45,9 @@ namespace Namaskara.Models
             get
             {
                 string weight = Regex.Replace(Size, @"[^0-9]", "");
-                string unit = Regex.Replace(Size, @"[^a-z]", "");
+                int weightInInt = (this.Unit == "kg" || this.Unit == "ltr") ? Int32.Parse(weight) * 1000 : Int32.Parse(weight);
 
-                return (unit == "kg" || unit == "ltr") ? Int32.Parse(weight)*1000 : Int32.Parse(weight);
+                return weightInInt + Config.PackagingInGrams[this.Product.Packaging];
             }
         }
         public string Unit

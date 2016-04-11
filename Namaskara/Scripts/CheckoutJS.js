@@ -1,6 +1,6 @@
 ﻿$(document).ready(function () {
     var form = $("#checkoutForm");
-
+    
     function checkDelCost() {
         if ($("#SameDeliveryAddress").is(":checked")) {
             $("#ShippingState").val($("#State").val());
@@ -156,9 +156,17 @@
                 });
             
         }
-
-
-
-
     });
+
+    $("#tnc-checkout").on("change", function () {
+        $("#confirm-order").prop("disabled", function (e, v) { return !v; });
+    });
+
+    $("#confirm-order").click(function () {
+        if ($(this).is(":disabled")) {
+            alert("Please aggree to the Terms And Condition before placing your order");
+        }
+        
+    });
+    
 })
