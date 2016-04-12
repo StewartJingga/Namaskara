@@ -51,7 +51,7 @@ namespace Namaskara.Controllers
             };
 
             //If user has created an order information
-            if (authenticated && ndb.UserInformations.Any(m => m.Email == User.Identity.Name))
+            if (authenticated && ndb.UserInformations.Any(m => m.Email == User.Identity.Name) && ndb.UserInformations.Single(m => m.Email == User.Identity.Name).isSet)
             {
                 UserInformation info = ndb.UserInformations.Single(m => m.Email == User.Identity.Name);
                 State state = ndb.States.Single(m => m.StateName == info.State);

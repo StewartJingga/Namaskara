@@ -46,7 +46,7 @@
     {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.OrderId)
+                @Html.ActionLink(item.OrderId.ToString(), "OrderItems", new { id = item.OrderId }, htmlAttributes: new { @class = "modal-link" })
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Email)
@@ -85,3 +85,38 @@
 </table>
 
 
+<div id="orderModal" class="modal fade" role="dialog">
+
+</div>
+
+@section scripts {
+    @*Modal scripts*@
+    <script type="text/javascript">
+        $(function () {
+
+            $('body').on('click', '.modal-link', function (e) {
+                e.preventDefault();
+                $(this).attr('data-target', '#orderModal');
+                $(this).attr('data-toggle', 'modal');
+            });
+
+            $('body').on('click', '.modal-close-btn', function () {
+                $("#orderModal").modal('hide');
+            });
+
+            $(".modal-body").on('click', function () {
+                $("#orderModal").find(".modal-dialog").css("padding-top", 300);
+            });
+
+            $("#orderModal").on('hidden.bs.modal', function () {
+                $(this).removeData('bs.modal');
+
+            });
+
+            $("#CancelModal").on('click', function () {
+                return false;
+            });
+        });
+    </script>
+
+}

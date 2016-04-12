@@ -221,7 +221,24 @@ namespace Namaskara.Controllers
 
         public ActionResult OrderDetails(int id)
         {
-            return View(ndb.Orders.Include("OrderInfo").Single(m => m.OrderId == id));
+            return PartialView(ndb.Orders.Include("OrderInfo").Single(m => m.OrderId == id));
+        }
+
+        public ActionResult OrderItems(int id)
+        {
+            List<OrderDetail> orderDetails = ndb.OrderDetails.Where(m => m.OrderId == id).ToList();
+            foreach (var od in orderDetails)
+            {
+                od.Item = ndb.Items.Include("Product").Single(m => m.Id == od.ItemId);
+            }
+            ViewData["OrderNumber"] = id;
+            Order order = ndb.Orders.Find(id);
+            ViewData["OrderTotal"] = order.Total;
+            ViewData["OrderDelivery"] = order.Delivery;
+            ViewData["OrderPrice"] = order.Price;
+            ViewData["OrderPromo"] = Utilities.FindReducingPrice(order.Price, order.PromoDiscount);
+
+            return PartialView(orderDetails);
         }
 
         public ActionResult EditOrder(int id)

@@ -1,0 +1,85 @@
+﻿@model IEnumerable<Namaskara.Models.OrderDetail>
+@using Namaskara.Models
+
+
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-body">
+            <h2 class="float-left">Order No. @ViewData["OrderNumber"]</h2>
+            <span class="glyphicon glyphicon-remove pull-right modal-close-btn"></span>
+            <div class="clearfix"></div>
+            <br />
+
+            <table class="table">
+                <tr>
+                    <th>
+
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Item.DisplayName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Quantity)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.UnitPrice)
+                    </th>
+                    <th>
+                        Price
+                    </th>
+
+                </tr>
+
+                @foreach (var item in Model)
+                {
+
+                    <tr>
+                        <td>
+
+                            <img src="@Url.Content("/Images/" + @item.Item.Product.ImageUrl + ".jpg")" height="100" width="100" />
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Item.DisplayName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Quantity)
+                        </td>
+                        <td>
+                            @String.Format("Rp {0:n}", item.UnitPrice)
+                        </td>
+                        <td>
+                            @String.Format("Rp {0:n}", item.UnitPrice * item.Quantity)
+                        </td>
+
+                    </tr>
+                }
+                <tr>
+                    
+                    <td colspan="4" style="text-align: right">Sub-Total:</td>
+                    <td>@String.Format("Rp {0:n}", ViewData["OrderPrice"])</td>
+                </tr>
+
+                <tr>
+
+                    <td colspan="4" style="text-align: right">Delivery:</td>
+                    <td>@String.Format("Rp {0:n}", ViewData["OrderDelivery"])</td>
+                </tr>
+
+                <tr>
+
+                    <td colspan="4" style="text-align: right">Promo Discount:</td>
+                    <td>@String.Format("Rp {0:n}", ViewData["OrderPromo"])</td>
+                </tr>
+
+                <tr>
+
+                    <td colspan="4" style="text-align: right">Total:</td>
+                    <td>@String.Format("Rp {0:n}", ViewData["OrderTotal"])</td>
+                </tr>
+
+            </table>
+
+
+        </div>
+    </div>
+</div>

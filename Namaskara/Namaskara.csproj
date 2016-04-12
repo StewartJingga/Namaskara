@@ -275,11 +275,12 @@
     <Content Include="Images\amaranth.jpg" />
     <Content Include="Images\apricots - dried.jpg" />
     <Content Include="Images\arrowroot flour.jpg" />
+    <Content Include="Images\atlantic sea salt extra fine.jpg" />
     <Content Include="Images\atlantik sea salt - coarse.jpg" />
     <Content Include="Images\atlantik sea salt - fine.jpg" />
+    <Content Include="Images\barley flour organic.jpg" />
     <Content Include="Images\barley grass powder.jpg" />
     <Content Include="Images\barley malt - organic.jpg" />
-    <Content Include="Images\barley hulled organic.jpg" />
     <Content Include="Images\barley pearled organic.jpg" />
     <Content Include="Images\basmati rice brown.jpg" />
     <Content Include="Images\basmati rice white.jpg" />
@@ -287,7 +288,9 @@
     <Content Include="Images\black chia.jpg" />
     <Content Include="Images\black eyed peas canned %28eden%29.jpg" />
     <Content Include="Images\black soy beans canned %28eden%29.jpg" />
+    <Content Include="Images\blackstrap molasses liquid organic.jpg" />
     <Content Include="Images\blueberries - dried.jpg" />
+    <Content Include="Images\blueberry muesli organic.jpg" />
     <Content Include="Images\bonsoy.jpg" />
     <Content Include="Images\BRAGGS amino.jpg" />
     <Content Include="Images\BRAGGS apple cider vinegar.jpg" />
@@ -302,6 +305,7 @@
     <Content Include="Images\buckwheat hulled.jpg" />
     <Content Include="Images\bulgur coarse.jpg" />
     <Content Include="Images\cane sugar - gold light.jpg" />
+    <Content Include="Images\cane sugar light organic.jpg" />
     <Content Include="Images\cane sugar light.jpg" />
     <Content Include="Images\carob powder.jpg" />
     <Content Include="Images\cart.png" />
@@ -318,10 +322,12 @@
     <Content Include="Images\dr bronners liquid soap.jpg" />
     <Content Include="Images\dr bronners magic lotion.jpg" />
     <Content Include="Images\dr bronners magic soap.jpg" />
+    <Content Include="Images\dried cranberries.jpg" />
     <Content Include="Images\edensoy carob.jpg" />
     <Content Include="Images\edensoy carob02.jpg" />
     <Content Include="Images\edensoy choc.jpg" />
     <Content Include="Images\edensoy choc02.jpg" />
+    <Content Include="Images\edensoy extra original.jpg" />
     <Content Include="Images\edensoy vanilla extra.jpg" />
     <Content Include="Images\edensoy vanilla extra02.jpg" />
     <Content Include="Images\edensoy vanilla.jpg" />
@@ -343,6 +349,7 @@
     <Content Include="Images\himalayan rock salt - coarse.jpg" />
     <Content Include="Images\himalayan rock salt - fine.jpg" />
     <Content Include="Images\himalayan rock salt - med.jpg" />
+    <Content Include="Images\barley hulled organic.jpg" />
     <Content Include="Images\iconwishlist.png" />
     <Content Include="Images\iconwishlist_hover.png" />
     <Content Include="Images\instagram-logo.png" />
@@ -421,6 +428,7 @@
     <Content Include="Images\soya beans black.jpg" />
     <Content Include="Images\soya beans.jpg" />
     <Content Include="Images\spelt flour.jpg" />
+    <Content Include="Images\spirulina flakes.jpg" />
     <Content Include="Images\spirulina powder.jpg" />
     <Content Include="Images\spirulina tablets.jpg" />
     <Content Include="Images\sultanas - dried.jpg" />
@@ -459,6 +467,7 @@
     <Content Include="Scripts\jquery-2.2.1.min.js" />
     <Content Include="Scripts\jquery-2.2.1.min.map" />
     <Content Include="fonts\BebasNeue.otf" />
+    <None Include="Properties\PublishProfiles\namaskara.pubxml" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
@@ -557,10 +566,9 @@
     <Content Include="Views\Account\AccountNavigation.cshtml" />
     <Content Include="Views\Account\Wishlist.cshtml" />
     <Content Include="Views\Home\TermsAndConditions.cshtml" />
+    <Content Include="Views\StoreManager\OrderItems.cshtml" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="PaymentImages\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />

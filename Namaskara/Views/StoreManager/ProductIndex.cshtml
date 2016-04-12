@@ -18,7 +18,7 @@
             @Html.DisplayNameFor(model => model.Origin)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.ImageUrl)
+            @Html.DisplayNameFor(model => model.IsAvailable)
         </th>
         <th></th>
     </tr>
@@ -32,7 +32,7 @@
             @Html.DisplayFor(modelItem => item.Origin)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.ImageUrl)
+            @Html.DisplayFor(modelItem => item.IsAvailable)
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.ProductId }) |

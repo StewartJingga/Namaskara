@@ -14,48 +14,56 @@
             </div>
             <div>
                 <div>
-                    <table class="table">
-                        <tr>
-                            <th>
-                                @Html.DisplayNameFor(model => model.OrderId)
-                            </th>
-
-                            <th>
-                                @Html.DisplayNameFor(model => model.Total)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.Status)
-                            </th>
-
-                            <th>
-                                @Html.DisplayNameFor(model => model.OrderDate)
-                            </th>
-                            <th></th>
-                        </tr>
-
-                        @foreach (var item in Model)
-                        {
+                    @if (Model.Count() > 0)
+                    {
+                        <table class="table">
                             <tr>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.OrderId)
-                                </td>
-                                <td>
-                                    @String.Format("{0:n}", item.Total)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Status)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.OrderDate)
-                                </td>
-                                <td>
-                                    @Html.ActionLink("Details", "ShippingDetails", new { id = item.OrderId }, htmlAttributes: new { @class = "modal-link"}) |
-                                    @Html.ActionLink("Items", "OrderDetails", new { id = item.OrderId }, htmlAttributes: new { @class = "modal-link" })
-                                </td>
-                            </tr>
-                        }
+                                <th>
+                                    @Html.DisplayNameFor(model => model.OrderId)
+                                </th>
 
-                    </table>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Total)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Status)
+                                </th>
+
+                                <th>
+                                    @Html.DisplayNameFor(model => model.OrderDate)
+                                </th>
+                                <th></th>
+                            </tr>
+
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.OrderId)
+                                    </td>
+                                    <td>
+                                        @String.Format("{0:n}", item.Total)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Status)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.OrderDate)
+                                    </td>
+                                    <td>
+                                        @Html.ActionLink("Details", "ShippingDetails", new { id = item.OrderId }, htmlAttributes: new { @class = "modal-link" }) |
+                                        @Html.ActionLink("Items", "OrderDetails", new { id = item.OrderId }, htmlAttributes: new { @class = "modal-link" })
+                                    </td>
+                                </tr>
+                            }
+
+                        </table>
+                    }
+                    else
+                    {
+                        <p>You don't have order history</p>
+                    }
+
                 </div>
             </div>
         </div>

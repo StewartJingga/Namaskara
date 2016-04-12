@@ -408,6 +408,9 @@ namespace Namaskara.Controllers
                     //Adding user to Role
                     await UserManager.AddToRoleAsync(user.Id, "Member");
 
+                    UserInformation ui = new UserInformation { Email = user.UserName };
+                    ndb.UserInformations.Add(ui);
+                    ndb.SaveChanges();
                     await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
 
                     MigrateShoppingCart(model.Email);

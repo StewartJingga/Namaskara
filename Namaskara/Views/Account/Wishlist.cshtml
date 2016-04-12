@@ -4,6 +4,7 @@
 @{
     ViewBag.Title = "My Wishlist";
 }
+
 <div id="wishlist">
     <div class="left-content">
         <div class="detail-template">
@@ -13,46 +14,53 @@
 
             <div>
                 <div>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th></th>
-                                <th>Product</th>
-                                <th>Price</th>
-                                <th></th>
-                                <th></th>
-                            </tr>
-                        </thead>
+                    @if (Model.Count() > 0)
+                    {
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>Product</th>
+                                    <th>Price</th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                            </thead>
 
-                        @foreach (var wl in Model)
-                        {
-                            <tr id="row-@wl.WishListId">
-                                <td>
-                                    <img src="@Url.Content("/Images/" + @wl.Item.Product.ImageUrl + ".jpg")" />
-                                </td>
-                                <td>@wl.Item.DisplayName</td>
-                                @if (wl.Item.Product.IsOnSale)
-                                {
-                                    <td>@String.Format("Rp {0:n}", Utilities.FindReducedPrice(wl.Item.RetailPrice, wl.Item.Product.DiscountPercentage)) </td>
-                                }
-                                else
-                                {
-                                    <td>@String.Format("Rp {0:n}", wl.Item.RetailPrice)</td>
-                                }
-                                <td>
-                                    <a href="@Url.Action("DetailsPartial", "Store", new { id = wl.Item.Product.ProductId })" class="modal-link addCart">
-                                        <div>Add To Cart</div>
-                                    </a>
-                                </td>
-                                <td>
-                                    <a href="#" class="RemoveLink" data-id="@wl.WishListId">
-                                        X
-                                    </a>
-                                </td>
-                            </tr>
-                        }
-                        
-                    </table>
+                            @foreach (var wl in Model)
+                            {
+                                <tr id="row-@wl.WishListId">
+                                    <td>
+                                        <img src="@Url.Content("/Images/" + @wl.Item.Product.ImageUrl + ".jpg")" />
+                                    </td>
+                                    <td>@wl.Item.DisplayName</td>
+                                    @if (wl.Item.Product.IsOnSale)
+                                    {
+                                        <td>@String.Format("Rp {0:n}", Utilities.FindReducedPrice(wl.Item.RetailPrice, wl.Item.Product.DiscountPercentage)) </td>
+                                    }
+                                    else
+                                    {
+                                        <td>@String.Format("Rp {0:n}", wl.Item.RetailPrice)</td>
+                                    }
+                                    <td>
+                                        <a href="@Url.Action("DetailsPartial", "Store", new { id = wl.Item.Product.ProductId })" class="modal-link addCart">
+                                            <div>Add To Cart</div>
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a href="#" class="RemoveLink" data-id="@wl.WishListId">
+                                            X
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+
+                        </table>
+                    }
+                    else
+                    {
+                        <p>Your wishlist is empty.</p>
+                    }
                 </div>
             </div>
         </div>
@@ -67,6 +75,10 @@
 <div id="productDetails" class="modal fade" role="dialog">
 
 </div>
+    
+
+
+
 
 
 @section scripts {
