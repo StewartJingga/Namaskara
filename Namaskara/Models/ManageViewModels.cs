@@ -83,4 +83,13 @@ namespace Namaskara.Models
         public string SelectedProvider { get; set; }
         public ICollection<System.Web.Mvc.SelectListItem> Providers { get; set; }
     }
+
+    public class CreateItemViewModel
+    {
+        public int ProductId { get; set; }
+        public string Name { get; set; }
+        public int Number { get; set; }
+        public string Unit { get; set; }
+        public decimal RetailPrice { get; set; }
+    }
 }

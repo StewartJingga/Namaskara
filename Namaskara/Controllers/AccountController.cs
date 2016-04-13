@@ -60,7 +60,6 @@ namespace Namaskara.Controllers
         
         //Adding User to Role
         [Authorize(Roles = "Admin")]
-        
         public ActionResult AddUserToRole()
         {
             return View();

@@ -1437,12 +1437,6 @@ namespace Namaskara.Models
 
 
 
-
-
-
-            
-
-
         }
     }
 }

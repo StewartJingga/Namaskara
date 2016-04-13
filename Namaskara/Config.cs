@@ -19,6 +19,8 @@ namespace Namaskara.Models
                                      "Waiting For Confirmation",
                                     "Confirmed", "Completed", "Postponed", "Expired"};
 
+        public static string[] UnitList = { "kg", "g", "ltr", "ml" };
+
         public static string SendingEmailConfirmationMessage =
             String.Format("<h2>Thank you for purchasing at our store!</h2><br>Your order has been submitted.<br>Please review your order below.<br>"
                             +"");

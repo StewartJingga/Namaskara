@@ -25,10 +25,6 @@ p, h1,h2,h3,h4,h5,h6, a, dd, dt, td, th {
 }
 
 
-a {
-    color: black;
-    text-decoration: none;
-}
 
 .fleft-main > div {
     float: left;
@@ -169,6 +165,11 @@ body.modal-open {
 div#header {
     height: 161px;
     border-bottom: 1px solid black;
+}
+
+#header a {
+    color: black;
+    text-decoration: none;
 }
 
 #header > div {
@@ -612,7 +613,7 @@ a.addCart {
 #details-product .description {
     margin-top: 50px;
     padding: 10px;
-    background-color: lightgray;
+    background-color: rgb(229,229,229);
     width: 500px;
     height: 200px;
     overflow: auto;
@@ -976,14 +977,16 @@ table#itemList th{
 div#footer {
     padding-top: 40px;
     border-top: 1px solid grey;
-   
-    
-    
 }
 
 #footer a{
     color: black;
     font-family: 'Roboto', sans-serif;
+}
+
+.footer-div {
+    float:left;
+    width: 280px;
 }
 
 #logo-footer-img img {

@@ -1,0 +1,72 @@
+﻿@model Namaskara.Models.Product
+
+@{
+    ViewBag.Title = "ProductDetails";
+}
+
+<h2>@Model.Name</h2>
+
+<hr />
+
+<div class="row">
+
+    <div class="col-md-6">
+        <h4>Details</h4>
+        <hr />
+        <br />
+        <dl class="dl-horizontal">
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Origin)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Origin)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Description)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Description)
+            </dd>
+
+        </dl>
+        <br />
+    </div>
+    <div class="col-md-6">
+        <h4>Item List</h4>
+        <hr />
+        <br />
+        <table id="itemList">
+            <tr>
+                <th>Size</th>
+                <th style="text-align:center">Price (Rp)</th>
+                <th>Available</th>
+
+
+            </tr>
+            @foreach (var item in Model.Items)
+            {
+                <tr>
+                    <td>@item.Size</td>
+
+                    <td>@String.Format("{0:n}", item.RetailPrice)</td>
+
+                    <td>@item.IsAvailable</td>
+
+                </tr>
+            }
+        </table>
+
+        @Html.ActionLink("Add Item", "CreateItem", new { id = Model.ProductId }, htmlAttributes: new { @style = "color: blue;" })
+    </div>
+    
+    
+</div>
+<hr />
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ProductId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

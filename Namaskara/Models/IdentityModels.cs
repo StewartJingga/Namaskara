@@ -21,7 +21,7 @@ namespace Namaskara.Models
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext()
-            : base("UserDatabase", throwIfV1Schema: false)
+            : base("NamaskaraDb", throwIfV1Schema: false)
         {
         }
 
