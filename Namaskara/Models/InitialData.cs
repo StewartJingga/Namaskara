@@ -1431,6 +1431,8 @@ namespace Namaskara.Models
 
 
             }.ForEach(m => context.Cities.Add(m));
+
+            
             
             base.Seed(context);
             context.SaveChanges();

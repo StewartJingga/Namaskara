@@ -247,13 +247,9 @@
     <Compile Include="ViewModels\UserAccountViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Data\Database.mdf" />
-    <Content Include="App_Data\Database_log.ldf">
-      <DependentUpon>Database.mdf</DependentUpon>
-    </Content>
-    <Content Include="App_Data\UserDatabase.mdf" />
-    <Content Include="App_Data\UserDatabase_log.ldf">
-      <DependentUpon>UserDatabase.mdf</DependentUpon>
+    <Content Include="App_Data\NamaskaraDb.mdf" />
+    <Content Include="App_Data\NamaskaraDb_log.ldf">
+      <DependentUpon>NamaskaraDb.mdf</DependentUpon>
     </Content>
     <Content Include="Content\bootstrap-overriding.css" />
     <Content Include="Content\bootstrap.css" />

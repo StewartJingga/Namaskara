@@ -14,8 +14,8 @@
                 </div>
                 <div class="container">
                     <div class="row">
-                        <div class="col-sm-5"><img src="@Url.Content("/Images/" + Model.ImageUrl + ".jpg")" /></div>
-                        <div class="col-sm-6">
+                        <div class="modal-div modal-div-sm"><img src="@Url.Content("/Images/" + Model.ImageUrl + ".jpg")" /></div>
+                        <div class="modal-div modal-div-md">
                             @if (Model.IsOnSale)
                             {
                                 <p class="price modal-price">
@@ -51,6 +51,7 @@
                             </div>
                             <button class="addToCart">Add To Cart</button>
                         </div>
+                        <div class="clear"></div>
                     </div>
                     <br />
                     <br />

@@ -12,6 +12,7 @@ using Namaskara.Models;
 using System.Collections.Generic;
 using Namaskara.ViewModels;
 using System.Diagnostics;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace Namaskara.Controllers
 {
@@ -25,6 +26,7 @@ namespace Namaskara.Controllers
 
         public AccountController()
         {
+
         }
 
         public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
@@ -57,7 +59,37 @@ namespace Namaskara.Controllers
             }
         }
 
-        
+        //[AllowAnonymous]
+        //public async Task<ActionResult> SeedAdmin()
+        //{
+        //    IdentityRole role = new IdentityRole { Name = "Admin" };
+        //    context.Roles.Add(role);
+        //    IdentityRole role2 = new IdentityRole { Name = "Member" };
+        //    context.Roles.Add(role2);
+        //    context.SaveChanges();
+
+        //    string email = "stewart_jingga@yahoo.com";
+        //    var passwordHash = new PasswordHasher();
+            
+        //    string password = passwordHash.HashPassword("smithsog00d");
+        //    var user = new ApplicationUser { UserName = email, Email = email };
+
+        //    var result = await UserManager.CreateAsync(user, password);
+        //    if (result.Succeeded)
+        //    {
+        //        //Adding user to Role
+        //        await UserManager.AddToRoleAsync(user.Id, "Admin");
+
+        //        UserInformation ui = new UserInformation { Email = user.UserName };
+        //        ndb.UserInformations.Add(ui);
+        //        ndb.SaveChanges();
+        //    }
+
+        //    return RedirectToAction("Index", "Home");
+
+        //}
+
+
         //Adding User to Role
         [Authorize(Roles = "Admin")]
         public ActionResult AddUserToRole()

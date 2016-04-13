@@ -169,7 +169,7 @@ div#header {
 
 #header a {
     color: black;
-    text-decoration: none;
+    
 }
 
 #header > div {
@@ -503,6 +503,19 @@ a.addCart {
     
 }
 
+.modal-div{
+    float: left;
+    margin: 15px;
+}
+
+.modal-div-sm {
+    width: 200px;
+}
+
+.modal-div-md {
+    width: 300px;
+}
+
 #detailsPartial img{
     width: 200px;
     height: 190px;
@@ -537,7 +550,7 @@ a.addCart {
     background-color: #6ab40a;
 }
 
-#detailsPartial .row .col-sm-6 > div{
+#detailsPartial .row .modal-div > div{
     margin: 15px 0;
    
 }
