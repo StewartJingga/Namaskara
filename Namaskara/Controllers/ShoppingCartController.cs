@@ -46,21 +46,29 @@ namespace Namaskara.Controllers
         }
 
         [HttpPost]
-        public ActionResult RemoveFromCart(int id)
+        public ActionResult UpdateCartItem(int id, int count)
         {
             var cart = ShoppingCart.GetCart(this.HttpContext);
 
-            CartItem cartItem = ndb.CartItems.Single(m => m.RecordId == id);
-            string itemName = ndb.Items.Single(m => m.Id == cartItem.ItemId).DisplayName;
+            CartItem cartItem = ndb.CartItems.Include("Item").Single(m => m.RecordId == id);
+            if (count == 0) ndb.CartItems.Remove(cartItem);
+            else
+            {
+                cartItem.Count = count;
+                ndb.Entry(cartItem).State = System.Data.Entity.EntityState.Modified;
+            }
+            
+            ndb.SaveChanges();
 
-            int itemCount = cart.RemoveFromCart(id);
+            cartItem.Item.Product = ndb.Products.Find(cartItem.Item.ProductId);
+            decimal itemPrice = cartItem.Item.Product.IsOnSale ? Utilities.FindReducedPrice(cartItem.Item.RetailPrice, cartItem.Item.Product.DiscountPercentage) : cartItem.Item.RetailPrice;
 
             var results = new ShoppingCartRemoveViewModel
             {
-                Message = Server.HtmlEncode(itemName) + " has been removed from your shopping cart.",
+                Message = count == 0 ? "Item has been removed from your shopping cart." : "Item has been updated.",
                 CartTotal = String.Format("Rp {0:n}", cart.GetTotal()),
-                CartCount = cart.GetCount(),
-                ItemCount = itemCount,
+                ItemCount = count,
+                CartCount = String.Format("Rp {0:n}", itemPrice * count),
                 DeleteId = id
             };
             return Json(results);
@@ -80,6 +88,7 @@ namespace Namaskara.Controllers
 
             var results = new ShoppingCartRemoveViewModel
             {
+                Message =  "Item has been removed from your shopping cart.",
                 CartTotal = String.Format("Rp {0:n}", cart.GetTotal()),
                 Summary = String.Format("{0} Items // Rp {1:n}", items.Count, cart.GetTotal()),
                 IsEmpty = (items.Count == 0),

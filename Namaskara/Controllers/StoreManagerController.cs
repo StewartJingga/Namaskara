@@ -18,6 +18,12 @@ namespace Namaskara.Controllers
         {
             MakeExpired();
         }
+
+        public ActionResult Dashboard()
+        {
+            return View();
+        }
+
         // GET: StoreManager
         public ActionResult CategoryIndex()
         {

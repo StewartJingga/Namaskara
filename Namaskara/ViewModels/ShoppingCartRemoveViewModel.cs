@@ -10,7 +10,7 @@ namespace Namaskara.ViewModels
     {
         public string Message { get; set; }
         public string CartTotal { get; set; }
-        public int CartCount { get; set; }
+        public string CartCount { get; set; }
         public int ItemCount { get; set; }
         public int DeleteId { get; set; }
         public string Summary { get; set; }

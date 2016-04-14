@@ -260,6 +260,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="iconpromo.png" />
     <Content Include="Images\3 grain rice.jpg" />
     <Content Include="Images\adzuki beans canned %28eden%29.jpg" />
     <Content Include="Images\adzuki beans.jpg" />
@@ -347,6 +348,8 @@
     <Content Include="Images\himalayan rock salt - fine.jpg" />
     <Content Include="Images\himalayan rock salt - med.jpg" />
     <Content Include="Images\barley hulled organic.jpg" />
+    <Content Include="Images\iconpromo.gif" />
+    <Content Include="Images\iconpromo.png" />
     <Content Include="Images\iconwishlist.png" />
     <Content Include="Images\iconwishlist_hover.png" />
     <Content Include="Images\instagram-logo.png" />
@@ -570,6 +573,7 @@
     <Content Include="Views\Product\EditProduct.cshtml" />
     <Content Include="Views\Product\ProductDetails.cshtml" />
     <Content Include="Views\Product\CreateItem.cshtml" />
+    <Content Include="Views\StoreManager\Dashboard.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

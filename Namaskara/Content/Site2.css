@@ -465,6 +465,19 @@ div.wish-list-icon:hover {
     
 }
 
+.sale-icon {
+    float: left;
+    position:absolute;
+    left: -5px;
+    top: -15px;
+}
+
+#productIndex div.sale-icon img{
+    width: 50px;
+    height: 50px;
+}
+
+
 
 #products p{
     text-align: center;
@@ -642,6 +655,10 @@ a.addCart {
     width: 900px;
 }
 
+#shoppingCart a{
+    color: black;
+}
+
 #shoppingCart h3{
     font-family: BebasNeue;
     font-weight: bold;
@@ -660,7 +677,7 @@ a.addCart {
 
 #shoppingCart tr {
     border-bottom: 1px solid black;
-    line-height: 90px;
+    
     text-align: center;
     font-weight: bold;
 }
@@ -670,6 +687,11 @@ a.addCart {
     line-height: 50px;
     background-color: #6ab40a;
     
+}
+
+#shoppingCart input[type=number]{
+    width: 45px;
+    height: 30px;
 }
 
 #shoppingCart .cartButtons {

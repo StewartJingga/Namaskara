@@ -34,6 +34,10 @@
                             <li>@Html.ActionLink("How To Buy", "HowToBuy", "Home")</li>
                             <li>@Html.ActionLink("Products", "ProductIndex", "Store")</li>
                             <li>@Html.ActionLink("Contact Us", "Contact", "Home")</li>
+                            @if (Request.IsAuthenticated && User.IsInRole("Admin"))
+                            {
+                                <li>@Html.ActionLink("Admin", "Dashboard", "StoreManager")</li>
+                            }
                         </ul>
                     </nav>
                 </div>

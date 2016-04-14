@@ -18,19 +18,36 @@
 
             if (recordToDelete != "") {
 
-                $.post('@Url.Action("RemoveFromCart", "ShoppingCart")', { id: recordToDelete },
+                $.post('@Url.Action("DeleteFromCart", "ShoppingCart")', { id: recordToDelete },
+                    function (data) {
+                        $("#row-" + data.DeleteId).fadeOut("slow");
+                        $("#cart-total").text(data.CartTotal);
+                        $("#update-message").text(data.Message);
+
+                        $("#cart-reload").load('@Url.Action("CartSummary", "ShoppingCart")');
+                    }, "json");
+            }
+        });
+
+        $(".UpdateLink").click(function () {
+
+            var recordToUpdate = $(this).attr("data-id");
+            var itemCount = $("#item-count-" + recordToUpdate).val();
+
+            if (recordToUpdate != "") {
+
+                $.post('@Url.Action("UpdateCartItem", "ShoppingCart")', { id: recordToUpdate, count: itemCount},
                     function (data) {
                         if (data.ItemCount == 0) {
                             $("#row-" + data.DeleteId).fadeOut("slow");
                         } else {
-                            $("#item-count-" + data.DeleteId).text(data.ItemCount);
-                            $("#total-price-" + data.DeleteId).text(parseFloat(Math.round(data.ItemCount * itemPrice)).toFixed(2));
-
+                            $("#item-count-" + data.DeleteId).val(data.ItemCount);
+                            $("#total-price-" + data.DeleteId).text(data.CartCount);
                         }
                         $("#cart-total").text(data.CartTotal);
                         $("#update-message").text(data.Message);
-                        $("#cart-status").text("Cart (" + data.CartCount + ")");
 
+                        $("#cart-reload").load('@Url.Action("CartSummary", "ShoppingCart")');
                     }, "json");
             }
         });
@@ -44,6 +61,7 @@
 <hr />
 @if (Model.CartItems.Count > 0)
 {
+    
     <div id="shoppingCart">
         <table>
             <tr class="table-head">
@@ -78,8 +96,9 @@
                             @String.Format("{0:n}", item.Item.RetailPrice)
                         }
                     </td>
-                    <td id="item-count-@item.RecordId">
-                        @item.Count
+                    <td>
+                        <input id="item-count-@item.RecordId" type="number" value="@item.Count" />
+                        <span class="glyphicon glyphicon-refresh UpdateLink" style="cursor: pointer; color: blue" data-id="@item.RecordId" ></span>
                     </td>
                     <td id="total-price-@item.RecordId">
                         @if (item.Item.Product.IsOnSale)
@@ -93,7 +112,7 @@
 
                     </td>
                     <td>
-                        <a href="#" class="RemoveLink" data-id="@item.RecordId">
+                        <a href="#" class="RemoveLink" data-id="@item.RecordId" style="color: red">
                             X
                         </a>
                     </td>

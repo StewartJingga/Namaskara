@@ -199,6 +199,7 @@ namespace Namaskara.Controllers
             bool isValid = ndb.PaymentConfirmations.Any(m => m.OrderId == orderId && m.Code == code);
             if (ndb.Orders.Find(orderId).Status != "Order Submitted")
             {
+                ViewBag.errorMessage = "You have confirmed this order";
                 return View("Error");
             }
             if (isValid)

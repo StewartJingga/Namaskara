@@ -6,9 +6,6 @@
 }
 
 
-
-
-
 <!-- MAIN CONTENT -->
 <div id="productIndex" class="fleft-main">
     <div>
@@ -27,6 +24,13 @@
             {
                 <div class="box">
                     <div data-wl="@item.ProductId" class="wish-list-icon" data-toggle="tooltip" data-placement="right" title="Add to Wishlist"></div>
+                    @if (item.IsOnSale)
+                    {
+                        <div class="sale-icon">
+                            <img src="~/Images/iconpromo.gif" />
+                        </div>
+                    }
+                    
                        <div data-toggle="tooltip" title="@item.Name" data-delay="200">
                         <a href="@Url.Action("Details", new { id = item.ProductId })">
                             <div>
