@@ -6,14 +6,40 @@
             $("#ShippingState").val($("#State").val());
         }
         var city = $("#ShippingState").val();
+        $("#DeliveryMethodId_1").prop("checked", true);
+        $("#express").hide();
         $.post("/Checkout/CheckDelCost", { dest: city },
             function (data) {
                 if (data != null) {
-                    $(".deliveryDays").text("| "+data.Days);
-                    $(".deliveryCost").text("Rp " + data.Cost);
-                    $(".deliveryCost2").text(data.Cost);
+                    $("#deliveryDays").text("| "+data.Days);
+                    $("#deliveryCost").text("Rp " + data.Cost);
+                    if (data.CostExpress != 0)
+                    {
+                        $("#deliveryDaysExpress").text("| " + data.DaysExpress);
+                        $("#deliveryCostExpress").text("Rp " + data.CostExpress);
+                        $("#express").show();
+                    }
+                    
                 }
             });
+    }
+
+    function finalDeliveryCost()
+    {
+        if ($("#SameDeliveryAddress").is(":checked")) {
+            $("#ShippingState").val($("#State").val());
+        }
+        var city = $("#ShippingState").val();
+        var delID = $("input[name=DeliveryMethodId]:checked").val();
+
+        $.post("/Checkout/CheckFinalDelCost", { dest: city, deliveryMethodId :delID },
+            function (data) {
+                if (data != null) {
+                    $(".deliveryCost2").text(data.Cost);
+
+                }
+            });
+
     }
     checkDelCost();
     function sameDelAddress() {
@@ -146,11 +172,13 @@
         if ($("#checkoutForm").valid()) {
             var state = $("#ShippingState").val();
             
-            var promocode = $("#PromoActivated").val() ? $("#PromoCode").val():"";
-            $.post("/Checkout/GetTotalPrice", { dest: state, code : promocode },
+            var promocode = $("#PromoActivated").val() ? $("#PromoCode").val() : "";
+            var delID = $("input[name=DeliveryMethodId]:checked").val();
+            $.post("/Checkout/GetTotalPrice", { dest: state, deliveryMethodId : delID, code : promocode },
                 function (data) {
                     $("#totalPrice").text(data.TotalPrice);
                     $("#promoDiscount").text(data.PromoDiscount);
+                    finalDeliveryCost();
                     $("#preCheckout").hide();
                     $("#reviewOrder").show();
                 });

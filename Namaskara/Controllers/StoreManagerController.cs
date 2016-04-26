@@ -218,6 +218,7 @@ namespace Namaskara.Controllers
         {
             Order order = ndb.Orders.Find(id);
             order.Status = status;
+            order.CompleteDate = DateTime.Now;
             ndb.Entry(order).State = System.Data.Entity.EntityState.Modified;
             ndb.SaveChanges();
 

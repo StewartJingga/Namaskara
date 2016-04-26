@@ -13,5 +13,7 @@ namespace Namaskara.Models
         public string StateName { get; set; }
         public decimal PricePerKg { get; set; }
         public string DeliveryDuration { get; set; }
+        public decimal PricePerKgExpress { get; set; }
+        public string DeliveryDurationExpress { get; set; }
     }
 }

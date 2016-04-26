@@ -18,20 +18,40 @@ namespace Namaskara.Models
         }
 
 
-        public static decimal FindDeliveryCost(string state, int weight, NamaskaraDb ndb)//weight in gram
+        public static decimal FindDeliveryCost(string state, int weight, int deliveryMethodId, NamaskaraDb ndb)//weight in gram
         {
             int weightInKilo = (int)Math.Ceiling((double)weight/1000);
+            decimal pricePerKg = 0;
+            switch (deliveryMethodId)
+            {
+                case (1):
+                    pricePerKg = ndb.States.Single(m => m.StateName == state).PricePerKg;
+                    break;
+                case (2):
+                    pricePerKg = ndb.States.Single(m => m.StateName == state).PricePerKgExpress;
+                    break;
+            }
 
-            int cost = weightInKilo * (int)ndb.States.Single(m => m.StateName == state).PricePerKg;            
+            int cost = weightInKilo * (int)pricePerKg;            
 
             return Convert.ToDecimal(cost);
         }
 
-        public static string FindDeliveryDays(string state, NamaskaraDb ndb)//weight in gram
+        public static string FindDeliveryDays(string state, int deliveryMethodId, NamaskaraDb ndb)
         {
             try
             {
-                string days = ndb.States.Single(m => m.StateName == state).DeliveryDuration;
+                string days = "";
+                switch (deliveryMethodId)
+                {
+                    case (1):
+                        days = ndb.States.Single(m => m.StateName == state).DeliveryDuration;
+                        break;
+                    case (2):
+                        days = ndb.States.Single(m => m.StateName == state).DeliveryDurationExpress;
+                        break;
+                }
+               
                 return days;
             }
             catch { return null; }
@@ -51,10 +71,10 @@ namespace Namaskara.Models
             orderInfo.ShippingState = orderInfo.State;
         }
 
-        public static decimal GetTotalPrice(ShoppingCart cart, string state, NamaskaraDb ndb, double promoDiscount = 0)
+        public static decimal GetTotalPrice(ShoppingCart cart, string state, int deliveryMethodId, NamaskaraDb ndb, double promoDiscount = 0)
         {
             
-            decimal deliveryCost = FindDeliveryCost(state, cart.GetCartWeight(), ndb);
+            decimal deliveryCost = FindDeliveryCost(state, cart.GetCartWeight(), deliveryMethodId, ndb);
             decimal cartTotal = FindReducedPrice(cart.GetTotal(), promoDiscount);
             return deliveryCost + cartTotal;
         }
@@ -88,13 +108,22 @@ namespace Namaskara.Models
             }
 
             body += "<tr><td colspan=\"3\">Subtotal:</td><td style=\"text-align:right\">" + order.Price + "</td></tr>";
-            body += "<tr><td colspan=\"3\">Delivery Cost:</td><td style=\"text-align:right\">" + order.Delivery + "</td></tr>";
+            body += "<tr><td colspan=\"3\">Delivery Cost:</td><td style=\"text-align:right\">" + String.Format("{0}.00", order.Delivery) + "</td></tr>";
             body += "<tr><td colspan=\"3\">Promo Discount:</td><td style=\"text-align:right\">" + FindReducingPrice(order.Price, order.PromoDiscount) + "</td></tr>";
             body += "<tr><td colspan=\"3\">Total:</td><td style=\"text-align:right\">" + order.Total + "</td></tr>";
             body += "</tbody></table></div>";
 
             return body;
         }
- 
+
+        public static string CreateEnquiryEmail(string name, string email, string message)
+        {
+            string body = "From : " + name;
+            body += "<br>Email : " + email;
+            body += "<br><br>" + message;
+
+            return body;
+        }
+
     }
 }

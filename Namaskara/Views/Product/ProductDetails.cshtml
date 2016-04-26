@@ -44,6 +44,7 @@
                 <th>Size</th>
                 <th style="text-align:center">Price (Rp)</th>
                 <th>Available</th>
+                <th></th>
 
 
             </tr>
@@ -56,6 +57,8 @@
 
                     <td>@item.IsAvailable</td>
 
+                    <td>@Html.ActionLink("Delete", "DeleteItem", new { id = item.Id })</td>
+
                 </tr>
             }
         </table>
@@ -67,6 +70,6 @@
 </div>
 <hr />
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.ProductId }) |
+    @Html.ActionLink("Edit", "EditProduct", new { id = Model.ProductId }) |
     @Html.ActionLink("Back to List", "Index")
 </p>

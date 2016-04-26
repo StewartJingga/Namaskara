@@ -400,6 +400,17 @@ div#mainBody {
     height: 425px;
 }
 
+/* ------ COntact Us----------*/
+#contact td {
+    padding: 5px 5px;
+}
+
+#contact input,
+#contact textarea{
+    font-size: 14px;
+    resize:none;
+
+}
 
 
 /*------ PRODUCT INDEX -----*/
@@ -1070,4 +1081,8 @@ div#footer {
 
 .modal-content {
     font-family: 'Montserrat', sans-serif;
+}
+
+.glyphicon-envelope{
+    font-size: 20px;
 }

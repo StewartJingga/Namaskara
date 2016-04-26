@@ -92,6 +92,7 @@ namespace Namaskara.Controllers
 
         //Adding User to Role
         [Authorize(Roles = "Admin")]
+        [AllowAnonymous]
         public ActionResult AddUserToRole()
         {
             return View();
@@ -101,6 +102,7 @@ namespace Namaskara.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
+        [AllowAnonymous]
         public ActionResult AddUserToRole(AddUserToRole model)
         {
             if (ModelState.IsValid)

@@ -6,71 +6,86 @@
 
 }
 
-<div id="details-product" class="fleft-main">
-    <div>
-        @{ Html.RenderAction("CategoryList", "Store");}
-    </div>
-    <div class="fleft-right">
-        
-        <div class="alert alert-success" id="update-message" style="display: none;"></div>
-        <div class="container">
-            <br />
-            
-            <div class="row">
-                <div class="col-sm-5"><img src="@Url.Content("/Images/" + Model.ImageUrl + ".jpg")" /></div>
-                <div class="col-sm-6">
-                    <h2>@Model.Name</h2>
+@if (Model.IsAvailable && Model.Items.Count > 0)
+{
+    <div id="details-product" class="fleft-main">
+        <div>
+            @{ Html.RenderAction("CategoryList", "Store");}
+        </div>
+        <div class="fleft-right">
+
+            <div class="alert alert-success" id="update-message" style="display: none;"></div>
+            <div class="container">
+                <br />
+
+                <div class="row">
+                    <div class="col-sm-5"><img src="@Url.Content("/Images/" + Model.ImageUrl + ".jpg")" /></div>
+                    <div class="col-sm-6">
+                        <h2>@Model.Name</h2>
+                        <br />
+                        @if (Model.IsOnSale)
+                        {
+                            <p class="price">
+                                <span class="old-price">@String.Format("Rp {0:n}", Model.Items[0].RetailPrice)</span>
+                                <span class="glyphicon glyphicon-arrow-right"></span>
+                                <span class="new-price">@String.Format("Rp {0:n}", Utilities.FindReducedPrice(Model.Items[0].RetailPrice, Model.DiscountPercentage))</span>
+                            </p>
+                        }
+                        else
+                        {
+                            <p class="price normal-price">@String.Format("Rp {0:n}", Model.Items[0].RetailPrice)</p>
+                        }
+
+                        <div>
+                            <h5><strong>Available Sizes</strong></h5>
+                            <select class="items">
+                                @for (int i = 0; i < Model.Items.Count; i++)
+                                {
+                                    if (i == 0)
+                                    {
+                                        <option value="@Model.Items[i].Id" selected>@Model.Items[i].Size</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@Model.Items[i].Id">@Model.Items[i].Size</option>
+                                    }
+                                }
+
+                            </select>
+                        </div>
+                        <div>
+                            <strong>Qty: </strong><input class="count" type="number" value="1" max="20" min="0" />
+                        </div>
+                        <button class="addToCart">Add To Cart</button>
+
+
+                    </div>
+                </div>
+                <div class="description">
+                    <h5><strong>Description</strong></h5>
                     <br />
-                    @if (Model.IsOnSale)
-            {
-                        <p class="price">
-                            <span class="old-price">@String.Format("Rp {0:n}", Model.Items[0].RetailPrice)</span>
-                            <span class="glyphicon glyphicon-arrow-right"></span>
-                            <span class="new-price">@String.Format("Rp {0:n}", Utilities.FindReducedPrice(Model.Items[0].RetailPrice, Model.DiscountPercentage))</span>
-                        </p>
-                    }
-                    else
-                    {
-                        <p class="price normal-price">@String.Format("Rp {0:n}", Model.Items[0].RetailPrice)</p>
-                    }
-
-                    <div>
-                        <h5><strong>Available Sizes</strong></h5>
-                        <select class="items">
-                            @for (int i = 0; i < Model.Items.Count; i++)
-                            {
-                                if (i == 0)
-                                {
-                                    <option value="@Model.Items[i].Id" selected>@Model.Items[i].Size</option>
-                                }
-                                else
-                                {
-                                    <option value="@Model.Items[i].Id">@Model.Items[i].Size</option>
-                                }
-                            }
-
-                        </select>
-                    </div>
-                    <div>
-                        <strong>Qty: </strong><input class="count" type="number" value="1" max="20" min="0" />
-                    </div>
-                    <button class="addToCart">Add To Cart</button>
-
-                    
+                    <h6><strong>Origin :</strong> @Model.Origin</h6>
+                    <br />
+                    <p>@Model.Description</p>
                 </div>
             </div>
-            <div class="description">
-                <h5><strong>Description</strong></h5>
-                <br />
-                <h6><strong>Origin :</strong> @Model.Origin</h6>
-                <br />
-                <p>@Model.Description</p>
-            </div>
         </div>
+
     </div>
-        
-</div>
-<div class="clear"></div>
+    <div class="clear"></div>
+}
+else
+{
+    <h3>Item is unavailable</h3>
+    <a href="#" onclick="goBack()">Go Back</a>
+    <script>
+        function goBack() {
+            window.history.back();
+        }
+    </script>
+
+}
+
 
 @section scripts {
     <script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>

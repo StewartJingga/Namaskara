@@ -14,8 +14,7 @@ namespace Namaskara
     {
         protected void Application_Start()
         {
-            //Database.SetInitializer(new Namaskara.Models.InitialData());
-            
+            Database.SetInitializer(new Namaskara.Models.InitialData());
             AreaRegistration.RegisterAllAreas();
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);

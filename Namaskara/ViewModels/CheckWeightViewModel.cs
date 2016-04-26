@@ -9,6 +9,8 @@ namespace Namaskara.ViewModels
     {
         public string Cost { get; set; }
         public string Days { get; set; }
+        public string CostExpress { get; set; }
+        public string DaysExpress { get; set; }
 
     }
 }

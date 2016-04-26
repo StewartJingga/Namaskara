@@ -55,6 +55,7 @@ namespace Namaskara.ViewModels
         public string ShippingCountry { get; set; }
         [Display(Name = "Same Delivery Address")]
         public bool SameDeliveryAddress { get; set; }
+        public int DeliveryMethodId { get; set; }
         public List<CartItem> CartItems { get; set; }
         public string CartTotalPrice { get; set; }
         public string PromoCode { get; set; }

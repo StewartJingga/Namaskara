@@ -157,9 +157,16 @@
                     <div>
                         <p>Please select shipping method :</p>
                         
-                        <input type="radio" checked/> JNE Service REG <span class="deliveryDays"></span>
-                        <span class="deliveryCost"></span>
+                        <input type="radio" name="DeliveryMethodId" id="DeliveryMethodId_1" value="1"/> JNE Service REG <span class="deliveryDays" id="deliveryDays"></span>
+                        <span class="deliveryCost" id="deliveryCost"></span>
                         <div class="clear"></div>
+
+                        <div id="express" style="display:none; padding-left: 10px">
+                            <input type="radio" name="DeliveryMethodId" id="DeliveryMethodId_2" value="2" /> JNE Service YES <span class="deliveryDays" id="deliveryDaysExpress"></span>
+                            <span class="deliveryCost" id="deliveryCostExpress"></span>
+                            <div class="clear"></div>
+                        </div>
+                        
                     </div>
                 </div>
                 <hr />

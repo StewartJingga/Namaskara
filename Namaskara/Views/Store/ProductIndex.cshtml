@@ -45,26 +45,38 @@
                             </div>
                         </a>
                         <div>
-                            <p>@item.Items[0].Name</p>
-                            <p>@item.Items[0].Size</p>
-                            
-                            @if (item.IsOnSale)
+                            <p>@item.Name</p>
+                            @if (item.IsAvailable)
                             {
-                                <p class="price" style="color:red">@Utilities.CheckEnquiry(Utilities.FindReducedPrice(item.Items[0].RetailPrice, item.DiscountPercentage))</p>
+                                
+                                <p>@item.Items[0].Size</p>
+
+                                if (item.IsOnSale)
+                                {
+                                    <p class="price"><strike style="font-size: 11px;">@Utilities.CheckEnquiry(item.Items[0].RetailPrice) </strike><span style="color:red;">@Utilities.CheckEnquiry(Utilities.FindReducedPrice(item.Items[0].RetailPrice, item.DiscountPercentage))</span></p>
+                                }
+                                else
+                                {
+                                    <p class="price">@Utilities.CheckEnquiry(item.Items[0].RetailPrice)</p>
+                                }
+
+                                if (item.Items[0].RetailPrice != 0)
+                                {
+                                    <a href="@Url.Action("DetailsPartial", new { id = @item.ProductId })" class="modal-link addCart">
+                                        <div>Add To Cart</div>
+                                    </a>
+                                }
                             }
                             else
                             {
-                                <p class="price">@Utilities.CheckEnquiry(item.Items[0].RetailPrice)</p>
+                                <p style="color:red">Out of Stock</p>
                             }
+
+
 
                         </div>
                     </div>
-                    @if (item.Items[0].RetailPrice != 0)
-                    {
-                        <a href="@Url.Action("DetailsPartial", new { id = @item.ProductId })" class="modal-link addCart">
-                            <div>Add To Cart</div>
-                        </a>
-                    }
+                    
              </div>
 
             }

@@ -66,7 +66,7 @@ namespace Namaskara.Controllers
                     ViewData["CatName"] = "Can't find products";
                 }
             }
-            if (products != null) products = products.Where(m => m.IsAvailable == true).OrderBy(m => m.Name).ToList();
+            if (products != null) products = products.OrderBy(m => m.Name).ToList();
             return View(products);
         }
 

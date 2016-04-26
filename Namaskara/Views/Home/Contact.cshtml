@@ -3,6 +3,12 @@
 }
 <h2>@ViewBag.Title.</h2>
 <h3>@ViewBag.Message</h3>
+@if (ViewBag.Message != null)
+{
+    <div class="alert alert-success" id="update-message" style="display: none;">
+        @ViewBag.Message;
+    </div>
+}
 
 <address>
     One Microsoft Way<br />
@@ -15,3 +21,37 @@
     <strong>Support:</strong>   <a href="mailto:Support@example.com">Support@example.com</a><br />
     <strong>Marketing:</strong> <a href="mailto:Marketing@example.com">Marketing@example.com</a>
 </address>
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary();
+    @Html.AntiForgeryToken();
+
+    <table id="contact">
+        <tr>
+            <td><label for="Name">Name</label></td>
+            <td><input name="Name" id="Name" /><br /></td>
+        </tr>
+        <tr>
+            <td><label for="Email">Email</label></td>
+            <td><input name="Email" id="Email" /><br /></td>
+        </tr>
+        <tr>
+            <td><label for="Subject">Subject</label></td>
+            <td><input name="Subject" id="Subject" /><br /></td>
+        </tr>
+        <tr>
+            <td><label for="Message">Message</label></td>
+            <td><textarea name="Message" id="Message" cols="30" rows="5"></textarea></td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><button>Send</button></td>
+        </tr>
+    </table>
+}
+
+
+
+
+

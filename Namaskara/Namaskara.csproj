@@ -214,6 +214,7 @@
     <Compile Include="Models\City.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="Models\CreateNewProduct.cs" />
+    <Compile Include="Models\DeliveryMethod.cs" />
     <Compile Include="Models\EmailFormModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\InitialData.cs" />
@@ -574,6 +575,9 @@
     <Content Include="Views\Product\ProductDetails.cshtml" />
     <Content Include="Views\Product\CreateItem.cshtml" />
     <Content Include="Views\StoreManager\Dashboard.cshtml" />
+    <Content Include="Views\Home\FAQ.cshtml" />
+    <Content Include="Views\Home\HowToOrder.cshtml" />
+    <Content Include="Views\Home\ExchangePolicy.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

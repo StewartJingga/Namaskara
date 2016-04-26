@@ -6,7 +6,7 @@ using System.Data.Entity;
 
 namespace Namaskara.Models
 {
-    public class InitialData : DropCreateDatabaseIfModelChanges<NamaskaraDb>
+    public class InitialData : DropCreateDatabaseAlways<NamaskaraDb>
     {
         protected override void Seed(NamaskaraDb context)
         {
@@ -856,42 +856,48 @@ namespace Namaskara.Models
 
             }.ForEach(m => context.Items.Add(m));
 
+            new List<DeliveryMethod>()
+            {
+                new DeliveryMethod { DeliveryName = "JNE REG" },
+                new DeliveryMethod { DeliveryName = "JNE YES" }
+            }.ForEach(m => context.DeliveryMethods.Add(m));
+
             List<State> States = new List<State>()
             {
-                new State { StateName = "Bali", PricePerKg = 22000M, DeliveryDuration = "1-2 days" },
-                new State { StateName = "Bangka Belitung", PricePerKg = 22000M, DeliveryDuration = "1-2 days" },
-                new State { StateName = "Banten", PricePerKg = 10000M, DeliveryDuration = "1-2 days" },
-                new State { StateName = "Bengkulu", PricePerKg = 25000M, DeliveryDuration = "1-2 days" },
-                new State { StateName = "DI Yogyakarta", PricePerKg = 18000M, DeliveryDuration = "1-2 days" },
-                new State { StateName = "DKI Jakarta", PricePerKg = 10000M, DeliveryDuration = "1-2 days" },
-                new State { StateName = "Gorontalo", PricePerKg = 50000M, DeliveryDuration = "2-3 days" },
-                new State { StateName = "Jambi", PricePerKg = 22000M, DeliveryDuration = "1-2 days" },
-                new State { StateName = "Jawa Barat", PricePerKg = 11000M, DeliveryDuration = "1-2 days" },
-                new State { StateName = "Jawa Tengah", PricePerKg = 18000M, DeliveryDuration = "1-2 days" },
-                new State { StateName = "Jawa Timur", PricePerKg = 19000M, DeliveryDuration = "1-2 days" },
-                new State { StateName = "Kalimantan Barat", PricePerKg = 30000M, DeliveryDuration = "1-2 days" },
-                new State { StateName = "Kalimantan Selatan", PricePerKg = 33000M, DeliveryDuration = "1-2 days" },
-                new State { StateName = "Kalimantan Tengah", PricePerKg = 33000M, DeliveryDuration = "1-2 days" },
-                new State { StateName = "Kalimantan Timur", PricePerKg = 46000M, DeliveryDuration = "2-3 days" },
-                new State { StateName = "Kalimantan Utara", PricePerKg = 58000M, DeliveryDuration = "3-5 days" },
-                new State { StateName = "Kepulauan Riau", PricePerKg = 28000M, DeliveryDuration = "1-2 days" },
-                new State { StateName = "Lampung", PricePerKg = 19000M, DeliveryDuration = "1-2 days" },
-                new State { StateName = "Maluku", PricePerKg = 58000M, DeliveryDuration = "2-3 days" },
-                new State { StateName = "Maluku Utara", PricePerKg = 61000M, DeliveryDuration = "2-3 days" },
-                new State { StateName = "Nangroe Aceh Darussalam", PricePerKg = 37000M, DeliveryDuration = "1-2 days" },
-                new State { StateName = "Nusa Tenggara Barat", PricePerKg = 28000M, DeliveryDuration = "1-2 days" },
-                new State { StateName = "Nusa Tenggara Timur", PricePerKg = 55000M, DeliveryDuration = "2-3 days" },
-                new State { StateName = "Papua", PricePerKg = 88000M, DeliveryDuration = "2-4 days" },
-                new State { StateName = "Papua Barat", PricePerKg = 121000M, DeliveryDuration = "4-6 days" },
-                new State { StateName = "Riau", PricePerKg = 28000M, DeliveryDuration = "1-2 days" },
-                new State { StateName = "Sulawesi Barat", PricePerKg = 52000M, DeliveryDuration = "3-5 days" },
-                new State { StateName = "Sulawesi Selatan", PricePerKg = 36000M, DeliveryDuration = "2-3 days" },
-                new State { StateName = "Sulawesi Tengah", PricePerKg = 44000M, DeliveryDuration = "2-3 days" },
-                new State { StateName = "Sulawesi Tenggara", PricePerKg = 50000M, DeliveryDuration = "2-3 days" },
-                new State { StateName = "Sulawesi Utara", PricePerKg = 47000M, DeliveryDuration = "2-3 days" },
-                new State { StateName = "Sumatera Barat", PricePerKg = 28000M, DeliveryDuration = "1-2 days" },
-                new State { StateName = "Sumatera Selatan", PricePerKg = 22000M, DeliveryDuration = "1-2 days" },
-                new State { StateName = "Sumatera Utara", PricePerKg = 30000M, DeliveryDuration = "1-2 days" }
+                new State { StateName = "Bali", PricePerKg = 22000M, DeliveryDuration = "1-2 days", PricePerKgExpress = 30000M, DeliveryDurationExpress = "1 days" },
+                new State { StateName = "Bangka Belitung", PricePerKg = 22000M, DeliveryDuration = "1-2 days", PricePerKgExpress = 34000M, DeliveryDurationExpress = "1 days" },
+                new State { StateName = "Banten", PricePerKg = 10000M, DeliveryDuration = "1-2 days", PricePerKgExpress = 22000M, DeliveryDurationExpress = "1 days" },
+                new State { StateName = "Bengkulu", PricePerKg = 25000M, DeliveryDuration = "1-2 days", PricePerKgExpress = 34000M, DeliveryDurationExpress = "1 days" },
+                new State { StateName = "DI Yogyakarta", PricePerKg = 18000M, DeliveryDuration = "1-2 days", PricePerKgExpress = 28000M, DeliveryDurationExpress = "1 days" },
+                new State { StateName = "DKI Jakarta", PricePerKg = 10000M, DeliveryDuration = "1-2 days", PricePerKgExpress = 0M, DeliveryDurationExpress = " days" },
+                new State { StateName = "Gorontalo", PricePerKg = 50000M, DeliveryDuration = "2-3 days", PricePerKgExpress = 0M, DeliveryDurationExpress = " days" },
+                new State { StateName = "Jambi", PricePerKg = 22000M, DeliveryDuration = "1-2 days", PricePerKgExpress = 34000M, DeliveryDurationExpress = "1 days" },
+                new State { StateName = "Jawa Barat", PricePerKg = 11000M, DeliveryDuration = "1-2 days", PricePerKgExpress = 22000M, DeliveryDurationExpress = "1 days" },
+                new State { StateName = "Jawa Tengah", PricePerKg = 18000M, DeliveryDuration = "1-2 days", PricePerKgExpress = 28000M, DeliveryDurationExpress = "1 days" },
+                new State { StateName = "Jawa Timur", PricePerKg = 19000M, DeliveryDuration = "1-2 days", PricePerKgExpress = 29000M, DeliveryDurationExpress = "1 days" },
+                new State { StateName = "Kalimantan Barat", PricePerKg = 30000M, DeliveryDuration = "1-2 days", PricePerKgExpress = 35000M, DeliveryDurationExpress = "1 days" },
+                new State { StateName = "Kalimantan Selatan", PricePerKg = 33000M, DeliveryDuration = "1-2 days", PricePerKgExpress = 44000M, DeliveryDurationExpress = "1 days" },
+                new State { StateName = "Kalimantan Tengah", PricePerKg = 33000M, DeliveryDuration = "1-2 days", PricePerKgExpress = 41000M, DeliveryDurationExpress = "1 days" },
+                new State { StateName = "Kalimantan Timur", PricePerKg = 46000M, DeliveryDuration = "2-3 days", PricePerKgExpress = 0M, DeliveryDurationExpress = " days" },
+                new State { StateName = "Kalimantan Utara", PricePerKg = 58000M, DeliveryDuration = "3-5 days", PricePerKgExpress = 0M, DeliveryDurationExpress = " days" },
+                new State { StateName = "Kepulauan Riau", PricePerKg = 28000M, DeliveryDuration = "1-2 days", PricePerKgExpress = 0M, DeliveryDurationExpress = " days" },
+                new State { StateName = "Lampung", PricePerKg = 19000M, DeliveryDuration = "1-2 days", PricePerKgExpress = 30000M, DeliveryDurationExpress = "1 days" },
+                new State { StateName = "Maluku", PricePerKg = 58000M, DeliveryDuration = "2-3 days", PricePerKgExpress = 0M, DeliveryDurationExpress = " days" },
+                new State { StateName = "Maluku Utara", PricePerKg = 61000M, DeliveryDuration = "2-3 days", PricePerKgExpress = 0M, DeliveryDurationExpress = " days" },
+                new State { StateName = "Nangroe Aceh Darussalam", PricePerKg = 37000M, DeliveryDuration = "1-2 days", PricePerKgExpress = 0M, DeliveryDurationExpress = " days" },
+                new State { StateName = "Nusa Tenggara Barat", PricePerKg = 28000M, DeliveryDuration = "1-2 days", PricePerKgExpress = 37000M, DeliveryDurationExpress = "1 days" },
+                new State { StateName = "Nusa Tenggara Timur", PricePerKg = 55000M, DeliveryDuration = "2-3 days", PricePerKgExpress = 0M, DeliveryDurationExpress = " days" },
+                new State { StateName = "Papua", PricePerKg = 88000M, DeliveryDuration = "2-4 days", PricePerKgExpress = 0M, DeliveryDurationExpress = " days" },
+                new State { StateName = "Papua Barat", PricePerKg = 121000M, DeliveryDuration = "4-6 days", PricePerKgExpress = 0M, DeliveryDurationExpress = " days" },
+                new State { StateName = "Riau", PricePerKg = 28000M, DeliveryDuration = "1-2 days", PricePerKgExpress = 35000M, DeliveryDurationExpress = "1 days" },
+                new State { StateName = "Sulawesi Barat", PricePerKg = 52000M, DeliveryDuration = "3-5 days", PricePerKgExpress = 0M, DeliveryDurationExpress = " days" },
+                new State { StateName = "Sulawesi Selatan", PricePerKg = 36000M, DeliveryDuration = "2-3 days", PricePerKgExpress = 48000M, DeliveryDurationExpress = "1 days" },
+                new State { StateName = "Sulawesi Tengah", PricePerKg = 44000M, DeliveryDuration = "2-3 days", PricePerKgExpress = 0M, DeliveryDurationExpress = " days" },
+                new State { StateName = "Sulawesi Tenggara", PricePerKg = 50000M, DeliveryDuration = "2-3 days", PricePerKgExpress = 0M, DeliveryDurationExpress = " days" },
+                new State { StateName = "Sulawesi Utara", PricePerKg = 47000M, DeliveryDuration = "2-3 days", PricePerKgExpress = 0M, DeliveryDurationExpress = " days" },
+                new State { StateName = "Sumatera Barat", PricePerKg = 28000M, DeliveryDuration = "1-2 days", PricePerKgExpress = 35000M, DeliveryDurationExpress = "1 days" },
+                new State { StateName = "Sumatera Selatan", PricePerKg = 22000M, DeliveryDuration = "1-2 days", PricePerKgExpress = 34000M, DeliveryDurationExpress = "1 days" },
+                new State { StateName = "Sumatera Utara", PricePerKg = 30000M, DeliveryDuration = "1-2 days", PricePerKgExpress = 40000M, DeliveryDurationExpress = "1 days" }
             };
 
             new List<City>

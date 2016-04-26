@@ -135,7 +135,7 @@ namespace Namaskara.Controllers
         public ActionResult CreateItem(int id)
         {
             Product prod = ndb.Products.Find(id);
-            
+            ViewBag.Unit = new SelectList(Config.UnitList);
             return View(prod);
         }
 
@@ -163,6 +163,14 @@ namespace Namaskara.Controllers
                 return View(model);
             }
                  
+        }
+
+        public ActionResult DeleteItem(int id)
+        {
+            ndb.Items.Remove(ndb.Items.Find(id));
+            ndb.SaveChanges();
+
+            return Redirect(Request.UrlReferrer.ToString());
         }
 
 

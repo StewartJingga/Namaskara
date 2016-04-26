@@ -15,6 +15,7 @@ namespace Namaskara.Models
         public string Email { get; set; }
         [Display(Name = "Items Price (Rp)")]
         public decimal Price { get; set; }
+        public int DeliveryMethodId { get; set; }
         [Display(Name = "Delivery (Rp)")]
         public decimal Delivery { get; set; }
         [Display(Name = "Total (Rp)")]
@@ -38,8 +39,10 @@ namespace Namaskara.Models
         public DateTime OrderDate { get; set; }
         [Display(Name = "Expiry Date")]
         public DateTime ConfirmDate { get; set; }
+        public DateTime? CompleteDate { get; set; }
         public OrderInfo OrderInfo { get; set; }
         public List<OrderDetail> OrderDetails { get; set; }
+        public DeliveryMethod DeliveryMethod { get; set; }
 
         public Order()
         {

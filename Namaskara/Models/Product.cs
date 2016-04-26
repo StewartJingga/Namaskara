@@ -19,6 +19,11 @@ namespace Namaskara.Models
         public bool IsOnSale { get; set; }
         public bool IsFeatured { get; set; }
         public bool IsAvailable { get; set; }
+        public bool IsGlutenFree { get; set; }
+        public bool IsVegan { get; set; }
+        public bool IsLactoseFree { get; set; }
+        public bool IsNutFree { get; set; }
+
         [Range(0, 100.00, ErrorMessage ="Discount must be between 0 to 100")]
         public double DiscountPercentage { get; set; }
         [ScaffoldColumn(false)]

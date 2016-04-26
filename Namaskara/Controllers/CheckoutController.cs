@@ -87,15 +87,14 @@ namespace Namaskara.Controllers
                 Utilities.DuplicateDeliveryAddress(orderInfo);
             }
             ndb.OrderInformation.Add(orderInfo);
-            ndb.SaveChanges();
 
             try
             {
+
                 Order order = new Order();
                 if (authenticated) order.isAuthenticatedPurchase = true;
                 TryUpdateModel(order);
                 ProcessOrder(order, orderInfo);
-
                 //Save the user information if it hasnt been set before (for authenticated user)
                 if (authenticated)
                 {
@@ -126,6 +125,13 @@ namespace Namaskara.Controllers
             }
             catch
             {
+                var cart = ShoppingCart.GetCart(this.HttpContext);
+                ViewBag.Weight = cart.GetCartWeight().ToString();
+                ViewBag.States = new SelectList(ndb.States, "StateName", "StateName");
+                ViewBag.Cities = new SelectList(ndb.Cities, "CityName", "CityName");
+                string[] countries = { "Indonesia" };
+                ViewBag.Countries = new SelectList(countries);
+                model.CartItems = cart.GetCartItems();
                 return View(model);
             }
         }
@@ -134,17 +140,33 @@ namespace Namaskara.Controllers
         public ActionResult CheckDelCost(string dest)
         {
             var cart = ShoppingCart.GetCart(this.HttpContext);
-            string days = Utilities.FindDeliveryDays(dest, ndb);
+            
             var model = new CheckWeightViewModel
             {
-                Cost = String.Format("{0:n}", Utilities.FindDeliveryCost(dest, cart.GetCartWeight(), ndb)),
-                Days = days
+                Cost = String.Format("{0:n}", Utilities.FindDeliveryCost(dest, cart.GetCartWeight(), 1, ndb)),
+                Days = Utilities.FindDeliveryDays(dest, 1, ndb),
+                CostExpress = String.Format("{0:n}", Utilities.FindDeliveryCost(dest, cart.GetCartWeight(), 2, ndb)),
+                DaysExpress = Utilities.FindDeliveryDays(dest, 2, ndb)
+        };
+
+            return Json(model);
+        }
+
+        [HttpPost]
+        public ActionResult CheckFinalDelCost(string dest, int deliveryMethodId)
+        {
+            var cart = ShoppingCart.GetCart(this.HttpContext);
+
+            var model = new CheckWeightViewModel
+            {
+                Cost = String.Format("{0:n}", Utilities.FindDeliveryCost(dest, cart.GetCartWeight(), deliveryMethodId, ndb)),
+                Days = Utilities.FindDeliveryDays(dest, deliveryMethodId, ndb),
             };
 
             return Json(model);
         }
 
-        
+
         [HttpPost]
         public string CheckPromo(string code)
         {
@@ -154,13 +176,13 @@ namespace Namaskara.Controllers
 
        
         [HttpPost]
-        public ActionResult GetTotalPrice(string dest, string code = "")
+        public ActionResult GetTotalPrice(string dest, int deliveryMethodId, string code = "")
         {
             var cart = ShoppingCart.GetCart(this.HttpContext);
 
             double discount = Utilities.CheckPromoDiscount(code, ndb);
             decimal discountPrice = Utilities.FindReducingPrice(cart.GetTotal(), discount);
-            decimal total = Utilities.GetTotalPrice(cart, dest, ndb, discount);
+            decimal total = Utilities.GetTotalPrice(cart, dest, deliveryMethodId, ndb, discount);
             
             return Json(new ReviewOrderViewModel { TotalPrice = String.Format("{0:n}", total), PromoDiscount = String.Format("- {0:n}", discountPrice) });
         }
@@ -273,15 +295,15 @@ namespace Namaskara.Controllers
             var cart = ShoppingCart.GetCart(this.HttpContext);
 
             //Process the order
-            order.OrderInfoId = orderInfo.OrderInfoId;
+            order.OrderInfo = orderInfo;
             order.Email = orderInfo.Email;
             order.OrderDate = DateTime.Now;
             order.ConfirmDate = order.OrderDate.AddDays(Config.DaysToConfirm);
             order.Status = "Order Submitted";
-            order.Delivery = Utilities.FindDeliveryCost(orderInfo.ShippingState, cart.GetCartWeight(), ndb);
+            order.Delivery = Utilities.FindDeliveryCost(orderInfo.ShippingState, cart.GetCartWeight(), order.DeliveryMethodId, ndb);
             order.Price = cart.GetTotal();    
             order.PromoDiscount = Utilities.CheckPromoDiscount(order.PromoCode, ndb);
-            order.Total = Utilities.GetTotalPrice(cart, orderInfo.ShippingState, ndb, order.PromoDiscount);
+            order.Total = Utilities.GetTotalPrice(cart, orderInfo.ShippingState, order.DeliveryMethodId, ndb, order.PromoDiscount);
             
             //Save Order
             ndb.Orders.Add(order);

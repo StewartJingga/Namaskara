@@ -22,6 +22,7 @@ namespace Namaskara.Models
 
         public DbSet<State> States { get; set; }
         public DbSet<City> Cities { get; set; }
+        public DbSet<DeliveryMethod> DeliveryMethods { get; set; }
 
         public DbSet<WishList> Wishlists { get; set; }
         
