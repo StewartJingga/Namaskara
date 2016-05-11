@@ -11,6 +11,8 @@ using System.Threading.Tasks;
 using Namaskara.ViewModels;
 using System.IO;
 using System.Diagnostics;
+using System.Net.Mime;
+using Microsoft.AspNet.Identity;
 
 namespace Namaskara.Controllers
 {
@@ -75,7 +77,7 @@ namespace Namaskara.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult AddressAndPayment(CheckoutViewModel model)
+        public async Task<ActionResult> AddressAndPayment(CheckoutViewModel model)
         {
             bool authenticated = User.Identity.IsAuthenticated;
             OrderInfo orderInfo = new OrderInfo();
@@ -88,13 +90,15 @@ namespace Namaskara.Controllers
             }
             ndb.OrderInformation.Add(orderInfo);
 
+
+            Order order = new Order();
+            if (authenticated) order.isAuthenticatedPurchase = true;
+            TryUpdateModel(order);
+            await ProcessOrder(order, orderInfo);
             try
             {
 
-                Order order = new Order();
-                if (authenticated) order.isAuthenticatedPurchase = true;
-                TryUpdateModel(order);
-                ProcessOrder(order, orderInfo);
+                
                 //Save the user information if it hasnt been set before (for authenticated user)
                 if (authenticated)
                 {
@@ -249,7 +253,7 @@ namespace Namaskara.Controllers
         
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult ConfirmPayment(UploadImageModel model)
+        public async Task<ActionResult> ConfirmPayment(UploadImageModel model)
         {
             if (ModelState.IsValid)
             {
@@ -277,6 +281,30 @@ namespace Namaskara.Controllers
                 order.Status = "Waiting For Confirmation";
                 ndb.Entry(order).State = System.Data.Entity.EntityState.Modified;
                 ndb.SaveChanges();
+
+                //Put order details into order object to create email message
+                order.OrderDetails = ndb.OrderDetails.Where(m => m.OrderId == order.OrderId).ToList();
+                foreach (var od in order.OrderDetails)
+                {
+                    od.Item = ndb.Items.Single(m => m.Id == od.ItemId);
+                }
+
+                //Create Email Form
+                var FAQUrl = Url.Action("FAQ", "Home", null, Request.Url.Scheme);
+                AlternateView avHtml = AlternateView.CreateAlternateViewFromString(Utilities.CreatePaymentConfirmationEmail(order, FAQUrl), null, MediaTypeNames.Text.Html);
+                
+                LinkedResource logo = new LinkedResource(Url.Content("/Images/Namaskara Alternatives-01.png"), MediaTypeNames.Image.Jpeg);
+                logo.ContentId = "Logo";
+                avHtml.LinkedResources.Add(logo);
+
+                EmailFormModel email = new EmailFormModel
+                {
+                    Destination = order.Email,
+                    Message = avHtml
+                };
+
+                await sendPaymentConfirmationEmail(email);
+
                 return RedirectToAction("PaymentUploaded");
             }
                   
@@ -289,7 +317,7 @@ namespace Namaskara.Controllers
             return View();
         }
 
-        private void ProcessOrder(Order order, OrderInfo orderInfo)
+        private async Task ProcessOrder(Order order, OrderInfo orderInfo)
         {
             //Get the cart
             var cart = ShoppingCart.GetCart(this.HttpContext);
@@ -329,14 +357,23 @@ namespace Namaskara.Controllers
 
             //Create Email Form
             var callbackUrl = Url.Action("ConfirmPayment", "Checkout", new { orderId = order.OrderId, code = code }, protocol: Request.Url.Scheme);
+            var FAQUrl = Url.Action("FAQ", "Home", null, Request.Url.Scheme);
+
+            AlternateView avHtml = AlternateView.CreateAlternateViewFromString(Utilities.CreateOrderSummaryEmail(order, callbackUrl, FAQUrl), null, MediaTypeNames.Text.Html);
+
+            LinkedResource logo = new LinkedResource(Server.MapPath("~") + @"Images/Namaskara Alternatives-01.png", MediaTypeNames.Image.Jpeg);
+            logo.ContentId = "Logo";
+            avHtml.LinkedResources.Add(logo);
 
             EmailFormModel email = new EmailFormModel
             {
                 Destination = order.Email,
-                Message = Utilities.CreateOrderSummaryEmail(order, callbackUrl)
+                Message = avHtml
             };
 
-            sendPaymentConfirmationEmail(email);
+            
+
+            await sendPaymentConfirmationEmail(email);
         }
 
         private string CreatePaymentConfirmationToken()
@@ -345,32 +382,33 @@ namespace Namaskara.Controllers
             return token;
         }
 
-        private void sendPaymentConfirmationEmail(EmailFormModel model)
+        private async Task sendPaymentConfirmationEmail(EmailFormModel model)
         {
             if (ModelState.IsValid)
             {
 
                 var email = new MailMessage();
+                
                 email.To.Add(new MailAddress(model.Destination));
-                email.From = new MailAddress("stewart_jingga@yahoo.com");
+                email.From = new MailAddress(Config.Email);
                 email.Subject = "Payment Confirmation Namaskara";
-                email.Body = model.Message;
+                email.AlternateViews.Add(model.Message);
                 email.IsBodyHtml = true;
 
                 using (var client = new SmtpClient())
                 {
                     var credential = new NetworkCredential
                     {
-                        UserName = "stewart_jingga@yahoo.com",
-                        Password = "smithsog00d"
+                        UserName = Config.Email,
+                        Password = Config.Password
                     };
                     client.Credentials = credential;
-                    client.Host = "smtp.mail.yahoo.com";
-                    client.Port = 587;
-                    client.EnableSsl = true;
+                    client.Host = Config.SmtpHost;
+                    client.Port = Config.SmtpPort;
+                    client.EnableSsl = false;
 
                    
-                    client.Send(email);
+                    await client.SendMailAsync(email);
 
 
                 }

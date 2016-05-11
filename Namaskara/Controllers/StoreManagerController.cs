@@ -228,7 +228,7 @@ namespace Namaskara.Controllers
 
         public ActionResult OrderDetails(int id)
         {
-            return PartialView(ndb.Orders.Include("OrderInfo").Single(m => m.OrderId == id));
+            return View(ndb.Orders.Include("OrderInfo").Single(m => m.OrderId == id));
         }
 
         public ActionResult OrderItems(int id)

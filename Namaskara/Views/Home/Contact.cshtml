@@ -1,26 +1,23 @@
-﻿@{
-    ViewBag.Title = "Contact";
+﻿@using Namaskara.Models
+
+@{
+    ViewBag.Title = "Contact Us";
 }
 <h2>@ViewBag.Title.</h2>
-<h3>@ViewBag.Message</h3>
+<br />
 @if (ViewBag.Message != null)
 {
-    <div class="alert alert-success" id="update-message" style="display: none;">
+    <div class="alert alert-success" id="update-message">
         @ViewBag.Message;
     </div>
+    <br />
 }
 
-<address>
-    One Microsoft Way<br />
-    Redmond, WA 98052-6399<br />
-    <abbr title="Phone">P:</abbr>
-    425.555.0100
-</address>
+<p>Email: @Config.Email</p>
+<p>Whatsapp: @Config.WhatsAppNumber</p>
 
-<address>
-    <strong>Support:</strong>   <a href="mailto:Support@example.com">Support@example.com</a><br />
-    <strong>Marketing:</strong> <a href="mailto:Marketing@example.com">Marketing@example.com</a>
-</address>
+
+
 
 @using (Html.BeginForm())
 {

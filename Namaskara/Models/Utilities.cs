@@ -94,24 +94,63 @@ namespace Namaskara.Models
             return price == 0 ? "Please Enquire" : String.Format("Rp {0:n}", price);
         }
 
-        public static string CreateOrderSummaryEmail(Order order, string callbackUrl)
+        public static string CreateOrderSummaryEmail(Order order, string callbackUrl, string faqUrl)
         {
-            string body = "<h2>Thank You for purchasing at our store!</h2><h4>Your order has been submitted.</h4><p>Please review your order</p><br />";
-            body += "<p>Please confirm your payment by clicking <a href=\"" + callbackUrl + "\">here</a></p>";
-            
-            body += "<h3>Your Order number is " + order.OrderId + "</h3>";
-            body += "<div><table><thead><tr><td>Product Name</td><td>Unit Price</td><td>Qty</td><td>Total</td></tr></thead><tbody>";
+            string body = "<style>#table tr{border-bottom: 1px solid black;}#table td{padding: 6px;}.footer {font-size:11px;}</style>";
+
+            body += "<h2>Namaste.</h2><h4>Thank You for your order. Your Order Number is: #" + order.OrderId;
+            body += "<p>Here is a summary of your order:</p><br>";
+            body += "<div><table id='table'><thead><tr><td>Product Name</td><td>Unit Price</td><td>Qty</td><td style=\"text-align:right;\">Total</td></tr></thead><tbody>";
             foreach (var item in order.OrderDetails)
             {
-                body += "<tr><td>" + item.Item.DisplayName + "</td><td>" + item.UnitPrice + "</td><td>" + item.Quantity + "</td>";
-                body += "<td>" + item.UnitPrice * item.Quantity + "</td></tr>";
+                body += "<tr><td>" + item.Item.DisplayName + "</td><td>" + String.Format("Rp. {0:n}", item.UnitPrice) + "</td><td>" + item.Quantity + "</td>";
+                body += "<td style=\"text-align:right;\">" + String.Format("Rp. {0:n}", item.UnitPrice * item.Quantity) + "</td></tr>";
             }
 
-            body += "<tr><td colspan=\"3\">Subtotal:</td><td style=\"text-align:right\">" + order.Price + "</td></tr>";
-            body += "<tr><td colspan=\"3\">Delivery Cost:</td><td style=\"text-align:right\">" + String.Format("{0}.00", order.Delivery) + "</td></tr>";
-            body += "<tr><td colspan=\"3\">Promo Discount:</td><td style=\"text-align:right\">" + FindReducingPrice(order.Price, order.PromoDiscount) + "</td></tr>";
-            body += "<tr><td colspan=\"3\">Total:</td><td style=\"text-align:right\">" + order.Total + "</td></tr>";
-            body += "</tbody></table></div>";
+            body += "<tr><td colspan=\"3\">Subtotal:</td><td style=\"text-align:right\">" + String.Format("Rp. {0:n}", order.Price) + "</td></tr>";
+            body += "<tr><td colspan=\"3\">Delivery Cost:</td><td style=\"text-align:right\">" + String.Format("Rp. {0:n}", order.Delivery) + "</td></tr>";
+            body += "<tr><td colspan=\"3\">Promo Discount:</td><td style=\"text-align:right\">" + String.Format("Rp. {0:n}", FindReducingPrice(order.Price, order.PromoDiscount)) + "</td></tr>";
+            body += "<tr><td colspan=\"3\">Total:</td><td style=\"text-align:right;\">" + String.Format("Rp. {0:n}", order.Total) + "</td></tr>";
+            body += "</tbody></table></div><br>";
+
+            body += "<p>In order to process your order, please complete the payment within " + (Config.DaysToConfirm * 24) + " hours.</p>";
+            body += "<p>Click <a href=\"" + callbackUrl + "\">here</a> to confirm your payment</p><br>";
+
+            body += "<img src=\"cid:Logo\" width=400 height=150 style='margin: 0 auto;'><br>";
+
+            body += "<p class='footer'>Log into your Namaskara Account to view the status of this order.</p>";
+            body += "<p class='footer'>Please do not reply to this message. Please visit our <a href='" + faqUrl + "'>FAQ</a> for general inquiries.</p>";
+            body += "<p class='footer'>If you need further assistance. please contact us at " + Config.WhatsAppNumber + " (9AM - 7PM).</p>";
+            
+
+            return body;
+        }
+
+        public static string CreatePaymentConfirmationEmail(Order order, string faqUrl)
+        {
+            string body = "<style>#table tr{border-bottom: 1px solid black;}#table td{padding: 6px;}.footer {font-size:11px;}</style>";
+
+            body += "<h2>Namaste.</h2><h4>Thank You for confirming your payment. Your order is now being processed and will be dispatched to you shortly.";
+            body += "<p>Here is a summary of your order:</p><br>";
+            body += "<div><table id='table'><thead><tr><td>Product Name</td><td>Unit Price</td><td>Qty</td><td style=\"text-align:right;\">Total</td></tr></thead><tbody>";
+            foreach (var item in order.OrderDetails)
+            {
+                body += "<tr><td>" + item.Item.DisplayName + "</td><td>" + String.Format("Rp. {0:n}", item.UnitPrice) + "</td><td>" + item.Quantity + "</td>";
+                body += "<td style=\"text-align:right;\">" + String.Format("Rp. {0:n}", item.UnitPrice * item.Quantity) + "</td></tr>";
+            }
+
+            body += "<tr><td colspan=\"3\">Subtotal:</td><td style=\"text-align:right\">" + String.Format("Rp. {0:n}", order.Price) + "</td></tr>";
+            body += "<tr><td colspan=\"3\">Delivery Cost:</td><td style=\"text-align:right\">" + String.Format("Rp. {0:n}", order.Delivery) + "</td></tr>";
+            body += "<tr><td colspan=\"3\">Promo Discount:</td><td style=\"text-align:right\">" + String.Format("Rp. {0:n}", FindReducingPrice(order.Price, order.PromoDiscount)) + "</td></tr>";
+            body += "<tr><td colspan=\"3\">Total:</td><td style=\"text-align:right;\">" + String.Format("Rp. {0:n}", order.Total) + "</td></tr>";
+            body += "</tbody></table></div><br>";
+
+            body += "<img src=\"cid:Logo\" width=400 height=150 style='margin: 0 auto;'><br>";
+
+            body += "<p class='footer'>Log into your Namaskara Account to view the status of this order.</p>";
+            body += "<p class='footer'>Please do not reply to this message. Please visit our <a href='" + faqUrl + "'>FAQ</a> for general inquiries.</p>";
+            body += "<p class='footer'>If you need further assistance. please contact us at " + Config.WhatsAppNumber + " (9AM - 7PM).</p>";
+
 
             return body;
         }

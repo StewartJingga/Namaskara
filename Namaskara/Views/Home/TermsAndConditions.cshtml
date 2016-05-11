@@ -1,23 +1,31 @@
-﻿
+﻿@using Namaskara.Models
 @{
     ViewBag.Title = "Namaskara Superfood's Terms And Conditions";
 }
 
-<h2>Terms & Conditions</h2>
+<h2><strong>Terms & Conditions</strong></h2>
 
 <br />
-<h4>Operating Hours</h4>
-
-<p>We operate 7 days a week, Monday to Sunday from 9 AM – 7 PM (WIB) and can be reached via email or Whatsapp.</p>
-<p>We do not operate during public holidays; any means of communication will not be responded during these times.</p>
+<h4><strong>Operating Hours</strong></h4>
+<br />
+<p>We operate 7 days a week, Monday to Sunday from 9 AM – 7 PM (WIB) and can be reached via @Html.ActionLink("email", "Contact") or Whatsapp (@Config.WhatsAppNumber).</p>
+<p>Our Customer Service division does not operate during public holidays; any means of communication will not be responded during these times.</p>
+<p>Our Logistic division will continue to operate during public holidays, meaning we still process your order and you will still get your order delivered during these times.</p>
 
 <br />
-
-<h4>Delivery/Shipping</h4>
+<h4><strong>Ordering</strong></h4>
+<br />
+<p>Order <strong>cannot</strong> be cancelled once it has been processed.</p>
+<br />
+<h4><strong>Delivery/Shipping</strong></h4>
 
 <p>Namaskara Superfood is not held accountable for any item lost during shipping and package cannot be refunded/returned once the package has been received and signed for.</p>
 <p>Faulty items/products can be exchanged if falls into @Html.ActionLink("Item/Product Condition Eligible for Exchange", "ExchangePolicy").</p>
 
 <br />
+<br />
+<br />
+
+<h6>Should you experience any issue regarding your order, please contact our Customer Service Representative by emailing us at @Config.Email or call us at @Config.WhatsAppNumber.</h6>
 
 

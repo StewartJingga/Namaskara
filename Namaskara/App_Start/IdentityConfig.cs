@@ -20,33 +20,24 @@ namespace Namaskara
     {
         public async Task SendAsync(IdentityMessage message)
         {
-            var email = new MailMessage();
+            MailMessage email = new MailMessage();
             email.To.Add(new MailAddress(message.Destination));
-            email.From = new MailAddress("stewart_jingga@yahoo.com");
+            email.From = new MailAddress(Config.Email);
             email.Subject = message.Subject;
             email.Body = message.Body;
             email.IsBodyHtml = true;
-
-            //var email =
-            //    new MailMessage(new MailAddress("noreply@mandiri-jaya.com", "(do not reply)"),
-            //    new MailAddress(message.Destination))
-            //    {
-            //        Subject = message.Subject,
-            //        Body = message.Body,
-            //        IsBodyHtml = true
-            //    };
 
             using (var client = new SmtpClient())
             {
                 var credential = new NetworkCredential
                 {
-                    UserName = "stewart_jingga@yahoo.com",
-                    Password = "smithsog00d"
+                    UserName = Config.Email,
+                    Password = Config.Password
                 };
                 client.Credentials = credential;
-                client.Host = "smtp.mail.yahoo.com";
-                client.Port = 587;
-                client.EnableSsl = true;
+                client.Host = Config.SmtpHost;
+                client.Port = Config.SmtpPort;
+                client.EnableSsl = false;
                 
                 await client.SendMailAsync(email);
 

@@ -11,7 +11,7 @@ using System.Web.Security;
 
 namespace Namaskara.Controllers
 {
-    //[Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin")]
     public class RolesController : Controller
     {
         ApplicationDbContext context = new ApplicationDbContext();

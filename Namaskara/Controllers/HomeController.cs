@@ -25,7 +25,6 @@ namespace Namaskara.Controllers
 
         public ActionResult Contact()
         {
-
             return View();
         }
 
@@ -38,9 +37,9 @@ namespace Namaskara.Controllers
             {
 
                 var email = new MailMessage();
-                email.To.Add(new MailAddress("stewart_jingga@yahoo.com"));
-                email.From = new MailAddress("stewart_jingga@yahoo.com");
-                email.Subject = "Yow";
+                email.To.Add(new MailAddress(Config.Email));
+                email.From = new MailAddress(Config.Email);
+                email.Subject = model["Subject"];
                 email.Body = Utilities.CreateEnquiryEmail(model["Name"], model["Email"], model["Message"]);
                 email.IsBodyHtml = true;
 
@@ -48,22 +47,27 @@ namespace Namaskara.Controllers
                 {
                     var credential = new NetworkCredential
                     {
-                        UserName = "stewart_jingga@yahoo.com",
-                        Password = "smithsog00d"
+                        UserName = Config.Email,
+                        Password = Config.Password
                     };
                     client.Credentials = credential;
-                    client.Host = "smtp.mail.yahoo.com";
-                    client.Port = 587;
-                    client.EnableSsl = true;
+                    client.Host = Config.SmtpHost;
+                    client.Port = Config.SmtpPort;
+                    client.EnableSsl = false;
 
 
                     client.Send(email);
 
+                    ViewBag.Message = "Message has been successfully sent.";
 
                 }
             }
+            else
+            {
+                ViewBag.Message = "Failed to send message";
+            }
 
-            ViewBag.Message = "Email has been successfully sent.";
+            
 
             return View();
         }

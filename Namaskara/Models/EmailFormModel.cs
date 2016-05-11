@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mail;
 using System.Web;
 
 namespace Namaskara.Models
@@ -10,7 +11,7 @@ namespace Namaskara.Models
         public string FromName { get; set; }
         public string FromEmail { get; set; }
         public string Destination { get; set; }
-        public string Message { get; set; }
+        public AlternateView Message { get; set; }
 
     }
 }

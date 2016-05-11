@@ -248,15 +248,78 @@
     <Compile Include="ViewModels\UserAccountViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="android-chrome-144x144.png">
+      <DependentUpon>favicon.ico</DependentUpon>
+    </Content>
+    <Content Include="android-chrome-192x192.png">
+      <DependentUpon>favicon.ico</DependentUpon>
+    </Content>
+    <Content Include="android-chrome-36x36.png">
+      <DependentUpon>favicon.ico</DependentUpon>
+    </Content>
+    <Content Include="android-chrome-48x48.png">
+      <DependentUpon>favicon.ico</DependentUpon>
+    </Content>
+    <Content Include="android-chrome-72x72.png">
+      <DependentUpon>favicon.ico</DependentUpon>
+    </Content>
+    <Content Include="android-chrome-96x96.png">
+      <DependentUpon>favicon.ico</DependentUpon>
+    </Content>
+    <Content Include="apple-touch-icon-114x114.png">
+      <DependentUpon>favicon.ico</DependentUpon>
+    </Content>
+    <Content Include="apple-touch-icon-120x120.png">
+      <DependentUpon>favicon.ico</DependentUpon>
+    </Content>
+    <Content Include="apple-touch-icon-144x144.png">
+      <DependentUpon>favicon.ico</DependentUpon>
+    </Content>
+    <Content Include="apple-touch-icon-152x152.png">
+      <DependentUpon>favicon.ico</DependentUpon>
+    </Content>
+    <Content Include="apple-touch-icon-180x180.png">
+      <DependentUpon>favicon.ico</DependentUpon>
+    </Content>
+    <Content Include="apple-touch-icon-57x57.png">
+      <DependentUpon>favicon.ico</DependentUpon>
+    </Content>
+    <Content Include="apple-touch-icon-60x60.png">
+      <DependentUpon>favicon.ico</DependentUpon>
+    </Content>
+    <Content Include="apple-touch-icon-72x72.png">
+      <DependentUpon>favicon.ico</DependentUpon>
+    </Content>
+    <Content Include="apple-touch-icon-76x76.png">
+      <DependentUpon>favicon.ico</DependentUpon>
+    </Content>
+    <Content Include="apple-touch-icon-precomposed.png">
+      <DependentUpon>favicon.ico</DependentUpon>
+    </Content>
+    <Content Include="apple-touch-icon.png">
+      <DependentUpon>favicon.ico</DependentUpon>
+    </Content>
     <Content Include="App_Data\NamaskaraDb.mdf" />
     <Content Include="App_Data\NamaskaraDb_log.ldf">
       <DependentUpon>NamaskaraDb.mdf</DependentUpon>
+    </Content>
+    <Content Include="browserconfig.xml">
+      <DependentUpon>favicon.ico</DependentUpon>
     </Content>
     <Content Include="Content\bootstrap-overriding.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\reset.css" />
     <Content Include="Content\Site2.css" />
+    <Content Include="favicon-16x16.png">
+      <DependentUpon>favicon.ico</DependentUpon>
+    </Content>
+    <Content Include="favicon-32x32.png">
+      <DependentUpon>favicon.ico</DependentUpon>
+    </Content>
+    <Content Include="favicon-96x96.png">
+      <DependentUpon>favicon.ico</DependentUpon>
+    </Content>
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -456,6 +519,27 @@
     <Content Include="Images\wholemeal flour.jpg" />
     <Content Include="Images\wild black rice.jpg" />
     <Content Include="Images\wild red rice.jpg" />
+    <Content Include="manifest.json">
+      <DependentUpon>favicon.ico</DependentUpon>
+    </Content>
+    <Content Include="mstile-144x144.png">
+      <DependentUpon>favicon.ico</DependentUpon>
+    </Content>
+    <Content Include="mstile-150x150.png">
+      <DependentUpon>favicon.ico</DependentUpon>
+    </Content>
+    <Content Include="mstile-310x150.png">
+      <DependentUpon>favicon.ico</DependentUpon>
+    </Content>
+    <Content Include="mstile-310x310.png">
+      <DependentUpon>favicon.ico</DependentUpon>
+    </Content>
+    <Content Include="mstile-70x70.png">
+      <DependentUpon>favicon.ico</DependentUpon>
+    </Content>
+    <Content Include="safari-pinned-tab.svg">
+      <DependentUpon>favicon.ico</DependentUpon>
+    </Content>
     <Content Include="Scripts\ai.0.15.0-build58334.js" />
     <Content Include="Scripts\ai.0.15.0-build58334.min.js" />
     <Content Include="Scripts\bootstrap.js" />

@@ -92,7 +92,6 @@ namespace Namaskara.Controllers
 
         //Adding User to Role
         [Authorize(Roles = "Admin")]
-        [AllowAnonymous]
         public ActionResult AddUserToRole()
         {
             return View();
@@ -102,7 +101,6 @@ namespace Namaskara.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
-        [AllowAnonymous]
         public ActionResult AddUserToRole(AddUserToRole model)
         {
             if (ModelState.IsValid)
@@ -449,7 +447,8 @@ namespace Namaskara.Controllers
                     MigrateShoppingCart(model.Email);
 
                     //Uncomment this to enable email confirmation
-                    //string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+                    string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+                    await UserManager.ConfirmEmailAsync(user.Id, code);
                     //code = System.Web.HttpUtility.UrlEncode(code);
                     //var callbackUrl = Url.Action("ConfirmEmail", "Account",
                     //    new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
@@ -458,7 +457,7 @@ namespace Namaskara.Controllers
                     //    + callbackUrl + "\">here</a>");
 
                     // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
-                    
+
                     //ViewBag.Message = "Check your email and confirm account, you must be confirmed " +
                     //    "before you can log in.";
 
