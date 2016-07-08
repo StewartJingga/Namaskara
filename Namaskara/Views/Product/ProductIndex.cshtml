@@ -44,10 +44,25 @@
         
         <td>
             @Html.ActionLink("Edit", "EditProduct", new { id=item.ProductId }) |
-            @Html.ActionLink("Details", "ProductDetails", new { id = item.ProductId }) 
-            
+            @Html.ActionLink("Details", "ProductDetails", new { id = item.ProductId }) |
+            @Html.ActionLink("Delete", "DeleteProduct", new { id = item.ProductId }, new { @class = "dButt", prodName = item.Name })
         </td>
     </tr>
 }
 
 </table>
+
+@section scripts {
+    <script>
+        $(".dButt").click(function (e) {
+            e.preventDefault();
+            var prodName = $(this).attr('prodName');
+            var r = confirm("Are you sure you want to delete " + prodName + "?");
+            if (r == true) {
+                window.location = $(this).attr('href');
+            } else {
+                return false;
+            }
+        });
+    </script>
+    }

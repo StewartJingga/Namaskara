@@ -28,20 +28,10 @@ namespace Namaskara.Models
         public static string[] BankAccount = { "BCA", "Ni Komang Ayu Novita Sari", "7730379573" };//Bank, Account Name, Account Number
         public static string WhatsAppNumber = "+62 822 1155 5753";
 
-        public static string SmtpHost = "mail.namaskarasuperfood.com";
-        public static int SmtpPort = 25;
-        public static string Email = "admin@namaskarasuperfood.com";
-        public static string Password = "password";
-
-        //public static string SmtpHost = "mail.mandiri-jaya.com";
-        //public static int SmtpPort = 25;
-        //public static string Email = "stewart@mandiri-jaya.com";
-        //public static string Password = "smithsog00d";
-
-        //public static string SmtpHost = "mail.namaskarasuperfood.com";
-        //public static int SmtpPort = 25;
-        //public static string Email = "admin2@namaskarasuperfood.com";
-        //public static string Password = "elsacintaoscar";
+        public static string SmtpHost = "smtp.gmail.com";
+        public static int SmtpPort = 587;
+        public static string Email = "namaskara.team@gmail.com";
+        public static string Password = "namastenamaskar!";
 
         public static Dictionary<Enum, int> PackagingInGrams = new Dictionary<Enum, int>
         {

@@ -37,15 +37,12 @@ namespace Namaskara.Controllers
             if(id == 0)
             {
                 products = ndb.Products.ToList();
-                
             }
             else
             {
                 products = ndb.Products.Where(m => m.CategoryId == id).ToList();  
             }
-            return View(products);
-
-
+            return View(products.OrderBy(m => m.Name));
         }
         public ActionResult Details(int id, string message = "")
         {
@@ -153,19 +150,23 @@ namespace Namaskara.Controllers
             return RedirectToAction("Index");
         }
 
-        public ActionResult OrderIndex(string sort)
+        public ActionResult OrderIndex(string sort, string orderStatus)
         {
             ViewBag.OrderSort = String.IsNullOrEmpty(sort) ? "order_asc": "";
-            List<Order> orders;
+
+            IEnumerable<Order> orders = ndb.Orders;
+            if (!String.IsNullOrEmpty(orderStatus))
+            {
+                orders = orders.Where(m => m.Status == orderStatus);
+            }
             switch (sort)
             {
                 case "order_asc":
-                    orders = ndb.Orders.OrderBy(m => m.OrderId).ToList();
+                    orders = orders.OrderBy(m => m.OrderId).ToList();
                     break;
                 default:
-                    orders = ndb.Orders.OrderByDescending(m => m.OrderId).ToList();
+                    orders = orders.OrderByDescending(m => m.OrderId).ToList();
                     break;
-                
             }
             return View(orders);
         }
@@ -194,22 +195,21 @@ namespace Namaskara.Controllers
         {
             ViewBag.OrderSort = String.IsNullOrEmpty(sort) ? "order_asc" : "";
             
-            List<Order> orders;
+            IEnumerable<Order> orders = ndb.Orders.Include("DeliveryMethod")
+                                                    .Include("OrderInfo")
+                                                    .Where(m => m.Status == "Confirmed");
 
             switch (sort)
             {
                 case "order_asc":
-                    orders = ndb.Orders.Where(m => m.Status == "Confirmed").OrderBy(m => m.OrderId).ToList();
+                    orders = orders.OrderBy(m => m.OrderId).ToList();
                     break;
                 default:
-                    orders = ndb.Orders.Where(m => m.Status == "Confirmed").OrderByDescending(m => m.OrderId).ToList();
+                    orders = orders.OrderByDescending(m => m.OrderId).ToList();
                     break;
 
             }
-            foreach(var order in orders)
-            {
-                order.OrderInfo = ndb.OrderInformation.Find(order.OrderInfoId);
-            }
+            
             return View(orders);
         }
 
@@ -228,7 +228,9 @@ namespace Namaskara.Controllers
 
         public ActionResult OrderDetails(int id)
         {
-            return View(ndb.Orders.Include("OrderInfo").Single(m => m.OrderId == id));
+            return View(ndb.Orders.Include("OrderInfo")
+                                    .Include("DeliveryMethod")
+                                    .Single(m => m.OrderId == id));
         }
 
         public ActionResult OrderItems(int id)
@@ -246,6 +248,26 @@ namespace Namaskara.Controllers
             ViewData["OrderPromo"] = Utilities.FindReducingPrice(order.Price, order.PromoDiscount);
 
             return PartialView(orderDetails);
+        }
+
+        public ActionResult Statistics()
+        {
+            List<Order> order = ndb.Orders.Where(m => m.Status == "Confirmed").ToList();
+
+            OrderStatisticViewModel model = new OrderStatisticViewModel
+            {
+                BestSellingItem = "",
+                TotalNumberOfPurchase = order.Count(),
+            };
+
+           
+            order.ForEach(m => model.TotalItemPurchase += m.Price);
+
+            order.ForEach(m => model.TotalCost += m.Total);
+
+            
+
+            return View(model);
         }
 
         public ActionResult EditOrder(int id)
@@ -300,6 +322,39 @@ namespace Namaskara.Controllers
             ndb.SaveChanges();
 
             return RedirectToAction("OrderDetails", new { id = id });
+        }
+
+        //TODO: MAKE ALL AVAILABLE IN VIEW PAGE JQUERY ERROR
+        public ActionResult AllAvailable()
+        {
+            List<Product> products = ndb.Products.ToList();
+
+            foreach(var product in products)
+            {
+
+                product.IsAvailable = true;
+                ndb.Entry(product).State = System.Data.Entity.EntityState.Modified;
+            }
+
+            ndb.SaveChanges();
+
+            return RedirectToAction("ProductIndex");
+        }
+
+        public ActionResult AllUnavailable()
+        {
+            List<Product> products = ndb.Products.ToList();
+
+            foreach (var product in products)
+            {
+
+                product.IsAvailable = false;
+                ndb.Entry(product).State = System.Data.Entity.EntityState.Modified;
+            }
+
+            ndb.SaveChanges();
+
+            return RedirectToAction("ProductIndex");
         }
 
         public ActionResult PromoIndex()

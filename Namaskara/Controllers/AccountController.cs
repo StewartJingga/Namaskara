@@ -520,8 +520,9 @@ namespace Namaskara.Controllers
                 // Send an email with this link
                 string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
                 //code = System.Web.HttpUtility.UrlEncode(code);
-                var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);		
-                await UserManager.SendEmailAsync(user.Id, "Reset Password", "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>");
+                var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+                var FAQUrl = Url.Action("FAQ", "Home", null, Request.Url.Scheme);
+                await UserManager.SendEmailAsync(user.Id, "Reset Password", Utilities.CreateResetPasswordEmail(callbackUrl, FAQUrl));
                 return RedirectToAction("ForgotPasswordConfirmation", "Account");
             }
 

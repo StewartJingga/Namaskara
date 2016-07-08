@@ -50,10 +50,14 @@ namespace Namaskara.Controllers
                         UserName = Config.Email,
                         Password = Config.Password
                     };
+                    client.UseDefaultCredentials = false;// disable it
                     client.Credentials = credential;
                     client.Host = Config.SmtpHost;
                     client.Port = Config.SmtpPort;
-                    client.EnableSsl = false;
+                    client.EnableSsl = true;
+                    client.DeliveryMethod = SmtpDeliveryMethod.Network;
+
+                    
 
 
                     client.Send(email);

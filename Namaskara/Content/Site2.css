@@ -159,6 +159,21 @@ body.modal-open {
     margin-right: 0;
 }
 
+.qna p:nth-child(2) {
+    margin-top: 5px;
+    margin-bottom: 10px;
+   
+}
+
+.exchange-policy table {
+    margin-left: 10px;
+}
+
+.exchange-policy td:first-child {
+    padding-right: 15px;
+}
+
+
 
 
 /* ----------------------- HEADER CSS -----------------------*/
@@ -1072,6 +1087,7 @@ div#footer {
     height: 30px;
     margin: 5px 5px;
 }
+
 
 /* ----------------------- BOOTSTRAP OVERRIDE -------------------*/
 

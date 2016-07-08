@@ -37,7 +37,7 @@ namespace Namaskara
                 client.Credentials = credential;
                 client.Host = Config.SmtpHost;
                 client.Port = Config.SmtpPort;
-                client.EnableSsl = false;
+                client.EnableSsl = true;
                 
                 await client.SendMailAsync(email);
 

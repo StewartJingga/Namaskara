@@ -1,6 +1,8 @@
 ﻿using Namaskara.Models;
+using Namaskara.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -63,7 +65,7 @@ namespace Namaskara.Controllers
 
         public ActionResult ProductIndex()
         {
-            return View(ndb.Products.ToList());
+            return View(ndb.Products.OrderBy(m => m.Name).ToList());
         }
 
         public ActionResult ProductDetails(int id)
@@ -75,29 +77,38 @@ namespace Namaskara.Controllers
 
         public ActionResult CreateProduct()
         {
-            
             ViewBag.Categories = new SelectList(ndb.Categories, "CategoryId", "Name");
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CreateProduct(Product model)
+        public ActionResult CreateProduct(CreateProductViewModel model, HttpPostedFileBase Image)
         {
-            
-            if (ModelState.IsValid)
+            if (ModelState.IsValid) //&& )
             {
                 bool exist = ndb.Products.Any(m => m.Name == model.Name);
-                if (exist)
+
+                if(exist)
                 {
                     ViewBag.Categories = new SelectList(ndb.Categories, "CategoryId", "Name");
-                    return View();
+                    ViewBag.Error = "Product with the same name is already existed. Please choose different name.";
+                    return View(model);
                 }
 
                 Product prod = new Product();
                 TryUpdateModel(prod);
                 prod.IsAvailable = false;
                 prod.Category = null;
+
+                if (Image != null && Image.ContentLength > 0)
+                {
+                    string imageName = model.Name + "-img.jpg";
+                    var path = Path.Combine(Server.MapPath("~/Images"), imageName);
+                    Image.SaveAs(path);
+                    prod.ImageUrl = imageName;
+                }
+
                 ndb.Products.Add(prod);
                 ndb.SaveChanges();
 
@@ -106,7 +117,8 @@ namespace Namaskara.Controllers
             else
             {
                 ViewBag.Categories = new SelectList(ndb.Categories, "CategoryId", "Name");
-                return View();
+                ViewBag.Error = "Create Product Failed";
+                return View(model);
             }
                 
 
@@ -114,22 +126,90 @@ namespace Namaskara.Controllers
 
         public ActionResult EditProduct(int id)
         {
+            ViewBag.Categories = new SelectList(ndb.Categories, "CategoryId", "Name");
             return View(ndb.Products.Find(id));
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditProduct(Product model)
+        public ActionResult EditProduct(CreateProductViewModel model, HttpPostedFileBase Image)
         {
             if (ModelState.IsValid)
             {
-                ndb.Entry(model).State = System.Data.Entity.EntityState.Modified;
+                Product product = ndb.Products.Find(model.ProductId);
+
+                bool exist = ndb.Products.Any(m => m.Name == model.Name);
+
+                if (exist && product.Name != model.Name)
+                {
+                    ViewBag.Categories = new SelectList(ndb.Categories, "CategoryId", "Name");
+                    ViewBag.Error = "Product with the same name is already existed. Please choose different name.";
+
+                    Product prod = new Product();
+                    TryUpdateModel(prod);
+                    return View(prod);
+                }
+
+                
+                product.Name = model.Name;
+                product.Origin = model.Origin;
+                product.Description = model.Description;
+                product.CategoryId = model.CategoryId;
+                product.Packaging = model.Packaging;
+
+
+                if (Image != null && Image.ContentLength > 0)
+                {
+                    //Delete the old image
+                    DeleteImage(product.ImageUrl);
+
+                    string imageName = model.Name + "-img.jpg";
+                    var path = Path.Combine(Server.MapPath("~/Images"), imageName);
+                    Image.SaveAs(path);
+                    
+                    //Add the new ImageURL
+                    product.ImageUrl = imageName;
+                }
+
+                ndb.Entry(product).State = System.Data.Entity.EntityState.Modified;
                 ndb.SaveChanges();
 
                 return RedirectToAction("ProductIndex");
 
             }
-            else return View(model);
+            else {
+                ViewBag.Categories = new SelectList(ndb.Categories, "CategoryId", "Name");
+                Product prod = new Product();
+                TryUpdateModel(prod);
+                return View(prod);
+            }
+        }
+
+        public ActionResult DeleteProduct(int id)
+        {
+            Product prod = ndb.Products.Find(id);
+            List<Item> items = ndb.Items.Where(m => m.ProductId == id).ToList();
+            foreach(var item in items)
+            {
+                ndb.Items.Remove(item);
+            }
+
+            //Remove the Product Image
+            DeleteImage(prod.ImageUrl);
+            
+            ndb.Products.Remove(prod);
+            ndb.SaveChanges();
+
+            return RedirectToAction("ProductIndex");
+        }
+
+        public void DeleteImage(string imgUrl)
+        {
+            string imgPath = Request.MapPath("~/Images/" + imgUrl);
+            if (System.IO.File.Exists(imgPath))
+            {
+                System.IO.File.Delete(imgPath);
+            }
         }
 
         public ActionResult CreateItem(int id)

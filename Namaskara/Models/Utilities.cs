@@ -155,6 +155,22 @@ namespace Namaskara.Models
             return body;
         }
 
+        public static string CreateResetPasswordEmail(string callbackUrl, string faqUrl)
+        {
+            string body = "<style>#table tr{border-bottom: 1px solid black;}#table td{padding: 6px;}.footer {font-size:11px;}</style>";
+
+            body += "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>";
+
+            body += "<img src=\"cid:Logo\" width=400 height=150 style='margin: 0 auto;'><br>";
+
+            body += "<p class='footer'>Log into your Namaskara Account to view the status of this order.</p>";
+            body += "<p class='footer'>Please do not reply to this message. Please visit our <a href='" + faqUrl + "'>FAQ</a> for general inquiries.</p>";
+            body += "<p class='footer'>If you need further assistance. please contact us at " + Config.WhatsAppNumber + " (9AM - 7PM).</p>";
+
+
+            return body;
+        }
+
         public static string CreateEnquiryEmail(string name, string email, string message)
         {
             string body = "From : " + name;

@@ -5,6 +5,7 @@
 }
 
 <h2>Order List</h2>
+
 @{ Html.RenderAction("OrderNavigation");}
 
 <table class="table">
@@ -40,7 +41,8 @@
             @String.Format("{0:n}", item.Total)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Status)
+            
+            @Html.ActionLink(item.Status, "OrderIndex", new { orderStatus = item.Status })
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.OrderDate)

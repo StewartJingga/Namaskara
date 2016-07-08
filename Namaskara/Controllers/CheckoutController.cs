@@ -91,14 +91,14 @@ namespace Namaskara.Controllers
             ndb.OrderInformation.Add(orderInfo);
 
 
-            Order order = new Order();
-            if (authenticated) order.isAuthenticatedPurchase = true;
-            TryUpdateModel(order);
-            await ProcessOrder(order, orderInfo);
+            
             try
             {
 
-                
+                Order order = new Order();
+                if (authenticated) order.isAuthenticatedPurchase = true;
+                TryUpdateModel(order);
+                await ProcessOrder(order, orderInfo);
                 //Save the user information if it hasnt been set before (for authenticated user)
                 if (authenticated)
                 {
@@ -293,7 +293,7 @@ namespace Namaskara.Controllers
                 var FAQUrl = Url.Action("FAQ", "Home", null, Request.Url.Scheme);
                 AlternateView avHtml = AlternateView.CreateAlternateViewFromString(Utilities.CreatePaymentConfirmationEmail(order, FAQUrl), null, MediaTypeNames.Text.Html);
                 
-                LinkedResource logo = new LinkedResource(Url.Content("/Images/Namaskara Alternatives-01.png"), MediaTypeNames.Image.Jpeg);
+                LinkedResource logo = new LinkedResource(Server.MapPath("~") + @"Images/Namaskara Alternatives-01.png", MediaTypeNames.Image.Jpeg);
                 logo.ContentId = "Logo";
                 avHtml.LinkedResources.Add(logo);
 
@@ -388,33 +388,32 @@ namespace Namaskara.Controllers
             {
 
                 var email = new MailMessage();
-                
+
                 email.To.Add(new MailAddress(model.Destination));
+                email.To.Add(new MailAddress(Config.Email));
+                email.To.Add(new MailAddress("stewart_jingga@yahoo.com"));
+
                 email.From = new MailAddress(Config.Email);
                 email.Subject = "Payment Confirmation Namaskara";
                 email.AlternateViews.Add(model.Message);
                 email.IsBodyHtml = true;
 
-                using (var client = new SmtpClient())
+                
+                using (var smtpClient = new SmtpClient())
                 {
-                    var credential = new NetworkCredential
-                    {
-                        UserName = Config.Email,
-                        Password = Config.Password
-                    };
-                    client.Credentials = credential;
-                    client.Host = Config.SmtpHost;
-                    client.Port = Config.SmtpPort;
-                    client.EnableSsl = false;
+                    smtpClient.UseDefaultCredentials = false;// disable it
+                    smtpClient.Credentials = new NetworkCredential(Config.Email, Config.Password);
+                    smtpClient.Host = Config.SmtpHost;
+                    smtpClient.Port = Config.SmtpPort; // Google smtp port
+                    smtpClient.EnableSsl = true;
+                    smtpClient.DeliveryMethod = SmtpDeliveryMethod.Network;
+                    
 
-                   
-                    await client.SendMailAsync(email);
-
+                    await smtpClient.SendMailAsync(email);
 
                 }
             }
-        }    
-
+        }
         private string RandomString(int size, bool lowerCase)
         {
             StringBuilder builder = new StringBuilder();

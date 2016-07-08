@@ -238,6 +238,8 @@
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\CheckoutViewModel.cs" />
     <Compile Include="ViewModels\CheckWeightViewModel.cs" />
+    <Compile Include="ViewModels\CreateProductViewModel.cs" />
+    <Compile Include="ViewModels\OrderStatisticViewModel.cs" />
     <Compile Include="ViewModels\ReviewOrderViewModel.cs" />
     <Compile Include="ViewModels\ShoppingCartAddModel.cs" />
     <Compile Include="ViewModels\ShoppingCartRemoveViewModel.cs" />
@@ -371,6 +373,8 @@
     <Content Include="Images\cane sugar light.jpg" />
     <Content Include="Images\carob powder.jpg" />
     <Content Include="Images\cart.png" />
+    <Content Include="Images\cartwarnahitam.gif" />
+    <Content Include="Images\cartwarnaputih.gif" />
     <Content Include="Images\chandrika ayurvedic soap.jpg" />
     <Content Include="Images\chestnut dried.jpg" />
     <Content Include="Images\chickpeas.jpg" />
@@ -416,6 +420,7 @@
     <Content Include="Images\iconpromo.png" />
     <Content Include="Images\iconwishlist.png" />
     <Content Include="Images\iconwishlist_hover.png" />
+    <Content Include="Images\image_unavailable.jpg" />
     <Content Include="Images\instagram-logo.png" />
     <Content Include="Images\instant baby oats.jpg" />
     <Content Include="Images\kale powder.jpg" />
@@ -458,6 +463,7 @@
     <Content Include="Images\oat flour.jpg" />
     <Content Include="Images\oats groats.jpg" />
     <Content Include="Images\orange sugar.JPG" />
+    <Content Include="Images\out_of_stock.jpg" />
     <Content Include="Images\pine nuts kernel.jpg" />
     <Content Include="Images\pinto beans canned %28eden%29.jpg" />
     <Content Include="Images\pinto beans.jpg" />
@@ -662,6 +668,7 @@
     <Content Include="Views\Home\FAQ.cshtml" />
     <Content Include="Views\Home\HowToOrder.cshtml" />
     <Content Include="Views\Home\ExchangePolicy.cshtml" />
+    <Content Include="Views\StoreManager\Statistics.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

@@ -1,0 +1,49 @@
+﻿@model Namaskara.ViewModels.OrderStatisticViewModel
+
+@{
+    ViewBag.Title = "Statistics";
+}
+
+<h2>Statistics</h2>
+
+<div>
+    <h4>Order Statistic</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.BestSellingItem)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.BestSellingItem)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TotalNumberOfPurchase)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TotalNumberOfPurchase)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TotalItemPurchase)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TotalItemPurchase)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TotalCost)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TotalCost)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Back to List", "OrderIndex")
+</p>
