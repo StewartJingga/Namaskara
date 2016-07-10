@@ -53,7 +53,7 @@
                 @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
             </div>
         </div>
-        <img width="100" height="100" src="/Images/@Model.ImageUrl" />
+        <img width="100" height="100" src="@Html.Raw("/Images/" + Model.ImageUrl + ".jpg")" />
         <div class="form-group">
             <label for="Image" class="control-label col-md-2">Change Image</label>
             <div class="col-md-10">

@@ -103,8 +103,8 @@ namespace Namaskara.Controllers
 
                 if (Image != null && Image.ContentLength > 0)
                 {
-                    string imageName = model.Name + "-img.jpg";
-                    var path = Path.Combine(Server.MapPath("~/Images"), imageName);
+                    string imageName = model.Name + "-img";
+                    var path = Path.Combine(Server.MapPath("~/Images"), imageName + ".jpg");
                     Image.SaveAs(path);
                     prod.ImageUrl = imageName;
                 }
@@ -163,8 +163,8 @@ namespace Namaskara.Controllers
                     //Delete the old image
                     DeleteImage(product.ImageUrl);
 
-                    string imageName = model.Name + "-img.jpg";
-                    var path = Path.Combine(Server.MapPath("~/Images"), imageName);
+                    string imageName = model.Name + "-img";
+                    var path = Path.Combine(Server.MapPath("~/Images"), imageName + ".jpg");
                     Image.SaveAs(path);
                     
                     //Add the new ImageURL
